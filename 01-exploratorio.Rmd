@@ -290,7 +290,7 @@ a column separator -->
 :::
 
 ::: {.col data-latex="{0.4\\textwidth}"}
-```{r, out.width='40%', echo=FALSE}
+```{r, out.width='55%', echo=FALSE}
 knitr::include_graphics('images/boxplot.png')
 ```
 
