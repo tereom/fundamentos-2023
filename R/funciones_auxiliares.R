@@ -1,3 +1,4 @@
+library(cmdstanr)
 
 escape_table_salida <- function() {
   if (knitr::is_latex_output())

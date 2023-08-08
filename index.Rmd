@@ -82,7 +82,9 @@ Referencias: [@Chihara], [@Wasserman]
 
 Referencias: [@Chihara], [@Wasserman]
 
-13. Pruebas de hipótesis para medias y proporciones: una y dos poblaciones. [^index-2]: Material para revisión por parte del estudiante.
+13. Pruebas de hipótesis para medias y proporciones: una y dos poblaciones.[^index-2] 
+
+[^index-2]: Material para revisión por parte del estudiante.
 
 #### Introducción a inferencia bayesiana {.unnumbered}
 

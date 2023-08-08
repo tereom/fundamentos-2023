@@ -14,6 +14,7 @@ editor_options:
 
 ```{r setup, include=FALSE, message=FALSE}
 library(tidyverse)
+library(here)
 knitr::opts_chunk$set(echo = TRUE)
 comma <- function(x) format(x, digits = 2, big.mark = ",")
 theme_set(theme_minimal())
@@ -466,7 +467,7 @@ precio de las casas sin ajustar por su tamaño.
 Podemos resumir este primer análisis con un par de gráficas de cuantiles
 (@cleveland93):
 
-```{r, out.width = '90%', fig.align= 'center', cache=TRUE, fig,height = 5, fig.asp = 0.55}
+```{r fig-casas, out.width = '90%', fig.align= 'center', cache=TRUE, fig.height = 5, fig.asp = 0.55}
 mediana <- median(casas$precio_m2)
 resumen <- casas |>
   group_by(nombre_zona) |>
