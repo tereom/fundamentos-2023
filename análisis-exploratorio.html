@@ -53,6 +53,10 @@
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" 
+integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous">
+  </script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/fnaufel/smartify/smartify.min.js"></script>
 
 
 <style type="text/css">
@@ -147,6 +151,7 @@ div.csl-indent {
 }
 </style>
 
+<link rel="stylesheet" href="css/style.css" type="text/css" />
 </head>
 
 <body>
@@ -159,6 +164,9 @@ div.csl-indent {
       <nav role="navigation">
 
 <ul class="summary">
+<li><a href="./">Fundamentos de Estadística con Remuestreo</a></li>
+
+<li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Información del curso</a></li>
 <li class="chapter" data-level="" data-path="temario.html"><a href="temario.html"><i class="fa fa-check"></i>Temario</a>
 <ul>
@@ -218,6 +226,9 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#ejemplo-gráfica-de-minard"><i class="fa fa-check"></i>Ejemplo: gráfica de Minard</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i>Referencias</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/tereom/fundamentos-2023" target="blank">Publicado con bookdown</a></li>
+
 </ul>
 
       </nav>
@@ -306,50 +317,10 @@ num_personas
 <tbody>
 <tr>
 <td style="text-align:right;">
-17.51
+28.17
 </td>
 <td style="text-align:right;">
-3.00
-</td>
-<td style="text-align:left;">
-Si
-</td>
-<td style="text-align:left;">
-Dom
-</td>
-<td style="text-align:left;">
-Cena
-</td>
-<td style="text-align:right;">
-2
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-16.82
-</td>
-<td style="text-align:right;">
-4.00
-</td>
-<td style="text-align:left;">
-Si
-</td>
-<td style="text-align:left;">
-Dom
-</td>
-<td style="text-align:left;">
-Cena
-</td>
-<td style="text-align:right;">
-2
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-7.74
-</td>
-<td style="text-align:right;">
-1.44
+6.50
 </td>
 <td style="text-align:left;">
 Si
@@ -361,27 +332,27 @@ Sab
 Cena
 </td>
 <td style="text-align:right;">
-2
+3
 </td>
 </tr>
 <tr>
 <td style="text-align:right;">
-11.35
+20.69
 </td>
 <td style="text-align:right;">
-2.50
+5.00
 </td>
 <td style="text-align:left;">
-Si
+No
 </td>
 <td style="text-align:left;">
-Vie
+Dom
 </td>
 <td style="text-align:left;">
 Cena
 </td>
 <td style="text-align:right;">
-2
+5
 </td>
 </tr>
 <tr>
@@ -406,13 +377,33 @@ Comida
 </tr>
 <tr>
 <td style="text-align:right;">
-19.08
+16.45
 </td>
 <td style="text-align:right;">
-1.50
+2.47
 </td>
 <td style="text-align:left;">
 No
+</td>
+<td style="text-align:left;">
+Sab
+</td>
+<td style="text-align:left;">
+Cena
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+16.58
+</td>
+<td style="text-align:right;">
+4.00
+</td>
+<td style="text-align:left;">
+Si
 </td>
 <td style="text-align:left;">
 Jue
@@ -426,16 +417,36 @@ Comida
 </tr>
 <tr>
 <td style="text-align:right;">
-15.06
+20.53
 </td>
 <td style="text-align:right;">
-3.00
+4.00
 </td>
 <td style="text-align:left;">
-No
+Si
 </td>
 <td style="text-align:left;">
-Sab
+Jue
+</td>
+<td style="text-align:left;">
+Comida
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+15.69
+</td>
+<td style="text-align:right;">
+1.50
+</td>
+<td style="text-align:left;">
+Si
+</td>
+<td style="text-align:left;">
+Dom
 </td>
 <td style="text-align:left;">
 Cena
@@ -446,16 +457,16 @@ Cena
 </tr>
 <tr>
 <td style="text-align:right;">
-24.06
+25.71
 </td>
 <td style="text-align:right;">
-3.60
+4.00
 </td>
 <td style="text-align:left;">
 No
 </td>
 <td style="text-align:left;">
-Sab
+Dom
 </td>
 <td style="text-align:left;">
 Cena
@@ -466,39 +477,39 @@ Cena
 </tr>
 <tr>
 <td style="text-align:right;">
-20.65
+34.65
 </td>
 <td style="text-align:right;">
-3.35
+3.68
 </td>
 <td style="text-align:left;">
-No
+Si
 </td>
 <td style="text-align:left;">
-Sab
+Dom
 </td>
 <td style="text-align:left;">
 Cena
 </td>
 <td style="text-align:right;">
-3
+4
 </td>
 </tr>
 <tr>
 <td style="text-align:right;">
-17.92
+8.52
 </td>
 <td style="text-align:right;">
-4.08
+1.48
 </td>
 <td style="text-align:left;">
 No
 </td>
 <td style="text-align:left;">
-Sab
+Jue
 </td>
 <td style="text-align:left;">
-Cena
+Comida
 </td>
 <td style="text-align:right;">
 2
@@ -885,7 +896,7 @@ Intercuantílico</strong>, definido por la diferencia entre los cuantiles 25% y
 a column separator --></p>
 </div>
 <div class="col">
-<p><img src="images/boxplot.png" width="95%" /></p>
+<p><img src="images/boxplot.png" width="40%" /></p>
 <p>Figura: <a href="https://creativecommons.org/licenses/by-sa/3.0">Jumanbar / CC
 BY-SA</a></p>
 </div>
@@ -2186,6 +2197,7 @@ Guber, D. 1999. <span>“Getting What You Pay for: The Debate over Equity in Pub
 Lê, Sébastien, Julie Josse, François Husson, et al. 2008. <span>“FactoMineR: An r Package for Multivariate Analysis.”</span> <em>Journal of Statistical Software</em> 25 (1): 1–18.
 </div>
 </div>
+<script type="text/javascript">smartify();</script>
             </section>
 
           </div>
@@ -2207,8 +2219,8 @@ Lê, Sébastien, Julie Josse, François Husson, et al. 2008. <span>“FactoMineR
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
-"github": false,
-"facebook": true,
+"github": true,
+"facebook": false,
 "twitter": true,
 "linkedin": false,
 "weibo": false,
@@ -2223,8 +2235,8 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": null,
-"text": null
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/01-exploratorio.Rmd",
+"text": "Edit"
 },
 "history": {
 "link": null,
@@ -2234,7 +2246,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": null,
+"download": ["fundamentos-estadistica.Rmd"],
 "search": {
 "engine": "fuse",
 "options": null
