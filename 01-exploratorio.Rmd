@@ -901,10 +901,6 @@ de una lotería a lo largo de 53 sorteos (las unidades son cantidades de
 dinero indexadas). Graficamos en escalas logarítmicas y agregamos una
 curva `loess`.
 
-Los siguientes datos muestran los premios ofrecidos y las ventas totales
-de una lotería a lo largo de 53 sorteos (las unidades son cantidades de
-dinero indexadas). Graficamos en escalas logarítmicas y agregamos una
-curva `loess`.
 
 ```{r, fig.width=3.6, fig.height=3.3, fig.align ='center', warning = FALSE, message = FALSE}
 # cargamos los datos
@@ -956,14 +952,14 @@ provee de un método con estas características:
 
 **Curvas loess (regresión local):** Una manera de mejorar la
 flexibilidad de los modelos lineales es considerar rectas de manera
-local. Es decir, en cada $x$ posible consideramos cuál es la mejor recta
+local. Es decir, en cada $x$ posible consideramos cuál es la recta
 que mejor ajusta a los datos, considerando solamente valores de $x_n$
 que están cercanos a $x$.
 
 La siguiente gráfica muestra qué recta se ajusta alrededor de cada
 punto, y cómo queda el suavizador completo, con distintos valores de
-suavizamiento. EL tono de los puntos indican en cada paso cuánto peso se
-les da a cada valor:
+suavizamiento. El tono de los puntos indican en cada paso que ventana de datos es 
+considerada:
 
 ```{r binsmoother-animation, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center'}
 library(gganimate)
@@ -1089,7 +1085,8 @@ suavizamiento fijo, y $\lambda=1$. Denotamos como $\hat{g}(x)$ la curva
 x) para la observación $(x_n, y_n)$.
 
 Para poder calcular $w_n(x)$ debemos comenzar calculando
-$q=\lfloor{N\alpha}\rfloor$ que suponemos mayor que uno. Ahora definimos
+$q=\lfloor{N\alpha}\rfloor$ que suponemos mayor que uno, esta $q$ es el número 
+de puntos que se utilizan en cada ajuste local. Ahora definimos
 la función *tricubo*: \begin{align}
 T(u)=\begin{cases}
 (1-|u|^3)^3, & \text{para $|u| < 1$}.\\
@@ -1317,7 +1314,7 @@ datos_dia <- datos_dia |>
 
 ```{r, echo = FALSE, fig.height=3, echo = FALSE,  out.width = '90%', fig.align= 'center', cache=TRUE, fig.asp = 0.35}
 ggplot(datos_dia, aes(x = fecha)) +
-  geom_point(aes(y = res_2), alpha = 0.5, colour = "gray") +
+  geom_point(aes(y = res_2), alpha = 0.2) +
   geom_line(aes(y = ajuste_3, colour = dia_semana), size = 1) +
   xlab("")
 ```
@@ -1349,7 +1346,7 @@ ggplot(datos_dia, aes(sample = res_3)) +
 ### Reestimación {.unnumbered}
 
 Cuando hacemos este proceso secuencial de llevar el ajuste a los
-residual, a veces conviene iterarlo. La razón es que un una segunda o
+residual, a veces conviene iterarlo. La razón es que en una segunda o
 tercera pasada podemos hacer mejores estimaciones de cada componente, y
 es posible suavizar menos sin capturar *componentes de más alta
 frecuencia.*

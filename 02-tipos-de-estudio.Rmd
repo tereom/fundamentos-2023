@@ -51,7 +51,7 @@ otro produce respuestas poco útiles pero es fácil, y otro es tortuoso pero que
 caracteriza el mejor trabajo de análisis de datos:
 
 
-```{r, echo = FALSE, message = FALSE, fig.cap = "Adaptado de R. Peng: [Tukey, design thinking and better questions.](https://simplystatistics.org/2019/04/17/tukey-design-thinking-and-better-questions/)", warning=FALSE}
+```{r, echo = FALSE, message = FALSE, fig.cap = "Adaptado de R. Peng: [Tukey, design thinking and better questions.](https://simplystatistics.org/posts/2019-04-17-tukey-design-thinking-and-better-questions/ed)", warning=FALSE}
 library(tidyverse)
 theme_set(theme_minimal())
 puntos <- tibble(x = c(0.5, 1.2, 4, 4), y = c(0.5, 4, 0.5, 5),
