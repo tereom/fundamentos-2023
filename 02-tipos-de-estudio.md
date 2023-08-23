@@ -36,8 +36,8 @@ caracteriza el mejor trabajo de análisis de datos:
 
 
 <div class="figure" style="text-align: center">
-<img src="02-tipos-de-estudio_files/figure-html/unnamed-chunk-2-1.png" alt="Adaptado de R. Peng: [Tukey, design thinking and better questions.](https://simplystatistics.org/2019/04/17/tukey-design-thinking-and-better-questions/)" width="70%" />
-<p class="caption">(\#fig:unnamed-chunk-2)Adaptado de R. Peng: [Tukey, design thinking and better questions.](https://simplystatistics.org/2019/04/17/tukey-design-thinking-and-better-questions/)</p>
+<img src="02-tipos-de-estudio_files/figure-html/unnamed-chunk-2-1.png" alt="Adaptado de R. Peng: [Tukey, design thinking and better questions.](https://simplystatistics.org/posts/2019-04-17-tukey-design-thinking-and-better-questions/ed)" width="70%" />
+<p class="caption">(\#fig:unnamed-chunk-2)Adaptado de R. Peng: [Tukey, design thinking and better questions.](https://simplystatistics.org/posts/2019-04-17-tukey-design-thinking-and-better-questions/ed)</p>
 </div>
 
 

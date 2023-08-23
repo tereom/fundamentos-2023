@@ -2,3 +2,4 @@ fig:grafica-pcr
 fig:unnamed-chunk-2
 análisis-exploratorio
 tipos-de-estudio-y-experimentos
+pruebas-de-hipótesis

@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Sección 3 Pruebas de hipótesis | Fundamentos de Estadística con Remuestreo</title>
+  <meta name="description" content="Curso de Fundamentos de Estadística con Remuestreo, maestría en Ciencia de Datos, ITAM, Otoño 2023." />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Sección 3 Pruebas de hipótesis | Fundamentos de Estadística con Remuestreo" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Curso de Fundamentos de Estadística con Remuestreo, maestría en Ciencia de Datos, ITAM, Otoño 2023." />
+  <meta name="github-repo" content="tereom/fundamentos-2023" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Sección 3 Pruebas de hipótesis | Fundamentos de Estadística con Remuestreo" />
+  
+  <meta name="twitter:description" content="Curso de Fundamentos de Estadística con Remuestreo, maestría en Ciencia de Datos, ITAM, Otoño 2023." />
+  
+
+<meta name="author" content="Teresa Ortiz, Alfredo Garbuno, Felipe González" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="tipos-de-estudio-y-experimentos.html"/>
+<link rel="next" href="apéndice-principios-de-visualizacion.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" 
+integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous">
+  </script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/fnaufel/smartify/smartify.min.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Fundamentos de Estadística con Remuestreo</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Información del curso</a></li>
+<li class="chapter" data-level="" data-path="temario.html"><a href="temario.html"><i class="fa fa-check"></i>Temario</a>
+<ul>
+<li class="chapter" data-level="" data-path="temario.html"><a href="temario.html#plan-semanal"><i class="fa fa-check"></i>Plan semanal</a></li>
+<li class="chapter" data-level="" data-path="temario.html"><a href="temario.html#evaluación"><i class="fa fa-check"></i>Evaluación</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html"><i class="fa fa-check"></i><b>1</b> Análisis exploratorio</a>
+<ul>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#el-papel-de-la-exploración-en-el-análisis-de-datos"><i class="fa fa-check"></i>El papel de la exploración en el análisis de datos</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#preguntas-y-datos"><i class="fa fa-check"></i>Preguntas y datos</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#algunos-conceptos-básicos"><i class="fa fa-check"></i>Algunos conceptos básicos</a>
+<ul>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#histogramas"><i class="fa fa-check"></i>Histogramas</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#media-y-desviación-estándar"><i class="fa fa-check"></i>Media y desviación estándar</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#ejemplos"><i class="fa fa-check"></i>Ejemplos</a>
+<ul>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#precios-de-casas"><i class="fa fa-check"></i>Precios de casas</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#prueba-enlace"><i class="fa fa-check"></i>Prueba Enlace</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#estados-y-calificaciones-en-sat"><i class="fa fa-check"></i>Estados y calificaciones en SAT</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#tablas-de-conteos"><i class="fa fa-check"></i>Tablas de conteos</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#suavizamiento-loess"><i class="fa fa-check"></i>Suavizamiento loess</a>
+<ul>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#opcional-cálculo-del-suavizador"><i class="fa fa-check"></i>Opcional: cálculo del suavizador</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#caso-de-estudio-nacimientos-en-méxico"><i class="fa fa-check"></i>Caso de estudio: nacimientos en México</a>
+<ul>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#datos-de-natalidad-para-méxico"><i class="fa fa-check"></i>Datos de natalidad para México</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#tendencia"><i class="fa fa-check"></i>Tendencia</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#componente-anual"><i class="fa fa-check"></i>Componente anual</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#día-de-la-semana"><i class="fa fa-check"></i>Día de la semana</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#residuales"><i class="fa fa-check"></i>Residuales</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#reestimación"><i class="fa fa-check"></i>Reestimación</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#análisis-de-componentes"><i class="fa fa-check"></i>Análisis de componentes</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#residuales-antes-y-después-de-2006"><i class="fa fa-check"></i>Residuales: antes y después de 2006</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#otros-días-especiales-más-de-residuales"><i class="fa fa-check"></i>Otros días especiales: más de residuales</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#semana-santa"><i class="fa fa-check"></i>Semana santa</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html"><i class="fa fa-check"></i><b>2</b> Tipos de estudio y experimentos</a>
+<ul>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#motivación"><i class="fa fa-check"></i>Motivación</a></li>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#proceso-generador-de-datos"><i class="fa fa-check"></i>Proceso Generador de Datos</a></li>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#ejemplo-prevalencia-de-anemia"><i class="fa fa-check"></i>Ejemplo: Prevalencia de anemia</a></li>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#muestreo-aleatorio"><i class="fa fa-check"></i>Muestreo aleatorio</a></li>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#pero-si-no-podemos-hacer-muestreo-aleatorio"><i class="fa fa-check"></i>Pero si no podemos hacer muestreo aleatorio?</a>
+<ul>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#ejemplo-policías-y-tráfico"><i class="fa fa-check"></i>Ejemplo: Policías y tráfico</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#el-estimador-estándar"><i class="fa fa-check"></i>El estimador estándar</a></li>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#experimentos-tradicionales"><i class="fa fa-check"></i>Experimentos tradicionales</a></li>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#bloqueo"><i class="fa fa-check"></i>Bloqueo</a></li>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#variables-desconocidas"><i class="fa fa-check"></i>Variables desconocidas</a></li>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#aleatorizando-el-tratamiento"><i class="fa fa-check"></i>Aleatorizando el tratamiento</a></li>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#selección-de-unidades-y-tratamiento"><i class="fa fa-check"></i>Selección de unidades y tratamiento</a></li>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#asignación-natural-del-tratamiento"><i class="fa fa-check"></i>Asignación natural del tratamiento</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html"><i class="fa fa-check"></i><b>3</b> Pruebas de hipótesis</a>
+<ul>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#comparación-con-poblaciones-de-referencia"><i class="fa fa-check"></i>Comparación con poblaciones de referencia</a>
+<ul>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#ejemplo"><i class="fa fa-check"></i>Ejemplo</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#comparando-distribuciones"><i class="fa fa-check"></i>Comparando distribuciones</a></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#prueba-de-permutaciones-y-el-lineup"><i class="fa fa-check"></i>Prueba de permutaciones y el <em>lineup</em></a></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#comparaciones-usando-lineup-continuación"><i class="fa fa-check"></i>Comparaciones usando <em>lineup</em> (continuación)</a></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#prueba-de-permutaciones-para-proporciones"><i class="fa fa-check"></i>Prueba de permutaciones para proporciones</a></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#pruebas-de-hipótesis-tradicionales"><i class="fa fa-check"></i>Pruebas de hipótesis tradicionales</a></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#tomadores-de-té-continuación"><i class="fa fa-check"></i>Tomadores de té (continuación)</a></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#pruebas-de-permutación-problemas-en-implementación."><i class="fa fa-check"></i>Pruebas de permutación: problemas en implementación.</a></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#ejemplo-tiempos-de-fusión"><i class="fa fa-check"></i>Ejemplo: tiempos de fusión</a></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#ejemplo-tiempos-de-fusión-continuación"><i class="fa fa-check"></i>Ejemplo: tiempos de fusión (continuación)</a></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#separación-de-grupos"><i class="fa fa-check"></i>Separación de grupos</a>
+<ul>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#avispas-opcional"><i class="fa fa-check"></i>Avispas (opcional)</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#la-crisis-de-replicabilidad"><i class="fa fa-check"></i>La “crisis de replicabilidad”</a></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#el-jardín-de-los-senderos-que-se-bifurcan"><i class="fa fa-check"></i>El jardín de los senderos que se bifurcan</a></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#ejemplo-decisiones-de-análisis-y-valores-p"><i class="fa fa-check"></i>Ejemplo: decisiones de análisis y valores <em>p</em></a></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#alternativas-o-soluciones"><i class="fa fa-check"></i>Alternativas o soluciones</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html"><i class="fa fa-check"></i>Apéndice: Principios de visualizacion</a>
+<ul>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#el-cuarteto-de-anscombe"><i class="fa fa-check"></i>El cuarteto de Anscombe</a></li>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#introducción"><i class="fa fa-check"></i>Introducción</a></li>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#visualización-popular-de-datos"><i class="fa fa-check"></i>Visualización popular de datos</a></li>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#teoría-de-visualización-de-datos"><i class="fa fa-check"></i>Teoría de visualización de datos</a>
+<ul>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#principios-generales-del-diseño-analítico"><i class="fa fa-check"></i>Principios generales del diseño analítico</a></li>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#técnicas-de-visualización"><i class="fa fa-check"></i>Técnicas de visualización</a></li>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#indicadores-de-calidad-gráfica"><i class="fa fa-check"></i>Indicadores de calidad gráfica</a></li>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#factor-de-engaño-y-chartjunk"><i class="fa fa-check"></i>Factor de engaño y Chartjunk</a></li>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#pequeños-múltiplos-y-densidad-gráfica"><i class="fa fa-check"></i>Pequeños múltiplos y densidad gráfica</a></li>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#tinta-de-datos"><i class="fa fa-check"></i>Tinta de datos</a></li>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#decoración"><i class="fa fa-check"></i>Decoración</a></li>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#percepción-de-escala"><i class="fa fa-check"></i>Percepción de escala</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#ejemplo-gráfica-de-minard"><i class="fa fa-check"></i>Ejemplo: gráfica de Minard</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tareas.html"><a href="tareas.html"><i class="fa fa-check"></i>Tareas</a>
+<ul>
+<li class="chapter" data-level="" data-path="tareas.html"><a href="tareas.html#análisis-exploratorio-1"><i class="fa fa-check"></i>1. Análisis Exploratorio</a></li>
+<li class="chapter" data-level="" data-path="tareas.html"><a href="tareas.html#análisis-exploratorio---loess"><i class="fa fa-check"></i>2. Análisis Exploratorio - loess</a></li>
+<li class="chapter" data-level="" data-path="tareas.html"><a href="tareas.html#tipos-de-estudio-y-pgd"><i class="fa fa-check"></i>3. Tipos de estudio y PGD</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i>Referencias</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/tereom/fundamentos-2023" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Fundamentos de Estadística con Remuestreo</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="pruebas-de-hipótesis" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Sección 3</span> Pruebas de hipótesis<a href="pruebas-de-hipótesis.html#pruebas-de-hipótesis" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Las primeras técnicas inferenciales que veremos intentan contestar la siguiente pregunta: Si observamos cierto patrón en los datos, <strong>¿cómo podemos cuantificar la
+evidencia de que es un patrón notable y no sólo debido a fluctuaciones en los
+datos particulares que tenemos?</strong></p>
+<ul>
+<li>¿Cómo sabemos que no estamos <strong>sobreinterpretando</strong> esas fluctuaciones?</li>
+</ul>
+<p>Por ejemplo:</p>
+<ul>
+<li>Un sistema tiene cierto comportamiento “usual” para el cual tenemos datos históricos.
+El sistema presenta fluctuaciones en el tiempo.</li>
+<li>Observamos la última salida de nuestro sistema. Naturalmente, tiene fluctuaciones.
+¿Esas fluctuaciones son consistentes con la operación usual del sistema? ¿Existe
+evidencia para pensar que algo en el sistema cambió?</li>
+</ul>
+<div id="comparación-con-poblaciones-de-referencia" class="section level2 unnumbered hasAnchor">
+<h2>Comparación con poblaciones de referencia<a href="pruebas-de-hipótesis.html#comparación-con-poblaciones-de-referencia" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>En las prueba de hipótesis, tratamos de construir distribuciones de referencia
+para comparar resultados que obtengamos con un “estándar” de variación, y juzgar
+si nuestros resultados son consistentes con la referencia o no <span class="citation">(<a href="#ref-box78" role="doc-biblioref">Box et al. 1978</a>)</span>.</p>
+<p>En algunos casos, ese estándar de variación puede construirse con datos históricos.</p>
+<div id="ejemplo" class="section level3 unnumbered hasAnchor">
+<h3>Ejemplo<a href="pruebas-de-hipótesis.html#ejemplo" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Supongamos que estamos considerando cambios rápidos en una serie de tiempo de
+alta frecuencia. Hemos observado la serie en su estado “normal” durante un
+tiempo considerable, y cuando observamos nuevos datos <strong>quisiéramos juzgar si
+hay indicaciones o evidencia en contra de que el sistema sigue funcionando
+de manera similar</strong>.</p>
+<p>Digamos que monitoreamos ventanas de tiempo de tamaño 20 y necesitamos tomar una decisión. Abajo
+mostramos cinco ejemplos donde el sistema opera normalmente, que muestra la variabilidad
+en el tiempo en ventanas cortas del sistema.</p>
+<p>Ahora suponemos que obtenemos una nueva ventana de datos. ¿Hay evidencia en contra
+de que el sistema sigue funcionando de manera similar?</p>
+<p>Nuestra primera inclinación debe ser comparar: en este caso, compararamos ventanas históricas con nuestra nueva serie:</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="pruebas-de-hipótesis.html#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># usamos datos simulados para este ejemplo</span></span>
+<span id="cb57-2"><a href="pruebas-de-hipótesis.html#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">8812</span>)</span>
+<span id="cb57-3"><a href="pruebas-de-hipótesis.html#cb57-3" aria-hidden="true" tabindex="-1"></a>historicos <span class="ot">&lt;-</span> <span class="fu">simular_serie</span>(<span class="dv">2000</span>)</span></code></pre></div>
+<p><img src="03-pruebas-de-hipotesis_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>¿Vemos algo diferente en los datos nuevos (el panel de color diferente)?</p>
+<p>Indpendientemente de la respuesta, vemos que hacer <strong>este análisis de manera tan simple no es siempre útil</strong>:
+seguramente podemos encontrar maneras en que la nueva muestra (4) es diferente
+a muestras históricas. Por ejemplo, ninguna de muestras tiene un “forma de montaña” tan clara.</p>
+<p>Nos preguntamos si no estamos <strong>sobreinterpretando</strong> variaciones que son parte normal del proceso.</p>
+<p>Podemos hacer un mejor análisis si extraemos varias muestras del comportamiento
+usual del sistema, graficamos junto a la nueva muestra, y <strong>revolvemos</strong> las gráficas
+para que no sepamos cuál es cuál. Entonces la pregunta es:</p>
+<ul>
+<li>¿Podemos detectar donde están los datos nuevos?</li>
+</ul>
+<p>Esta se llama una <strong>prueba de lineup</strong>, o una <em>prueba de ronda de sospechosos</em> <span class="citation">(<a href="#ref-lineup" role="doc-biblioref">Hadley Wickham et al. 2010</a>)</span>.
+En la siguiente gráfica, en uno de los páneles
+están los datos recientemente observados. ¿Hay algo en los datos que distinga al patrón nuevo?</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="pruebas-de-hipótesis.html#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># nuevos datos</span></span>
+<span id="cb58-2"><a href="pruebas-de-hipótesis.html#cb58-2" aria-hidden="true" tabindex="-1"></a>obs <span class="ot">&lt;-</span> <span class="fu">simular_serie</span>(<span class="dv">500</span>, <span class="at">x_inicial =</span> <span class="fu">last</span>(obs<span class="sc">$</span>obs))</span>
+<span id="cb58-3"><a href="pruebas-de-hipótesis.html#cb58-3" aria-hidden="true" tabindex="-1"></a><span class="co"># muestrear datos históricos</span></span>
+<span id="cb58-4"><a href="pruebas-de-hipótesis.html#cb58-4" aria-hidden="true" tabindex="-1"></a>prueba_tbl <span class="ot">&lt;-</span> <span class="fu">muestrear_ventanas</span>(historicos, obs[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, ], <span class="at">n_ventana =</span> <span class="dv">20</span>)</span>
+<span id="cb58-5"><a href="pruebas-de-hipótesis.html#cb58-5" aria-hidden="true" tabindex="-1"></a><span class="co"># gráfica de pequeños múltiplos</span></span>
+<span id="cb58-6"><a href="pruebas-de-hipótesis.html#cb58-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(prueba_tbl<span class="sc">$</span>lineup, <span class="fu">aes</span>(<span class="at">x =</span> t_0, <span class="at">y =</span> obs)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb58-7"><a href="pruebas-de-hipótesis.html#cb58-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>rep, <span class="at">nrow =</span> <span class="dv">4</span>) <span class="sc">+</span> <span class="fu">scale_y_log10</span>()</span></code></pre></div>
+<p><img src="03-pruebas-de-hipotesis_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="ejercicio">
+<p>
+¿Cuáles son los datos nuevos (solo hay un panel con los nuevos
+datos)? ¿Qué implica que la gráfica que escojamos como “más diferente”
+no sean los datos nuevos? ¿Qué implica que le “atinemos” a la gráfica de
+los datos nuevos?
+</p>
+</div>
+<p>Ahora observamos al sistema en otro momento y repetimos la comparación. En el siguiente caso obtenemos:</p>
+<p><img src="03-pruebas-de-hipotesis_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Aunque es imposible estar seguros de que ha ocurrido un cambio, la diferencia de una de las
+series es muy considerable. Si identificamos los datos correctos,
+la probabilidad de que hayamos señalado la nueva serie “sobreinterpretando”
+fluctuaciones en un proceso que sigue comportándose normalente es 0.05 - relativamente baja.
+<strong>Detectar los datos diferentes es evidencia en contra de que el sistema sigue funcionando de la misma
+manera que antes.</strong></p>
+<p>En el ejemplo anterior se encontraban en la posición:</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="pruebas-de-hipótesis.html#cb59-1" aria-hidden="true" tabindex="-1"></a>prueba_tbl<span class="sc">$</span>pos</span></code></pre></div>
+<pre><code>## [1] 18</code></pre>
+<p><strong>Observaciones y terminología</strong>:</p>
+<ol style="list-style-type: decimal">
+<li><p>Llamamos <em>hipótesis nula</em> a la hipótesis de que los nuevos
+datos son producidos bajo las mismas condiciones que los datos de control o de referencia.</p></li>
+<li><p><strong>Si no escogemos la gráfica de los nuevos datos, nuestra conclusión es que
+la prueba no aporta evidencia en contra de la hipótesis nula.</strong></p></li>
+<li><p><strong>Si escogemos la gráfica correcta, nuestra conclusión es que la prueba aporta evidencia
+en contra de la hipótesis nula.</strong></p></li>
+</ol>
+<p>¿Qué tan fuerte es la evidencia, en caso de que descubrimos los datos no nulos?</p>
+<ol start="4" style="list-style-type: decimal">
+<li><p>Cuando el número de paneles es más grande y detectamos los datos, la evidencia es más alta en contra de la nula.
+Decimos que el <em>nivel de significancia de la prueba</em> es la probabilidad de seleccionar a los
+datos correctos cuando la hipótesis nula es cierta (el sistema no ha cambiado).
+En el caso de 20 paneles, la significancia es de 1/20 = 0.05. Cuando detectamos los datos nuevos,
+niveles de significancia más bajos implican más evidencia en contra de la nula.</p></li>
+<li><p>Si acertamos, y la diferencia es más notoria y fue muy fácil detectar la gráfica diferente (pues
+sus diferencias son más extremas),
+esto también sugiere más evidencia en contra de la hipótesis nula.</p></li>
+<li><p>Finalmente, esta prueba rara vez (o nunca) <strong>nos da seguridad completa acerca de ninguna conclusión</strong>, aún cuando
+hiciéramos muchos páneles.</p></li>
+</ol>
+</div>
+</div>
+<div id="comparando-distribuciones" class="section level2 unnumbered hasAnchor">
+<h2>Comparando distribuciones<a href="pruebas-de-hipótesis.html#comparando-distribuciones" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Ahora intentamos un ejemplo más típico. Supongamos que tenemos <em>muestras</em> para
+tres grupos <code>a</code>, <code>b</code> y <code>c</code>, esto es que dentro de cada grupo, el proceso de
+selección de los elementos se hace al azar y de manera simétrica (por ejemplo cada elemento tiene a misma probabiidad de ser seleccionado,
+y las extracciones se hacen de manera independiente.)</p>
+<p>Queremos comparar las distribuciones de los datos obtenidos para cada grupo.
+Quizá la pregunta detrás de esta
+comparación es: el grupo de <code>clientes b</code> recibió una promoción especial. ¿Están gastando
+más? La medición que comparamos es el gasto de los clientes.</p>
+<p><img src="03-pruebas-de-hipotesis_files/figure-html/unnamed-chunk-9-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>En la muestra observamos diferencias entre los grupos. Pero notamos adicionalmente que
+hay mucha variación dentro de cada grupo. <strong>Nos podríamos preguntar entonces si las diferencias
+que observamos se deben variación muestral, por ejemplo.</strong></p>
+<p>Podemos construir ahora una <em>hipótesis nula</em>, que establece que las observaciones
+provienen de una población similar:</p>
+<ul>
+<li>Las tres poblaciones (a, b, c)
+son prácticamente indistiguibles. En este
+caso, la variación que observamos se debería a que tenemos información incompleta.</li>
+</ul>
+<p>Como en el ejemplo anterior <strong>necesitamos construir u obtener una distribución de referencia</strong> para comparar
+qué tan extremos o diferentes son los datos que observamos. Esa distribución de referencia debería
+estar basada en el supuesto de que los grupos producen datos de distribuciones similares.</p>
+<p>Si tuvieramos mediciones similares históricas de estos tres grupos, quizá podríamos extraer
+datos de referencia y comparar, como hicimos en el ejempo anterior. Pero esto es menos común en
+este tipo de ejemplos.</p>
+</div>
+<div id="prueba-de-permutaciones-y-el-lineup" class="section level2 unnumbered hasAnchor">
+<h2>Prueba de permutaciones y el <em>lineup</em><a href="pruebas-de-hipótesis.html#prueba-de-permutaciones-y-el-lineup" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Para abordar este problema podemos pensar en usar permutaciones de los grupos de
+la siguiente forma (<span class="citation">(<a href="#ref-box78" role="doc-biblioref">Box et al. 1978</a>)</span>, <span class="citation">(<a href="#ref-timboot14" role="doc-biblioref">Tim C. Hesterberg 2015a</a>)</span>):</p>
+<ul>
+<li>Si los grupos producen
+datos bajo procesos idénticos, entonces los grupos <code>a</code>, <code>b</code>, <code>c</code> solo son etiquetas que no contienen información.</li>
+<li>Podríamos <strong>permutar al azar</strong> las etiquetas y observar nuevamente la gráfica
+de caja y brazos por grupos.</li>
+<li>Si la hipótesis nula es cierta (grupos idénticos), esta es una muestra tan verosímil como la que obtuvimos.</li>
+<li>Así que podemos construir datos de referencia permutando las etiquetas de los grupos al azar, y observando la variación que ocurre.</li>
+<li>Si la hipótesis nula es cercana a ser cierta, no deberíamos de poder distinguir fácilmente los
+datos observados de los producidos con las permutaciones al azar.</li>
+</ul>
+<p>Vamos a intentar esto, por ejemplo usando una <strong>gráfica de cuantiles simplificada</strong>. Hacemos un <em>lineup</em>, o una
+<em>rueda de sospechosos</em> (usamos el paquete <span class="citation">(<a href="#ref-nullabor" role="doc-biblioref">H. Wickham, Chowdhury, and Cook 2012</a>)</span>, ver <span class="citation">(<a href="#ref-lineup" role="doc-biblioref">Hadley Wickham et al. 2010</a>)</span>),
+donde 19 de los acusados <strong>son generados mediante permutaciones al azar</strong> de la variable del grupo,
+y el culpable (los verdaderos datos) están en una posición escogida al azar. ¿Podemos identificar
+los datos verdaderos? Para evitar sesgarnos, también ocultamos la etiqueta verdadera.</p>
+<p>Usamos una gráfica que muestra los cuantiles 0.10, 0.50, 0.90:</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="pruebas-de-hipótesis.html#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">88</span>)</span>
+<span id="cb61-2"><a href="pruebas-de-hipótesis.html#cb61-2" aria-hidden="true" tabindex="-1"></a>reps <span class="ot">&lt;-</span> <span class="fu">lineup</span>(<span class="fu">null_permute</span>(<span class="st">&quot;grupo&quot;</span>), muestra_tab, <span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div>
+<pre><code>## decrypt(&quot;JTBA F1p1 Cg GnsCpCng ue&quot;)</code></pre>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="pruebas-de-hipótesis.html#cb63-1" aria-hidden="true" tabindex="-1"></a>reps_mezcla <span class="ot">&lt;-</span> reps <span class="sc">|&gt;</span>  </span>
+<span id="cb63-2"><a href="pruebas-de-hipótesis.html#cb63-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">grupo_1 =</span> <span class="fu">factor</span>(digest<span class="sc">::</span><span class="fu">digest2int</span>(grupo) <span class="sc">%%</span> <span class="dv">177</span>))</span>
+<span id="cb63-3"><a href="pruebas-de-hipótesis.html#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grafica_cuantiles</span>(reps_mezcla, grupo_1, x) <span class="sc">+</span></span>
+<span id="cb63-4"><a href="pruebas-de-hipótesis.html#cb63-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
+<span id="cb63-5"><a href="pruebas-de-hipótesis.html#cb63-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>.sample, <span class="at">ncol =</span> <span class="dv">5</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;x&quot;</span>) <span class="sc">+</span></span>
+<span id="cb63-6"><a href="pruebas-de-hipótesis.html#cb63-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">caption =</span> <span class="st">&quot;Mediana y percentiles 10% y 90%&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb63-7"><a href="pruebas-de-hipótesis.html#cb63-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour =</span> grupo_1))</span></code></pre></div>
+<p><img src="03-pruebas-de-hipotesis_files/figure-html/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Y la pregunta que hacemos es ¿<strong>podemos distinguir nuestra muestra entre todas las
+replicaciones producidas con permutaciones</strong>?</p>
+<div class="ejercicio">
+<p>
+¿Dónde están los datos observados? Según tu elección, ¿qué tan
+diferentes son los datos observados de los datos nulos?
+</p>
+</div>
+<p>En este ejemplo, es difícil indicar cuáles son los datos. Los grupos tienen distribuciones
+similares y es factible que las diferencias que observamos se deban a variación muestral.</p>
+<ul>
+<li><p>Si la persona escoge los verdaderos datos, encontramos evidencia en contra de la hipótesis nula
+(los tres grupos son equivalentes).
+En algunos contextos, se dice que los datos son <em>significativamente diferentes</em> al nivel 0.05. Esto es
+evidencia en contra de que los datos se producen de manera homogénea, independientemente del grupo.</p></li>
+<li><p>Si la persona escoge uno de los datos permutados,
+no encontramos evidencia en contra de que los tres grupos producen datos con
+distribuciones similares.</p></li>
+</ul>
+</div>
+<div id="comparaciones-usando-lineup-continuación" class="section level2 unnumbered hasAnchor">
+<h2>Comparaciones usando <em>lineup</em> (continuación)<a href="pruebas-de-hipótesis.html#comparaciones-usando-lineup-continuación" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Repetimos el ejemplo para otra muestra (en este ejemplo el proceso generador
+de datos es diferente para el grupo <code>b</code>):</p>
+<p><img src="03-pruebas-de-hipotesis_files/figure-html/unnamed-chunk-12-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>Hacemos primero la prueba del <em>lineup</em>:</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="pruebas-de-hipótesis.html#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">121</span>)</span>
+<span id="cb64-2"><a href="pruebas-de-hipótesis.html#cb64-2" aria-hidden="true" tabindex="-1"></a>reps <span class="ot">&lt;-</span> <span class="fu">lineup</span>(<span class="fu">null_permute</span>(<span class="st">&quot;grupo&quot;</span>), muestra_tab, <span class="at">n =</span> <span class="dv">20</span>)</span>
+<span id="cb64-3"><a href="pruebas-de-hipótesis.html#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grafica_cuantiles</span>(reps <span class="sc">|&gt;</span>  <span class="fu">mutate</span>(<span class="at">grupo_escondido =</span> <span class="fu">factor</span>(digest<span class="sc">::</span><span class="fu">digest2int</span>(grupo) <span class="sc">%%</span> <span class="dv">177</span>)),</span>
+<span id="cb64-4"><a href="pruebas-de-hipótesis.html#cb64-4" aria-hidden="true" tabindex="-1"></a>                  grupo_escondido, x) <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span>.sample) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;x&quot;</span>) <span class="sc">+</span></span>
+<span id="cb64-5"><a href="pruebas-de-hipótesis.html#cb64-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour =</span> grupo_escondido))</span></code></pre></div>
+<p><img src="03-pruebas-de-hipotesis_files/figure-html/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" />
+Podemos distinguir más o menos claramente que está localizada en valores
+más altos y tiene mayor dispersión. En este caso, como en general podemos identificar los
+datos, obtenemos evidencia en contra de que los tres grupos tienen distribuciones iguales.</p>
+<p>Estos ejemplos siguen la idea de inferencia visual propuestas en
+<span class="citation">(<a href="#ref-lineup" role="doc-biblioref">Hadley Wickham et al. 2010</a>)</span>, <span class="citation">(<a href="#ref-graphical-tests" role="doc-biblioref">Hofmann et al. 2012</a>)</span> son
+pruebas muy flexibles y estadísticamente rigurosas.</p>
+</div>
+<div id="prueba-de-permutaciones-para-proporciones" class="section level2 unnumbered hasAnchor">
+<h2>Prueba de permutaciones para proporciones<a href="pruebas-de-hipótesis.html#prueba-de-permutaciones-para-proporciones" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Veremos otro ejemplo donde podemos hacer más concreta la idea de
+<strong>distribución nula o de referencia</strong> usando pruebas de permutaciones. Supongamos
+que con nuestra muestra
+de tomadores de té, queremos probar la siguiente hipótesis nula:</p>
+<ul>
+<li>Los tomadores de té en bolsas exclusivamente, usan azúcar a tasas simillares que
+los tomadores de té suelto (que pueden o no también tomar té en bolsita).</li>
+</ul>
+<p>Los datos que obtuvimos en nuestra encuesta, en conteos, son:</p>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+sugar
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+bolsa_exclusivo
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+suelto o bolsa
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+No.sugar
+</td>
+<td style="text-align:right;">
+81
+</td>
+<td style="text-align:right;">
+74
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sugar
+</td>
+<td style="text-align:right;">
+89
+</td>
+<td style="text-align:right;">
+56
+</td>
+</tr>
+</tbody>
+</table>
+<p>Y en proporciones tenemos que:</p>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+how
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+prop_azucar
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+bolsa_exclusivo
+</td>
+<td style="text-align:right;">
+0.52
+</td>
+<td style="text-align:right;">
+170
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+suelto o bolsa
+</td>
+<td style="text-align:right;">
+0.43
+</td>
+<td style="text-align:right;">
+130
+</td>
+</tr>
+</tbody>
+</table>
+<p>Pero distintas muestras podrían haber dado distintos resultados. Nos preguntamos
+qué tan fuerte es la evidencia en contra de que en realidad los dos grupos de personas usan azúcar en proporciones similares,
+y la diferencia que vemos se puede atribuir a variación muestral.</p>
+<p>En este ejemplo, podemos usar una <strong>estadística de prueba numérica</strong>, por ejemplo,
+la diferencia entre las dos proporciones:</p>
+<p><span class="math display">\[\hat p_1 - \hat p_2,\]</span></p>
+<p>(tomadores de té en <code>bolsa solamente</code> vs. <code>suelto y bolsa</code>). El proceso sería entonces:</p>
+<ul>
+<li>La hipótesis nula es que los dos grupos tienen distribuciones iguales. Este caso
+quiere decir que en la población, tomadores de té solo en bolsa usan
+azúcar a las mismas tasas que tomadores de suelto o bolsas.</li>
+<li>Bajo nuestra hipótesis nula (proporciones iguales), producimos una cantidad
+grande (por ejemplo 10 mil o más) de muestras permutando las etiquetas de los
+grupos.</li>
+<li>Evaluamos nuestra estadística de prueba en cada una de las muestras
+permutadas.</li>
+<li>El conjunto de valores obtenidos nos da nuestra <em>distribución de referencia</em>
+(ya no estamos limitados a 20 replicaciones como en las pruebas gráficas).</li>
+<li>Y la pregunta clave es: ¿el valor de la estadística en nuestra muestra es
+<em>extrema</em> en comparación a la distribución de referencia?</li>
+</ul>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="pruebas-de-hipótesis.html#cb65-1" aria-hidden="true" tabindex="-1"></a>dif_obs <span class="ot">&lt;-</span> te_azucar <span class="sc">|&gt;</span></span>
+<span id="cb65-2"><a href="pruebas-de-hipótesis.html#cb65-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">usa_azucar =</span> <span class="fu">as.numeric</span>(sugar <span class="sc">==</span> <span class="st">&quot;sugar&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb65-3"><a href="pruebas-de-hipótesis.html#cb65-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(how) <span class="sc">|&gt;</span></span>
+<span id="cb65-4"><a href="pruebas-de-hipótesis.html#cb65-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">prop_azucar =</span> <span class="fu">mean</span>(usa_azucar), <span class="at">.groups =</span> <span class="st">&#39;drop&#39;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb65-5"><a href="pruebas-de-hipótesis.html#cb65-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> how, <span class="at">values_from =</span> prop_azucar) <span class="sc">|&gt;</span></span>
+<span id="cb65-6"><a href="pruebas-de-hipótesis.html#cb65-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">diferencia_prop =</span> bolsa_exclusivo <span class="sc">-</span> <span class="st">`</span><span class="at">suelto o bolsa</span><span class="st">`</span>) <span class="sc">|&gt;</span></span>
+<span id="cb65-7"><a href="pruebas-de-hipótesis.html#cb65-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(diferencia_prop)</span></code></pre></div>
+<p>La diferencia observada es:</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="pruebas-de-hipótesis.html#cb66-1" aria-hidden="true" tabindex="-1"></a>dif_obs <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] 0.093</code></pre>
+<p>Ahora construimos nuestra distribución nula o de referencia:</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="pruebas-de-hipótesis.html#cb68-1" aria-hidden="true" tabindex="-1"></a>reps <span class="ot">&lt;-</span> <span class="fu">lineup</span>(<span class="fu">null_permute</span>(<span class="st">&quot;how&quot;</span>), te_azucar, <span class="at">n =</span> <span class="dv">10000</span>)</span>
+<span id="cb68-2"><a href="pruebas-de-hipótesis.html#cb68-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-3"><a href="pruebas-de-hipótesis.html#cb68-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(reps)</span></code></pre></div>
+<pre><code>## Rows: 3,000,000
+## Columns: 3
+## $ how     &lt;chr&gt; &quot;bolsa_exclusivo&quot;, &quot;bolsa_exclusivo&quot;, &quot;suelto o bolsa&quot;, &quot;suelt…
+## $ sugar   &lt;chr&gt; &quot;sugar&quot;, &quot;No.sugar&quot;, &quot;No.sugar&quot;, &quot;sugar&quot;, &quot;No.sugar&quot;, &quot;No.suga…
+## $ .sample &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…</code></pre>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="pruebas-de-hipótesis.html#cb70-1" aria-hidden="true" tabindex="-1"></a>valores_ref <span class="ot">&lt;-</span> reps <span class="sc">|&gt;</span></span>
+<span id="cb70-2"><a href="pruebas-de-hipótesis.html#cb70-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">usa_azucar =</span> <span class="fu">as.numeric</span>(sugar <span class="sc">==</span> <span class="st">&quot;sugar&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb70-3"><a href="pruebas-de-hipótesis.html#cb70-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(.sample, how) <span class="sc">|&gt;</span></span>
+<span id="cb70-4"><a href="pruebas-de-hipótesis.html#cb70-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">prop_azucar =</span> <span class="fu">mean</span>(usa_azucar), <span class="at">.groups =</span> <span class="st">&#39;drop&#39;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb70-5"><a href="pruebas-de-hipótesis.html#cb70-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> how, <span class="at">values_from =</span> prop_azucar) <span class="sc">|&gt;</span></span>
+<span id="cb70-6"><a href="pruebas-de-hipótesis.html#cb70-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">diferencia =</span> bolsa_exclusivo <span class="sc">-</span> <span class="st">`</span><span class="at">suelto o bolsa</span><span class="st">`</span>)</span></code></pre></div>
+<p>Y graficamos nuestros resultados (con un histograma y una gráfica de cuantiles, por ejemplo). la
+estadística evaluada un cada una de nuestras muestras permutadas:</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="pruebas-de-hipótesis.html#cb71-1" aria-hidden="true" tabindex="-1"></a>g_1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(valores_ref, <span class="fu">aes</span>(<span class="at">sample =</span> diferencia)) <span class="sc">+</span> <span class="fu">geom_qq</span>(<span class="at">distribution =</span> stats<span class="sc">::</span>qunif)  <span class="sc">+</span></span>
+<span id="cb71-2"><a href="pruebas-de-hipótesis.html#cb71-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;f&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;diferencia&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">&quot;Distribución nula o de referencia&quot;</span>)</span>
+<span id="cb71-3"><a href="pruebas-de-hipótesis.html#cb71-3" aria-hidden="true" tabindex="-1"></a>g_2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(valores_ref, <span class="fu">aes</span>(<span class="at">x =</span> diferencia)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.04</span>) <span class="sc">+</span></span>
+<span id="cb71-4"><a href="pruebas-de-hipótesis.html#cb71-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">&quot; &quot;</span>)</span>
+<span id="cb71-5"><a href="pruebas-de-hipótesis.html#cb71-5" aria-hidden="true" tabindex="-1"></a>g_1 <span class="sc">+</span> g_2</span></code></pre></div>
+<p><img src="03-pruebas-de-hipotesis_files/figure-html/unnamed-chunk-19-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>Este es el rango de fluctuación usual para nuestra estadística <em>bajo la
+hipótesis</em> de que los dos grupos de tomadores de té consumen té a la misma tasa.
+El valor que obtuvimos en nuestros datos es: 0.09.
+Mismo que no es un valor extremo en la distribución de referencia que vimos arriba. Ésta
+muestra no aporta mucha evidencia en contra de que los grupos tienen distribuciones similares.
+Podemos graficar otra vez marcando el valor observado:</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="pruebas-de-hipótesis.html#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Función de distribución acumulada (inverso de función de cuantiles)</span></span>
+<span id="cb72-2"><a href="pruebas-de-hipótesis.html#cb72-2" aria-hidden="true" tabindex="-1"></a>dist_perm <span class="ot">&lt;-</span> <span class="fu">ecdf</span>(valores_ref<span class="sc">$</span>diferencia)</span>
+<span id="cb72-3"><a href="pruebas-de-hipótesis.html#cb72-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculamos el percentil del valor observado</span></span>
+<span id="cb72-4"><a href="pruebas-de-hipótesis.html#cb72-4" aria-hidden="true" tabindex="-1"></a>percentil_obs <span class="ot">&lt;-</span> <span class="fu">dist_perm</span>(dif_obs)</span></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="pruebas-de-hipótesis.html#cb73-1" aria-hidden="true" tabindex="-1"></a>g_1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(valores_ref, <span class="fu">aes</span>(<span class="at">sample =</span> diferencia)) <span class="sc">+</span> <span class="fu">geom_qq</span>(<span class="at">distribution =</span> stats<span class="sc">::</span>qunif)  <span class="sc">+</span></span>
+<span id="cb73-2"><a href="pruebas-de-hipótesis.html#cb73-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;f&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;diferencia&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">&quot;Distribución nula o de referencia&quot;</span>) <span class="sc">+</span></span>
+<span id="cb73-3"><a href="pruebas-de-hipótesis.html#cb73-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> dif_obs, <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb73-4"><a href="pruebas-de-hipótesis.html#cb73-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">x =</span> <span class="fl">0.3</span>, <span class="at">y =</span> dif_obs <span class="sc">-</span> <span class="fl">0.05</span>, <span class="at">label =</span> <span class="st">&quot;diferencia observada&quot;</span>, <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>)</span>
+<span id="cb73-5"><a href="pruebas-de-hipótesis.html#cb73-5" aria-hidden="true" tabindex="-1"></a>g_2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(valores_ref, <span class="fu">aes</span>(<span class="at">x =</span> diferencia)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.04</span>) <span class="sc">+</span></span>
+<span id="cb73-6"><a href="pruebas-de-hipótesis.html#cb73-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">&quot; &quot;</span>) <span class="sc">+</span></span>
+<span id="cb73-7"><a href="pruebas-de-hipótesis.html#cb73-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> dif_obs, <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb73-8"><a href="pruebas-de-hipótesis.html#cb73-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">x =</span> dif_obs, <span class="at">y =</span> N_rep <span class="sc">*</span> .<span class="dv">3</span>, <span class="at">label =</span> percentil_obs,<span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.2</span>, <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>)</span>
+<span id="cb73-9"><a href="pruebas-de-hipótesis.html#cb73-9" aria-hidden="true" tabindex="-1"></a>g_1 <span class="sc">+</span> g_2</span></code></pre></div>
+<p><img src="03-pruebas-de-hipotesis_files/figure-html/unnamed-chunk-21-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>Y vemos que es un valor algo (pero no muy) extremo en la distribución de referencia que vimos arriba: esta
+muestra no aporta una gran cantidad de
+evidencia en contra de que los grupos tienen distribuciones similares, que
+en este caso significa que los dos grupos usan azúcar a tasas similares. Es decir, sobre
+la hipótesis
+<span class="math display">\[H_0: p_1 = p_2,\]</span>
+o bien,
+<span class="math display">\[H_0: p_1 - p_2 = 0.\]</span></p>
+</div>
+<div id="pruebas-de-hipótesis-tradicionales" class="section level2 unnumbered hasAnchor">
+<h2>Pruebas de hipótesis tradicionales<a href="pruebas-de-hipótesis.html#pruebas-de-hipótesis-tradicionales" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Comencemos recordando la definición de parámetro y estadística.</p>
+<div class="mathblock">
+<p>
+<strong>Definición.</strong> Un <strong>parámetro</strong> es una
+característica (numérica) de una población o de una distribución de
+probabilidad. Usualmente denotado por <span class="math inline"><span class="math inline">\(\theta \in \mathbb{R},\)</span></span> o por <span class="math inline"><span class="math inline">\(\theta \in \mathbb{R}^p.\)</span></span> Una <strong>estadística</strong> es una
+característica (numérica) de los datos. Usualmente denotado por <span class="math inline"><span class="math inline">\(\hat \theta.\)</span></span>
+</p>
+</div>
+<p>Cualquier función de un parámetro es también un parámetro <span class="math inline">\(\varphi = h(\theta),\)</span> y cualquier función
+de una estadística es también una estadística <span class="math inline">\(\hat \varphi = h(\hat \theta).\)</span> Cuando la estadística se calcula
+de una muestra aleatoria (<span class="math inline">\(T(X),\)</span> para <span class="math inline">\(X_i \sim \pi_x\)</span> para <span class="math inline">\(i = 1, \ldots, n\)</span>), es por consiguiente aleatoria y es por tanto una
+variable aleatoria (<span class="math inline">\(T \sim \pi_T\)</span>).</p>
+<ul>
+<li><p>Por ejemplo <span class="math inline">\(\mu\)</span> y <span class="math inline">\(\sigma\)</span> son parámetros de la distribución normal con
+función de densidad <span class="math inline">\(\pi(x) = (1/\sqrt{2\pi}\sigma)e^{(x-\mu)^2/(2\sigma^2)}\)</span>.
+La varianza <span class="math inline">\(\sigma^2\)</span>, y el coeficiente de variación (cociente de <em>señal a ruido</em>) <span class="math inline">\(\mu/\sigma\)</span> también
+son parámetros.</p></li>
+<li><p>Si <span class="math inline">\(X_1, \ldots ,X_n\)</span> son una muestra aleatoria, entonces la media
+<span class="math inline">\(\bar{X}=\frac1n\sum_i X_i\)</span> es una estadística.</p></li>
+</ul>
+<p>Ahora podemos pasar a las definiciones correspondientes a pruebas de hipótesis
+(o pruebas de significancia).</p>
+<div class="mathblock">
+<p>
+<strong>Definición.</strong> Denotamos por <span class="math inline"><span class="math inline">\(H_0\)</span></span> a la <em>hipótesis nula</em> la cual
+usualmente tratamos como la afirmación del <em>status quo.</em> La
+hipótesis alternativa la denotamos por <span class="math inline"><span class="math inline">\(H_1\)</span></span> y representa el supuesto que está a
+prueba y para el cual buscamos evidencia en los datos.
+</p>
+</div>
+<div class="mathblock">
+<p>
+<strong>Definición.</strong> La hipótesis normalmente se plantea en
+términos de un parámetro (<span class="math inline"><span class="math inline">\(\theta\in\mathbb{R}\)</span></span>) o conjunto de
+parámetros (<span class="math inline"><span class="math inline">\(\theta\in\mathbb{R}^p\)</span></span>)
+de la distribución de interés (por ejemplo media, moda, varianza). Para
+una hipótesis nula del estilo <span class="math inline"><span class="math inline">\(H_0: \theta = \theta_0,\)</span></span> la hipótesis a contrastar se puede denominar
+como:
+</p>
+<ul>
+<li>
+<em>Hipótesis alternativa de una cola</em> <span class="math inline"><span class="math inline">\(H_1: \theta \gt \theta_0\)</span></span><br />
+</li>
+<li>
+<em>Hipótesis alternativa de dos colas</em> <span class="math inline"><span class="math inline">\(H_1: \theta \neq \theta_0\)</span></span>
+</li>
+</ul>
+</div>
+<p>En el ejemplo anterior planteamos hipótesis nula (proporciones iguales) e
+hipótesis alternativa que la proporción de tomadores de te suelto que usan
+azúcar en menor proporción, esto corresponde a una hipótesis alternativa a dos colas:
+<span class="math inline">\(H_0: p_1 = p_2\)</span>, y <span class="math inline">\(H_1:p_1 &gt; p_2\)</span>.</p>
+<div class="mathblock">
+<p>
+<strong>Definición.</strong> Una <em>estadística de prueba</em> es
+una función numérica de los datos cuyo valor determina el resultado de
+la prueba. La función usualmente es denotada por <span class="math inline"><span class="math inline">\(T(\bf X)\)</span></span> donde <span class="math inline"><span class="math inline">\(\bf X\)</span></span> representa los datos como variable
+aleatoria. Por ejemplo, <span class="math inline"><span class="math inline">\(T = T(X_1, \ldots, X_n)\)</span></span> si sólo tenemos una muestra, o por <span class="math inline"><span class="math inline">\(T = T(X_1, \ldots, X_n, Y_1, \ldots, Y_m)\)</span></span>
+en el caso de tener dos muestras. Al evaluar la prueba para un conjunto
+de datos dado, <span class="math inline"><span class="math inline">\(x\)</span></span>, ésta se denomina
+<em>estadística de prueba observada,</em> <span class="math inline"><span class="math inline">\(t = T(x).\)</span></span>
+</p>
+</div>
+<p>La estadística de prueba correspondiente al ejemplo es <span class="math inline">\(T = \hat p_1 - \hat p_2.\)</span></p>
+<div class="mathblock">
+<p>
+<strong>Definición.</strong> El <em>valor p</em> es la probabilidad
+de que bajo la hipótesis nula los datos generen un valor tan extremo
+como la estadística de prueba observada. Por ejemplo, si consideramos la
+hipótesis nula admite valores grandes, el valor p se calcula como <span class="math inline"><span class="math inline">\(P(T \geq t).\)</span></span>
+</p>
+</div>
+<p>En el ejemplo de tomadores de té: el valor <em>p</em> lo calculamos usando el percentil donde
+nuestra observación cae en la distribución generada por las permutación (valor
+<em>p</em> de una cola).</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="pruebas-de-hipótesis.html#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">dist_perm</span>(dif_obs)</span></code></pre></div>
+<pre><code>## [1] 0.0425</code></pre>
+<p>Por otro lado, podemos calcular:</p>
+<ul>
+<li><strong>Valor p de dos colas</strong>: Si la hipótesis nula es cierta, ¿cuál es la
+<strong>probabilidad</strong> de observar una diferencia <strong>tan extrema o más extrema de lo
+que observamos</strong>?</li>
+</ul>
+<p>Considerando este caso interpretamos <em>extrema</em> como qué tan lejos cae del centro de
+masa de la distribución. De tal orma que podemos calcular el valor <em>p</em> como sigue.
+A partir del valor observado, consideramos cuál dato es menor: la probabilidad
+bajo lo hipótesis nula de observar una diferencia mayor de la que observamos, o
+la probabilidad de observar una diferencia menor a la que observamos. Tomamos
+el mínimo y multiplicamos por dos <span class="citation">(<a href="#ref-timboot14" role="doc-biblioref">Tim C. Hesterberg 2015a</a>)</span>:</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="pruebas-de-hipótesis.html#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="fu">min</span>(<span class="fu">dist_perm</span>(dif_obs), (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">dist_perm</span>(dif_obs)))</span></code></pre></div>
+<pre><code>## [1] 0.085</code></pre>
+<p>Este valor <em>p</em> se considera como evidencia <em>moderada</em> en contra de la hipótesis
+nula. Valores <em>p</em> chicos (observaciones más extremas en comparación con la
+referencia) aportan más evidencia <strong>en contra</strong> de la hipótesis nula, y valores
+más grandes aportan menos evidencia <strong>en contra</strong>.</p>
+<div class="mathblock">
+<p>
+<strong>Definición.</strong> Un resultado es <strong>estadisticamente
+significativo</strong> si tiene muy baja probabilidad de suceder al
+azar.
+</p>
+</div>
+<p>Entre más pequeño requiramos un valor <em>p</em> oara declarar un resultado
+estadísticamente significativo, somos <em>más conservadores</em>.</p>
+<p>Las pruebas de hipótesis con frecuencia inician contestando una pregunta más
+general que los valores <em>p</em>: ¿Cuál es la distribución de la estadística de
+prueba cuando no hay un efecto real?</p>
+<div class="mathblock">
+<p>
+<strong>Definición.</strong> La <strong>distribución nula</strong> es
+la distribución de la estadística de prueba si la hipótesis nula es
+cierta.
+</p>
+</div>
+<p>En ocasiones también nos referimos a ella como la <em>distribución de referencia</em>
+pues estamos comparando la estadística de prueba observada a su referencia
+para determinar que tan inusual es.</p>
+<p>En el ejemplo de tomadores de té aproximamos la distribución nula (y los valores
+<em>p</em>) con simulación; sin embargo, para algunas estadísticas hay métodos exactos.</p>
+<p>En particular, usamos el método de pruebas de permutación. Para dicha prueba el
+algoritmo para en el caso de dos grupos sería como sigue:</p>
+<div class="mathblock">
+<p>
+<strong>Prueba de permutación para dos muestras</strong>
+</p>
+<p>
+Supongamos que tenemos <code>m</code> observaciones de una población
+y <code>n</code> de otra.
+</p>
+<ul>
+<li>
+Combina los <code>m+n</code> valores.<br />
+</li>
+<li>
+Repite:<br />
+</li>
+<li>
+Obtén un remuestra de tamaño <code>m</code> sin reemplazo del
+total.<br />
+</li>
+<li>
+Usa las <code>n</code> observaciones restantes para obtener la otra
+muestra.<br />
+</li>
+<li>
+Calcula la estadística de prueba (que compara las muestras).<br />
+</li>
+<li>
+Calcula el valor <em>p</em> como la fracción de las veces que la
+estadística sobrepasó la estadística observada, multiplica por 2 para
+una prueba de dos lados.
+</li>
+</ul>
+</div>
+<p>La distribución de la estadística a lo largo de las remuestras de permutación
+es la <strong>distribución de permutación</strong>. Ésta puede ser exacta, si se calcula
+exhaustivamente (como cuando tenemos pocas observaciones) o aproximada (cuando enlistar todas las
+posible combinaciones es prohibitivo).</p>
+</div>
+<div id="tomadores-de-té-continuación" class="section level2 unnumbered hasAnchor">
+<h2>Tomadores de té (continuación)<a href="pruebas-de-hipótesis.html#tomadores-de-té-continuación" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Ahora hacemos una prueba de permutaciones para otro par de proporciones utilizando el mismo
+método. La hipótesis nula ahora es:</p>
+<ul>
+<li>Los tomadores de té Earl Gray usan azúcar a una tasa similar a los tomadores de té negro.</li>
+</ul>
+<p>Los datos que obtuvimos en nuestra encuesta se muestran en la siguiente tabla:</p>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+sugar
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Earl Grey
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+black
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+No.sugar
+</td>
+<td style="text-align:right;">
+84
+</td>
+<td style="text-align:right;">
+51
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sugar
+</td>
+<td style="text-align:right;">
+109
+</td>
+<td style="text-align:right;">
+23
+</td>
+</tr>
+</tbody>
+</table>
+<p>Y en porcentajes tenemos que:</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="pruebas-de-hipótesis.html#cb78-1" aria-hidden="true" tabindex="-1"></a>prop_azucar <span class="ot">&lt;-</span> te_azucar <span class="sc">|&gt;</span></span>
+<span id="cb78-2"><a href="pruebas-de-hipótesis.html#cb78-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(Tea, sugar) <span class="sc">|&gt;</span></span>
+<span id="cb78-3"><a href="pruebas-de-hipótesis.html#cb78-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Tea) <span class="sc">|&gt;</span></span>
+<span id="cb78-4"><a href="pruebas-de-hipótesis.html#cb78-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prop =</span> <span class="dv">100</span> <span class="sc">*</span> n <span class="sc">/</span> <span class="fu">sum</span>(n),</span>
+<span id="cb78-5"><a href="pruebas-de-hipótesis.html#cb78-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">n =</span> <span class="fu">sum</span>(n)) <span class="sc">|&gt;</span></span>
+<span id="cb78-6"><a href="pruebas-de-hipótesis.html#cb78-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sugar <span class="sc">==</span> <span class="st">&quot;sugar&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb78-7"><a href="pruebas-de-hipótesis.html#cb78-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Tea, <span class="at">prop_azucar =</span> prop, n) <span class="sc">|&gt;</span></span>
+<span id="cb78-8"><a href="pruebas-de-hipótesis.html#cb78-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">&#39;% usa azúcar&#39;</span> <span class="ot">=</span> <span class="fu">round</span>(prop_azucar)) <span class="sc">|&gt;</span></span>
+<span id="cb78-9"><a href="pruebas-de-hipótesis.html#cb78-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>prop_azucar)</span>
+<span id="cb78-10"><a href="pruebas-de-hipótesis.html#cb78-10" aria-hidden="true" tabindex="-1"></a>prop_azucar <span class="sc">|&gt;</span> <span class="fu">formatear_tabla</span>()</span></code></pre></div>
+<table class="table table-striped table-hover table-condensed table-responsive" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Tea
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+n
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+% usa azúcar
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Earl Grey
+</td>
+<td style="text-align:right;">
+193
+</td>
+<td style="text-align:right;">
+56
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+black
+</td>
+<td style="text-align:right;">
+74
+</td>
+<td style="text-align:right;">
+31
+</td>
+</tr>
+</tbody>
+</table>
+<p>Pero distintas muestras podrían haber dado distintos resultados. Nos preguntamos
+qué tan fuerte es la evidencia en contra de que en realidad los dos grupos de
+personas usan azúcar en proporciones similares considerando que la
+diferencia que vemos se puede atribuir a variación muestral.</p>
+<p>Escribimos la función que calcula diferencias para cada muestra:</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="pruebas-de-hipótesis.html#cb79-1" aria-hidden="true" tabindex="-1"></a>calc_diferencia_2 <span class="ot">&lt;-</span> <span class="cf">function</span>(datos){</span>
+<span id="cb79-2"><a href="pruebas-de-hipótesis.html#cb79-2" aria-hidden="true" tabindex="-1"></a>  datos <span class="sc">|&gt;</span></span>
+<span id="cb79-3"><a href="pruebas-de-hipótesis.html#cb79-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">usa_azucar =</span> <span class="fu">as.numeric</span>(sugar <span class="sc">==</span> <span class="st">&quot;sugar&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb79-4"><a href="pruebas-de-hipótesis.html#cb79-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(Tea) <span class="sc">|&gt;</span></span>
+<span id="cb79-5"><a href="pruebas-de-hipótesis.html#cb79-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">prop_azucar =</span> <span class="fu">mean</span>(usa_azucar), <span class="at">.groups =</span> <span class="st">&#39;drop&#39;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb79-6"><a href="pruebas-de-hipótesis.html#cb79-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Tea, <span class="at">values_from =</span> prop_azucar) <span class="sc">|&gt;</span></span>
+<span id="cb79-7"><a href="pruebas-de-hipótesis.html#cb79-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">diferencia_prop =</span> <span class="st">`</span><span class="at">Earl Grey</span><span class="st">`</span> <span class="sc">-</span> black) <span class="sc">|&gt;</span></span>
+<span id="cb79-8"><a href="pruebas-de-hipótesis.html#cb79-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(diferencia_prop)</span>
+<span id="cb79-9"><a href="pruebas-de-hipótesis.html#cb79-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>La diferencia observada es:</p>
+<pre><code>## [1] 0.254</code></pre>
+<p>Ahora construimos nuestra distribución nula o de referencia:</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="pruebas-de-hipótesis.html#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2</span>)</span>
+<span id="cb81-2"><a href="pruebas-de-hipótesis.html#cb81-2" aria-hidden="true" tabindex="-1"></a>reps <span class="ot">&lt;-</span> <span class="fu">lineup</span>(<span class="fu">null_permute</span>(<span class="st">&quot;Tea&quot;</span>), te_azucar, <span class="at">n =</span> N_rep)</span>
+<span id="cb81-3"><a href="pruebas-de-hipótesis.html#cb81-3" aria-hidden="true" tabindex="-1"></a>valores_ref <span class="ot">&lt;-</span> reps <span class="sc">|&gt;</span></span>
+<span id="cb81-4"><a href="pruebas-de-hipótesis.html#cb81-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(.sample) <span class="sc">|&gt;</span></span>
+<span id="cb81-5"><a href="pruebas-de-hipótesis.html#cb81-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nest</span>() <span class="sc">|&gt;</span></span>
+<span id="cb81-6"><a href="pruebas-de-hipótesis.html#cb81-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">diferencia =</span> <span class="fu">lapply</span>(data, calc_diferencia_2)) <span class="sc">|&gt;</span></span>
+<span id="cb81-7"><a href="pruebas-de-hipótesis.html#cb81-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(diferencia)</span></code></pre></div>
+<p>Y podemos graficar la distribución de referencia otra vez marcando el valor observado</p>
+<p><img src="03-pruebas-de-hipotesis_files/figure-html/unnamed-chunk-37-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>En este caso, la evidencia es muy fuerte <em>en contra</em> de la hipótesis nula, pues el
+resultado que obtuvimos es muy extremo en relación a la distribución de referencia.
+El valor <em>p</em> es cercano a 0.</p>
+<div class="ejercicio">
+<ul>
+<li>
+Haz una prueba de permutaciones para diferencia de medias para
+comparar la propina en cena vs en comidas.<br />
+</li>
+<li>
+Grafica la distribución de referencia.<br />
+</li>
+<li>
+Calcula el valor <em>p</em> (dos colas).
+</li>
+</ul>
+</div>
+</div>
+<div id="pruebas-de-permutación-problemas-en-implementación." class="section level2 unnumbered hasAnchor">
+<h2>Pruebas de permutación: problemas en implementación.<a href="pruebas-de-hipótesis.html#pruebas-de-permutación-problemas-en-implementación." class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Hasta ahora nos hemos centrado en ejemplos de diferencias en medias. Podemos
+extender las pruebas de permutación a <span class="math inline">\(\bar{X}\)</span> (la media de la primera muestra),
+<span class="math inline">\(n\bar{X}\)</span> (la suma de las observaciones en la primera muestra), y más.</p>
+<div class="mathblock">
+<p>
+<strong>Teorema.</strong> En pruebas de permutación, si dos
+estadísticas de prueba <span class="math inline"><span class="math inline">\(T_1\)</span></span> y <span class="math inline"><span class="math inline">\(T_2\)</span></span> están relacionadas por una función
+estríctamente creciente, <span class="math inline"><span class="math inline">\(T_1(X^*)=f(T_2(X^*))\)</span></span> donde <span class="math inline"><span class="math inline">\(X^*\)</span></span> es una remuestra de permutación de
+los datos originales, entonces los valores <em>p</em> serán los mismos
+en las pruebas de permutación.
+</p>
+</div>
+<p><strong>Agregar uno al numerador y denominador.</strong> Cuando se calcula el valor <em>p</em> en la
+implementación de muestreo, podemos agregar un uno al numerador y denominador. Esto
+corresponde a incluir los datos como una remuestra adicional y sirve para evitar
+reportar el valor <em>p</em> <span class="math inline">\(= 0,\)</span> que es imposible pues siempre hay una remuestra con un
+valor al menos tan extremo como los datos observados (los datos mismos).</p>
+<p><strong>Muestras con reemplazo de la Distribución Nula.</strong> En la implementación de
+muestreo, no nos aseguramos que las remuestras sean únicas. Sería más acertado
+tomar muestras sin reemplazo, sin embargo, el costo computacional es demasiado
+alto. Por simplicidad consideramos muestras <em>con reemplazo</em> del total de
+<span class="math display">\[m+n\choose n\]</span>
+posibles remuestras. Por lo tanto, al remuestrar obtenemos <em>una muestra de la distribución nula.</em></p>
+<p><strong>Entre más muestras, más exactitud.</strong> Hemos usado <span class="math inline">\(B = 10^3\)</span> remuestras (<code>N_rep</code> en el código),
+en general entre más remuestras tendremos una mejor estimación del valor <em>p</em>. Si el
+verdadero valor es <span class="math inline">\(p\)</span> el estimado tendrá una varianza aproximadamente de
+<span class="math inline">\(p(1- p)/B\)</span> donde <span class="math inline">\(B\)</span> es el número de remuestras generadas.</p>
+<p><strong>Observación.</strong> Así como los <span class="math inline">\(n\)</span> datos originales son una muestra de la
+población, también las <span class="math inline">\(B\)</span> remuestras de la estadística son una muestra de una
+población, en este caso de la distribución nula.</p>
+<p>La pruebas de permutaciones son más útiles cuando nuestra hipótesis nula se refiere
+que la distribución de los grupos son muy similares, o la independencia entre
+observaciones y grupo. Esto también aplica cuando queremos probar por ejemplo, que
+una variable numérica <span class="math inline">\(Y\)</span> es independiente de <span class="math inline">\(X.\)</span></p>
+<ul>
+<li><p>Hay algunas hipótesis que no se pueden probar con este método, como por ejemplo,
+las que se refieren a una sola muestra: ¿los datos son consistentes con que su
+media es igual a 5?</p></li>
+<li><p>Adicionalmente, en algunas ocasiones queremos probar aspectos más específicos
+de las diferencias: como ¿son iguales las medias o medianas de dos grupos de
+datos? ¿Tienen dispersión similar?</p></li>
+</ul>
+<p>Las pruebas de permutaciones no están tan perfectamente adaptadas a este
+problema, pues prueban <em>todos</em> los aspectos de las distribuciones que se
+comparan, aún cuando escojamos una estadística particular que pretende medir.
+Por ejemplo, cuando trabajamos con la diferencia de medias. Eso quiere decir que podemos
+rechazar igualdad de medias, por ejemplo, cuando en realidad otra característica de las
+distribuciones es la que difiere mucho en las poblaciones.</p>
+<p>En algunas referencias (ver <span class="citation">(<a href="#ref-Chihara" role="doc-biblioref">Chihara and Hesterberg 2018</a>)</span>, <span class="citation">(<a href="#ref-Efron" role="doc-biblioref">Efron and Tibshirani 1993</a>)</span>) se argumenta que de todas formas
+las pruebas de permutaciones son relativamente robustas a esta desadaptación. Un caso
+excepcional, por ejemplo, es cuando las poblaciones que comparamos resultan tener dispersión extremadamente distinta, y adicionalmente los tamaños de muestra de los grupos son muy desiguales (otra vez, ver ejemplos en <span class="citation">(<a href="#ref-Chihara" role="doc-biblioref">Chihara and Hesterberg 2018</a>)</span>).</p>
+</div>
+<div id="ejemplo-tiempos-de-fusión" class="section level2 unnumbered hasAnchor">
+<h2>Ejemplo: tiempos de fusión<a href="pruebas-de-hipótesis.html#ejemplo-tiempos-de-fusión" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Veamos el siguiente ejemplo, que es un experimento donde se midió el tiempo
+que tardan distintas personas en fusionar un <a href="https://en.wikipedia.org/wiki/Autostereogram#/media/File:Stereogram_Tut_Random_Dot_Shark.png">estereograma</a> para ver una imagen 3D. (<span class="citation">William S. Cleveland (<a href="#ref-cleveland93" role="doc-biblioref">1993</a>)</span>).</p>
+<p>Existen dos condiciones: en una se dio indicaciones de qué figura tenían que
+buscar (VV) y en otra no se dio esa indicación. ¿Las instrucciones verbales
+ayudan a fusionar más rápido el estereograma?</p>
+<pre><code>## 
+## ── Column specification ────────────────────────────────────────────────────────
+## cols(
+##   n = col_double(),
+##   time = col_double(),
+##   nv.vv = col_character()
+## )</code></pre>
+<p><img src="03-pruebas-de-hipotesis_files/figure-html/unnamed-chunk-40-1.png" width="384" style="display: block; margin: auto;" /></p>
+<p>La situación es la siguiente: considerando que hay mucha variación en el
+tiempo de fusión dentro de cada tratamiento, necesitamos calificar la evidencia
+de nuestra conclusión (el tiempo de fusión se reduce con información verbal).</p>
+<p>Podemos usar una prueba de permutaciones, esta vez justificándola por el hecho
+de que los tratamientos se asignan al azar: si los tratamientos son
+indistinguibles, entonces las etiquetas de los grupos son sólo etiquetas, y
+permutarlas daría muestras igualmente verosímiles.</p>
+<p>En este caso, compararemos gráficas de cuantiles de los datos con los
+producidos por permutaciones (transformamos los datos pues en este caso es
+más apropiado una comparación multiplicativa):</p>
+<p><img src="03-pruebas-de-hipotesis_files/figure-html/unnamed-chunk-41-1.png" width="768" style="display: block; margin: auto;" /></p>
+<div class="ejercicio">
+<p>
+¿Podemos identificar los datos? En general, muy frecuentemente las
+personas identifican los datos correctamente, lo que muestra evidencia
+considerable de que la instrucción verbal altera los tiempos de
+respuesta de los partipantes, y en este caso ayuda a reducir el tiempo
+de fusión de los estereogramas.
+</p>
+</div>
+</div>
+<div id="ejemplo-tiempos-de-fusión-continuación" class="section level2 unnumbered hasAnchor">
+<h2>Ejemplo: tiempos de fusión (continuación)<a href="pruebas-de-hipótesis.html#ejemplo-tiempos-de-fusión-continuación" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Podemos usar las pruebas de permutaciones para distintos de tipos de
+estadísticas: medianas, medias, comparar dispersión usando rangos
+intercuartiles o varianzas, etc.</p>
+<p>Regresamos a los tiempos de fusión. Podemos hacer una prueba de permutaciones para
+la diferencia de las medias o medianas, por ejemplo. En este ejemplo usaremos
+una medida de centralidad un poco diferente, como ilustración: el promedio de los cuartiles
+superior e inferior de las dos distribuciones. Usaremos el cociente de estas dos cantidades
+para medir su diferencia</p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="pruebas-de-hipótesis.html#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="co"># esta función hace permutaciones y calcula la diferencia para cada una</span></span>
+<span id="cb83-2"><a href="pruebas-de-hipótesis.html#cb83-2" aria-hidden="true" tabindex="-1"></a>permutaciones_est <span class="ot">&lt;-</span> <span class="cf">function</span>(datos, variable, calc_diferencia, <span class="at">n =</span> <span class="dv">1000</span>){</span>
+<span id="cb83-3"><a href="pruebas-de-hipótesis.html#cb83-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># calcular estadística para cada grupo</span></span>
+<span id="cb83-4"><a href="pruebas-de-hipótesis.html#cb83-4" aria-hidden="true" tabindex="-1"></a>  permutar <span class="ot">&lt;-</span> <span class="cf">function</span>(variable){</span>
+<span id="cb83-5"><a href="pruebas-de-hipótesis.html#cb83-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sample</span>(variable, <span class="fu">length</span>(variable))</span>
+<span id="cb83-6"><a href="pruebas-de-hipótesis.html#cb83-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb83-7"><a href="pruebas-de-hipótesis.html#cb83-7" aria-hidden="true" tabindex="-1"></a>  tbl_perms <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">.sample =</span> <span class="fu">seq</span>(<span class="dv">1</span>, n<span class="dv">-1</span>, <span class="dv">1</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb83-8"><a href="pruebas-de-hipótesis.html#cb83-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">diferencia =</span> <span class="fu">map_dbl</span>(.sample,</span>
+<span id="cb83-9"><a href="pruebas-de-hipótesis.html#cb83-9" aria-hidden="true" tabindex="-1"></a>                                <span class="sc">~</span> datos <span class="sc">|&gt;</span> <span class="fu">mutate</span>({{variable}}<span class="sc">:</span><span class="er">=</span> <span class="fu">permutar</span>({{variable}})) <span class="sc">|&gt;</span> <span class="fu">calc_diferencia</span>()))</span>
+<span id="cb83-10"><a href="pruebas-de-hipótesis.html#cb83-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(tbl_perms, <span class="fu">tibble</span>(<span class="at">.sample =</span> n, <span class="at">diferencia =</span> <span class="fu">calc_diferencia</span>(datos)))</span>
+<span id="cb83-11"><a href="pruebas-de-hipótesis.html#cb83-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb83-12"><a href="pruebas-de-hipótesis.html#cb83-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-13"><a href="pruebas-de-hipótesis.html#cb83-13" aria-hidden="true" tabindex="-1"></a>stat_fusion <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb83-14"><a href="pruebas-de-hipótesis.html#cb83-14" aria-hidden="true" tabindex="-1"></a>  (<span class="fu">quantile</span>(x, <span class="fl">0.75</span>) <span class="sc">+</span> <span class="fu">quantile</span>(x, <span class="fl">0.25</span>))<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb83-15"><a href="pruebas-de-hipótesis.html#cb83-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb83-16"><a href="pruebas-de-hipótesis.html#cb83-16" aria-hidden="true" tabindex="-1"></a>calc_fusion <span class="ot">&lt;-</span> <span class="cf">function</span>(stat_fusion){</span>
+<span id="cb83-17"><a href="pruebas-de-hipótesis.html#cb83-17" aria-hidden="true" tabindex="-1"></a>  fun <span class="ot">&lt;-</span> <span class="cf">function</span>(datos){</span>
+<span id="cb83-18"><a href="pruebas-de-hipótesis.html#cb83-18" aria-hidden="true" tabindex="-1"></a>    datos <span class="sc">|&gt;</span></span>
+<span id="cb83-19"><a href="pruebas-de-hipótesis.html#cb83-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">group_by</span>(nv.vv) <span class="sc">|&gt;</span></span>
+<span id="cb83-20"><a href="pruebas-de-hipótesis.html#cb83-20" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarise</span>(<span class="at">est =</span> <span class="fu">stat_fusion</span>(time), <span class="at">.groups =</span> <span class="st">&#39;drop&#39;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb83-21"><a href="pruebas-de-hipótesis.html#cb83-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> nv.vv, <span class="at">values_from =</span> est) <span class="sc">|&gt;</span></span>
+<span id="cb83-22"><a href="pruebas-de-hipótesis.html#cb83-22" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">dif =</span> VV <span class="sc">/</span> NV ) <span class="sc">|&gt;</span> <span class="fu">pull</span>(dif)</span>
+<span id="cb83-23"><a href="pruebas-de-hipótesis.html#cb83-23" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb83-24"><a href="pruebas-de-hipótesis.html#cb83-24" aria-hidden="true" tabindex="-1"></a>  fun</span>
+<span id="cb83-25"><a href="pruebas-de-hipótesis.html#cb83-25" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="pruebas-de-hipótesis.html#cb84-1" aria-hidden="true" tabindex="-1"></a>calc_cociente <span class="ot">&lt;-</span> <span class="fu">calc_fusion</span>(stat_fusion)</span>
+<span id="cb84-2"><a href="pruebas-de-hipótesis.html#cb84-2" aria-hidden="true" tabindex="-1"></a>dif_obs <span class="ot">&lt;-</span> <span class="fu">calc_cociente</span>(fusion)</span>
+<span id="cb84-3"><a href="pruebas-de-hipótesis.html#cb84-3" aria-hidden="true" tabindex="-1"></a><span class="co"># permutar</span></span>
+<span id="cb84-4"><a href="pruebas-de-hipótesis.html#cb84-4" aria-hidden="true" tabindex="-1"></a>valores_ref <span class="ot">&lt;-</span> <span class="fu">permutaciones_est</span>(fusion, nv.vv, calc_cociente, <span class="at">n =</span> N_rep)</span>
+<span id="cb84-5"><a href="pruebas-de-hipótesis.html#cb84-5" aria-hidden="true" tabindex="-1"></a>dist_perm_nv <span class="ot">&lt;-</span> <span class="fu">ecdf</span>(valores_ref<span class="sc">$</span>diferencia)</span>
+<span id="cb84-6"><a href="pruebas-de-hipótesis.html#cb84-6" aria-hidden="true" tabindex="-1"></a>cuantil_obs <span class="ot">&lt;-</span> <span class="fu">dist_perm_nv</span>(dif_obs)</span></code></pre></div>
+<p><img src="03-pruebas-de-hipotesis_files/figure-html/unnamed-chunk-45-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>Y el valor <em>p</em> de dos colas es</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="pruebas-de-hipótesis.html#cb85-1" aria-hidden="true" tabindex="-1"></a>dist_perm_nv <span class="ot">&lt;-</span> <span class="fu">ecdf</span>(valores_ref<span class="sc">$</span>diferencia)</span>
+<span id="cb85-2"><a href="pruebas-de-hipótesis.html#cb85-2" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="fu">min</span>(<span class="fu">dist_perm_nv</span>(dif_obs), <span class="dv">1</span> <span class="sc">-</span> <span class="fu">dist_perm_nv</span>(dif_obs))</span></code></pre></div>
+<pre><code>## [1] 0.028</code></pre>
+<p>Lo que muestra evidencia considerable, aunque no muy fuerte, de que la
+instrucción verbal ayuda a reducir el tiempo de fusión de los estereogramas: la
+<em>caja</em> del diagrama de caja y brazos para el grupo VV está <em>encogida</em> por un
+factor menor a 1.</p>
+</div>
+<div id="separación-de-grupos" class="section level2 unnumbered hasAnchor">
+<h2>Separación de grupos<a href="pruebas-de-hipótesis.html#separación-de-grupos" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Este ejemplo tomado de <span class="citation">(<a href="#ref-cookwasps" role="doc-biblioref">Chowdhury et al. 2015</a>)</span> (tanto la idea como el código). La pregunta que se aborda en
+ese estudio es:</p>
+<ul>
+<li>Existen métodos de clasificación (supervisados o no supervisados) para formar grupos en términos
+de variables que describen a los individuos</li>
+<li>Estos métodos (análisis discriminante, o <code>k-means</code>, por ejemplo), pretenden formar grupos compactos,
+bien separados entre ellos. Cuando aplicamos el método, obtenemos clasificadores basados en las variables
+de entrada.</li>
+<li>La pregunta es: ¿los grupos resultantes son producto de patrones que se generalizan a la población, o
+capitalizaron en variación aleatoria para formarse?</li>
+<li>Especialmente cuando tenemos muchas mediciones de los individuos, y una muestra relativamente chica,
+Es relativamente fácil encontrar combinaciones de variables que separan los grupos, aunque estas combinaciones
+y diferencias están basadas en ruido y no generalizan a la población.</li>
+</ul>
+<p>Como muestran en <span class="citation">(<a href="#ref-cookwasps" role="doc-biblioref">Chowdhury et al. 2015</a>)</span>, el <em>lineup</em> es útil para juzgar si tenemos evidencia en contra de que los
+grupos en realidad son iguales, y usamos variación muestral para separarlos.</p>
+<div id="avispas-opcional" class="section level3 unnumbered hasAnchor">
+<h3>Avispas (opcional)<a href="pruebas-de-hipótesis.html#avispas-opcional" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>En el siguiente ejemplo, tenemos 4 grupos de avispas (50 individuos en total),
+y para cada individuo se miden expresiones
+de 42 genes distintos. La pregunta es: ¿Podemos separar a los grupos de avispas
+dependiendo de sus mediciones?</p>
+<p>En este se usó análisis discriminante (LDA) para buscar proyecciones de los
+datos en dimensión baja de forma que los grupos sean lo <em>más compactos y separados posibles.</em></p>
+<p>Para probar qué tan bien funciona este método, podemos hacer una prueba de permutación, aplicamos
+LDA y observamos los resultados.</p>
+<p><img src="03-pruebas-de-hipotesis_files/figure-html/unnamed-chunk-47-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Y vemos que incluso permutando los grupos, es generalmente posible separarlos en grupos
+bien definidos: la búsqueda es suficientemente agresiva para encontrar
+combinaciones lineales que los separan. Que no podamos distinguir
+los datos verdaderos de las replicaciones nulas indica que este método difícilmente puede
+servir para separar los grupos claramente.</p>
+<p>Otro enfoque sería separar los datos en una muestra de entrenamiento y una de prueba (que discutiremos
+en la última sesión). Aplicamos el procedimiento a la muestra de entrenamiento y luego vemos qué pasa
+con los datos de prueba:</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="pruebas-de-hipótesis.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">8</span>)</span>
+<span id="cb87-2"><a href="pruebas-de-hipótesis.html#cb87-2" aria-hidden="true" tabindex="-1"></a>wasps_1 <span class="ot">&lt;-</span> wasps <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">u =</span> <span class="fu">runif</span>(<span class="fu">nrow</span>(wasps), <span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb87-3"><a href="pruebas-de-hipótesis.html#cb87-3" aria-hidden="true" tabindex="-1"></a>wasps_entrena <span class="ot">&lt;-</span> wasps_1 <span class="sc">|&gt;</span> <span class="fu">filter</span>(u <span class="sc">&lt;=</span> <span class="fl">0.8</span>)</span>
+<span id="cb87-4"><a href="pruebas-de-hipótesis.html#cb87-4" aria-hidden="true" tabindex="-1"></a>wasps_prueba <span class="ot">&lt;-</span> wasps_1 <span class="sc">|&gt;</span> <span class="fu">filter</span>(u <span class="sc">&gt;</span> <span class="fl">0.8</span>)                            </span>
+<span id="cb87-5"><a href="pruebas-de-hipótesis.html#cb87-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-6"><a href="pruebas-de-hipótesis.html#cb87-6" aria-hidden="true" tabindex="-1"></a>wasp.lda <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">lda</span>(Group <span class="sc">~</span> ., <span class="at">data=</span>wasps_entrena[,<span class="sc">-</span><span class="dv">1</span>])</span>
+<span id="cb87-7"><a href="pruebas-de-hipótesis.html#cb87-7" aria-hidden="true" tabindex="-1"></a>wasp_ld_entrena <span class="ot">&lt;-</span> <span class="fu">predict</span>(wasp.lda,  <span class="at">dimen=</span><span class="dv">2</span>)<span class="sc">$</span>x <span class="sc">|&gt;</span></span>
+<span id="cb87-8"><a href="pruebas-de-hipótesis.html#cb87-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">.name_repair =</span> <span class="st">&quot;universal&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb87-9"><a href="pruebas-de-hipótesis.html#cb87-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tipo =</span> <span class="st">&quot;entrenamiento&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb87-10"><a href="pruebas-de-hipótesis.html#cb87-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">grupo =</span> wasps_entrena<span class="sc">$</span>Group)</span>
+<span id="cb87-11"><a href="pruebas-de-hipótesis.html#cb87-11" aria-hidden="true" tabindex="-1"></a>wasp_ld_prueba <span class="ot">&lt;-</span> <span class="fu">predict</span>(wasp.lda, <span class="at">newdata =</span> wasps_prueba, <span class="at">dimen=</span><span class="dv">2</span>)<span class="sc">$</span>x  <span class="sc">|&gt;</span></span>
+<span id="cb87-12"><a href="pruebas-de-hipótesis.html#cb87-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">.name_repair =</span> <span class="st">&quot;universal&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb87-13"><a href="pruebas-de-hipótesis.html#cb87-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tipo =</span> <span class="st">&quot;prueba&quot;</span>)<span class="sc">|&gt;</span></span>
+<span id="cb87-14"><a href="pruebas-de-hipótesis.html#cb87-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">grupo =</span> wasps_prueba<span class="sc">$</span>Group)</span>
+<span id="cb87-15"><a href="pruebas-de-hipótesis.html#cb87-15" aria-hidden="true" tabindex="-1"></a>wasp_lda <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(wasp_ld_entrena, wasp_ld_prueba)</span>
+<span id="cb87-16"><a href="pruebas-de-hipótesis.html#cb87-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(wasp_lda, <span class="fu">aes</span>(<span class="at">x =</span> LD1, <span class="at">y =</span> LD2, <span class="at">colour =</span> grupo)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb87-17"><a href="pruebas-de-hipótesis.html#cb87-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>tipo)</span></code></pre></div>
+<p><img src="03-pruebas-de-hipotesis_files/figure-html/unnamed-chunk-48-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Aunque esta separación de datos es menos efectiva en este ejemplo por la muestra chica, podemos ver
+que la separación lograda en los datos de entrenamiento probablemente se debe a variación muestral.</p>
+</div>
+</div>
+<div id="la-crisis-de-replicabilidad" class="section level2 unnumbered hasAnchor">
+<h2>La “crisis de replicabilidad”<a href="pruebas-de-hipótesis.html#la-crisis-de-replicabilidad" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Recientemente <span class="citation">(<a href="#ref-falsefindings" role="doc-biblioref">Ioannidis 2005</a>)</span> se ha reconocido
+en campos como la psicología la <em>crisis de replicabilidad</em>. Varios estudios que recibieron
+mucha publicidad inicialmente no han podido ser replicados
+posteriormente por otros investigadores. Por ejemplo:</p>
+<ul>
+<li>Hacer <a href="https://www.sciencedaily.com/releases/2017/09/170911095932.htm">poses poderosas</a> produce cambios fisiológicos que mejoran nuestro desempeño en ciertas tareas.<br />
+</li>
+<li>Mostrar palabras relacionadas con “viejo” hacen que las personas caminen más lento (efectos de <a href="https://www.nature.com/news/nobel-laureate-challenges-psychologists-to-clean-up-their-act-1.11535">priming</a>).</li>
+</ul>
+<p>En todos estos casos, el argumento de la evidencia de estos efectos fue respaldada
+por una prueba de hipótesis nula con un valor <em>p</em> menor a 0.05. La razón es que ese es el estándar de publicación
+seguido por varias áreas y revistas arbitradas. La tasa de <em>no replicabilidad</em>
+parece ser mucho más alta (al menos la mitad o más, según algunas fuentes como la señalada arriba)
+que la sugerida por la tasa de falsos positivos (menos de 5%).</p>
+<p>Este problema de replicabilidad parece ser más frecuente cuando:</p>
+<ol style="list-style-type: decimal">
+<li>Se trata de estudios de potencia baja: mediciones ruidosas y tamaños de muestra chicos.<br />
+</li>
+<li>El plan de análisis no está claramente definido desde un principio (lo cual es difícil cuando
+se están investigando “fenómenos no estudiados antes”).</li>
+</ol>
+<p>¿A qué se atribuye esta crisis de replicabilidad?</p>
+</div>
+<div id="el-jardín-de-los-senderos-que-se-bifurcan" class="section level2 unnumbered hasAnchor">
+<h2>El jardín de los senderos que se bifurcan<a href="pruebas-de-hipótesis.html#el-jardín-de-los-senderos-que-se-bifurcan" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Aunque haya algunos ejemplos de manipulaciones conscientes —e incluso, en menos casos,
+malintencionadas— para obtener resultados publicables o significativos
+(<a href="https://en.wikipedia.org/wiki/Data_dredging">p-hacking</a>), como vimos en
+ejemplos anteriores, hay varias decisiones, todas razonables, que podemos tomar cuando
+estamos buscando las comparaciones correctas. Algunas pueden ser:</p>
+<ul>
+<li>Transformar los datos (tomar o no logaritmos, u otra transformación).<br />
+</li>
+<li>Editar datos atípicos (razonable si los equipos pueden fallar, o hay errores de captura, por ejemplo).<br />
+</li>
+<li>Distintas maneras de interpretar los criterios de inclusión de un estudio (por ejemplo, algunos participantes
+mostraron tener gripa, o revelaron que durmieron muy poco la noche anterior, etc. ¿los dejamos o los quitamos?).</li>
+</ul>
+<p>Dado un conjunto de datos, las justificaciones de las decisiones que se toman
+en cada paso son razonables, pero con datos distintos las decisiones podrían ser diferentes.
+Este es el <strong>jardín de los senderos que se bifurcan</strong> <a href="http://www.stat.columbia.edu/~gelman/research/published/incrementalism_3.pdf">(ver referencia en Gelman)</a>,
+que <strong>invalida en parte el uso valores p como criterio de evidencia contra la hipótesis nula</strong>.</p>
+<p>Esto es exacerbado por:</p>
+<ul>
+<li>Tamaños de muestra chicos y efectos “inestables” que se quieren medir (por ejemplo en psicología).<br />
+</li>
+<li>El hecho de que el criterio de publicación es obtener un
+valor <span class="math inline">\(p &lt; 0.05\)</span>, y la presión fuerte sobre los investigadores
+para producir resultados publicables (<span class="math inline">\(p &lt; 0.05\)</span>).<br />
+</li>
+<li>El que estudios o resultados similares que no obtuvieron valores <span class="math inline">\(p\)</span> por debajo del umbral no son
+publicados o reportados.</li>
+</ul>
+<p>Ver por ejemplo el <a href="https://www.amstat.org/asa/files/pdfs/P-ValueStatement.pdf">comunicado de la ASA</a>.</p>
+<p><strong>Ojo</strong>: esas presiones de publicación no sólo ocurre para investigadores en psicología. Cuando
+trabajamos en problemas de análisis de datos que son de importancia, es común que
+existan intereses de algunas partes o personas involucradas por algunos resultados u otros (por
+ejemplo, nuestros clientes de consultoría o clientes internos). Eso puede dañar nuestro trabajo
+como analistas, y el avance de nuestro equipo. Aunque esas presiones son inevitables, se vuelven
+manejables cuando hay una relación de confianza entre las partes involucradas.</p>
+</div>
+<div id="ejemplo-decisiones-de-análisis-y-valores-p" class="section level2 unnumbered hasAnchor">
+<h2>Ejemplo: decisiones de análisis y valores <em>p</em><a href="pruebas-de-hipótesis.html#ejemplo-decisiones-de-análisis-y-valores-p" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>En el ejemplo de datos de fusión, decidimos probar, por ejemplo, el promedio de
+los cuartiles inferior y superior, lo cual no es una decisión típica pero usamos como
+ilustración. Ahora intentamos usar distintas mediciones de la diferencia entre los grupos,
+usando distintas medidas resumen y transformaciones (por ejemplo, con o sin logaritmo). Aquí hay
+unas 12 combinaciones distintas para hacer el análisis (multiplicadas por criterios
+de “aceptación de datos en la muestra”, que simulamos tomando una submuestra al azar):</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="pruebas-de-hipótesis.html#cb88-1" aria-hidden="true" tabindex="-1"></a>calc_fusion <span class="ot">&lt;-</span> <span class="cf">function</span>(stat_fusion, trans, comparacion){</span>
+<span id="cb88-2"><a href="pruebas-de-hipótesis.html#cb88-2" aria-hidden="true" tabindex="-1"></a>  fun <span class="ot">&lt;-</span> <span class="cf">function</span>(datos){</span>
+<span id="cb88-3"><a href="pruebas-de-hipótesis.html#cb88-3" aria-hidden="true" tabindex="-1"></a>    datos <span class="sc">|&gt;</span></span>
+<span id="cb88-4"><a href="pruebas-de-hipótesis.html#cb88-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">group_by</span>(nv.vv) <span class="sc">|&gt;</span></span>
+<span id="cb88-5"><a href="pruebas-de-hipótesis.html#cb88-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarise</span>(<span class="at">est =</span> <span class="fu">stat_fusion</span>({{ trans }}(time)), <span class="at">.groups =</span> <span class="st">&#39;drop&#39;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb88-6"><a href="pruebas-de-hipótesis.html#cb88-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> nv.vv, <span class="at">values_from =</span> est) <span class="sc">|&gt;</span></span>
+<span id="cb88-7"><a href="pruebas-de-hipótesis.html#cb88-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">dif =</span> {{ comparacion }}) <span class="sc">|&gt;</span> <span class="fu">pull</span>(dif)</span>
+<span id="cb88-8"><a href="pruebas-de-hipótesis.html#cb88-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb88-9"><a href="pruebas-de-hipótesis.html#cb88-9" aria-hidden="true" tabindex="-1"></a>  fun</span>
+<span id="cb88-10"><a href="pruebas-de-hipótesis.html#cb88-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb88-11"><a href="pruebas-de-hipótesis.html#cb88-11" aria-hidden="true" tabindex="-1"></a>valor_p <span class="ot">&lt;-</span> <span class="cf">function</span>(datos, variable, calc_diferencia, <span class="at">n =</span> <span class="dv">1000</span>){</span>
+<span id="cb88-12"><a href="pruebas-de-hipótesis.html#cb88-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># calcular estadística para cada grupo</span></span>
+<span id="cb88-13"><a href="pruebas-de-hipótesis.html#cb88-13" aria-hidden="true" tabindex="-1"></a>  permutar <span class="ot">&lt;-</span> <span class="cf">function</span>(variable){</span>
+<span id="cb88-14"><a href="pruebas-de-hipótesis.html#cb88-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sample</span>(variable, <span class="fu">length</span>(variable))</span>
+<span id="cb88-15"><a href="pruebas-de-hipótesis.html#cb88-15" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb88-16"><a href="pruebas-de-hipótesis.html#cb88-16" aria-hidden="true" tabindex="-1"></a>  tbl_perms <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">.sample =</span> <span class="fu">seq</span>(<span class="dv">1</span>, n<span class="dv">-1</span>, <span class="dv">1</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb88-17"><a href="pruebas-de-hipótesis.html#cb88-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">diferencia =</span> <span class="fu">map_dbl</span>(.sample,</span>
+<span id="cb88-18"><a href="pruebas-de-hipótesis.html#cb88-18" aria-hidden="true" tabindex="-1"></a>                                <span class="sc">~</span> datos <span class="sc">|&gt;</span> <span class="fu">mutate</span>({{variable}} <span class="sc">:</span><span class="er">=</span> <span class="fu">permutar</span>({{variable}})) <span class="sc">|&gt;</span> <span class="fu">calc_diferencia</span>()))</span>
+<span id="cb88-19"><a href="pruebas-de-hipótesis.html#cb88-19" aria-hidden="true" tabindex="-1"></a>  perms <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(tbl_perms, <span class="fu">tibble</span>(<span class="at">.sample =</span> n, <span class="at">diferencia =</span> <span class="fu">calc_diferencia</span>(datos)))</span>
+<span id="cb88-20"><a href="pruebas-de-hipótesis.html#cb88-20" aria-hidden="true" tabindex="-1"></a>  perms_ecdf <span class="ot">&lt;-</span> <span class="fu">ecdf</span>(perms<span class="sc">$</span>diferencia)</span>
+<span id="cb88-21"><a href="pruebas-de-hipótesis.html#cb88-21" aria-hidden="true" tabindex="-1"></a>  dif <span class="ot">&lt;-</span> <span class="fu">calc_diferencia</span>(datos)</span>
+<span id="cb88-22"><a href="pruebas-de-hipótesis.html#cb88-22" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span> <span class="sc">*</span> <span class="fu">min</span>(<span class="fu">perms_ecdf</span>(dif), <span class="dv">1</span><span class="sc">-</span> <span class="fu">perms_ecdf</span>(dif))</span>
+<span id="cb88-23"><a href="pruebas-de-hipótesis.html#cb88-23" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="pruebas-de-hipótesis.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">7272</span>)</span>
+<span id="cb89-2"><a href="pruebas-de-hipótesis.html#cb89-2" aria-hidden="true" tabindex="-1"></a>media_cuartiles <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb89-3"><a href="pruebas-de-hipótesis.html#cb89-3" aria-hidden="true" tabindex="-1"></a>  (<span class="fu">quantile</span>(x, <span class="fl">0.75</span>) <span class="sc">+</span> <span class="fu">quantile</span>(x, <span class="fl">0.25</span>))<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb89-4"><a href="pruebas-de-hipótesis.html#cb89-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb89-5"><a href="pruebas-de-hipótesis.html#cb89-5" aria-hidden="true" tabindex="-1"></a><span class="co"># nota: usar n=10000 o más, esto solo es para demostración:</span></span>
+<span id="cb89-6"><a href="pruebas-de-hipótesis.html#cb89-6" aria-hidden="true" tabindex="-1"></a>ejemplo <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb89-7"><a href="pruebas-de-hipótesis.html#cb89-7" aria-hidden="true" tabindex="-1"></a>calc_dif <span class="ot">&lt;-</span> <span class="fu">calc_fusion</span>(mean, identity, VV <span class="sc">-</span> NV)</span>
+<span id="cb89-8"><a href="pruebas-de-hipótesis.html#cb89-8" aria-hidden="true" tabindex="-1"></a>ejemplo<span class="sc">$</span>media_dif <span class="ot">&lt;-</span> <span class="fu">valor_p</span>(fusion <span class="sc">|&gt;</span> <span class="fu">sample_frac</span>(<span class="fl">0.95</span>), nv.vv, calc_dif, <span class="at">n =</span> N_rep)</span>
+<span id="cb89-9"><a href="pruebas-de-hipótesis.html#cb89-9" aria-hidden="true" tabindex="-1"></a>calc_dif <span class="ot">&lt;-</span> <span class="fu">calc_fusion</span>(mean, log, VV <span class="sc">-</span> NV)</span>
+<span id="cb89-10"><a href="pruebas-de-hipótesis.html#cb89-10" aria-hidden="true" tabindex="-1"></a>ejemplo<span class="sc">$</span>media_dif_log <span class="ot">&lt;-</span> <span class="fu">valor_p</span>(fusion <span class="sc">|&gt;</span> <span class="fu">sample_frac</span>(<span class="fl">0.95</span>), nv.vv, calc_dif, <span class="at">n =</span> N_rep)</span>
+<span id="cb89-11"><a href="pruebas-de-hipótesis.html#cb89-11" aria-hidden="true" tabindex="-1"></a>calc_dif <span class="ot">&lt;-</span> <span class="fu">calc_fusion</span>(median, identity, VV <span class="sc">/</span> NV)</span>
+<span id="cb89-12"><a href="pruebas-de-hipótesis.html#cb89-12" aria-hidden="true" tabindex="-1"></a>ejemplo<span class="sc">$</span>mediana_razon <span class="ot">&lt;-</span> <span class="fu">valor_p</span>(fusion <span class="sc">|&gt;</span> <span class="fu">sample_frac</span>(<span class="fl">0.95</span>), nv.vv, calc_dif, <span class="at">n =</span> N_rep)</span>
+<span id="cb89-13"><a href="pruebas-de-hipótesis.html#cb89-13" aria-hidden="true" tabindex="-1"></a>calc_dif <span class="ot">&lt;-</span> <span class="fu">calc_fusion</span>(media_cuartiles, identity, VV <span class="sc">/</span> NV)</span>
+<span id="cb89-14"><a href="pruebas-de-hipótesis.html#cb89-14" aria-hidden="true" tabindex="-1"></a>ejemplo<span class="sc">$</span>cuartiles_razon <span class="ot">&lt;-</span> <span class="fu">valor_p</span>(fusion <span class="sc">|&gt;</span> <span class="fu">sample_frac</span>(<span class="fl">0.95</span>), nv.vv, calc_dif, <span class="at">n =</span> N_rep)</span></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="pruebas-de-hipótesis.html#cb90-1" aria-hidden="true" tabindex="-1"></a>ejemplo <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">&quot;cache/ejemplo_p_val.rds&quot;</span>)</span>
+<span id="cb90-2"><a href="pruebas-de-hipótesis.html#cb90-2" aria-hidden="true" tabindex="-1"></a>ejemplo<span class="sc">$</span>media_dif</span></code></pre></div>
+<pre><code>## [1] 0.0658</code></pre>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="pruebas-de-hipótesis.html#cb92-1" aria-hidden="true" tabindex="-1"></a>ejemplo<span class="sc">$</span>media_dif_log</span></code></pre></div>
+<pre><code>## [1] 0.018</code></pre>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="pruebas-de-hipótesis.html#cb94-1" aria-hidden="true" tabindex="-1"></a>ejemplo<span class="sc">$</span>mediana_razon</span></code></pre></div>
+<pre><code>## [1] 0.049</code></pre>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="pruebas-de-hipótesis.html#cb96-1" aria-hidden="true" tabindex="-1"></a>ejemplo<span class="sc">$</span>cuartiles_razon</span></code></pre></div>
+<pre><code>## [1] 0.0464</code></pre>
+<p>Si existen grados de libertad —muchas veces necesarios para hacer un análisis exitoso—, entonces
+los valores <em>p</em> pueden tener poco significado.</p>
+</div>
+<div id="alternativas-o-soluciones" class="section level2 unnumbered hasAnchor">
+<h2>Alternativas o soluciones<a href="pruebas-de-hipótesis.html#alternativas-o-soluciones" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>El primer punto importante es reconocer que la mayor parte de nuestro trabajo
+es <strong>exploratorio</strong> (recordemos el proceso complicado del análisis de datos de refinamiento de preguntas).
+En este tipo de trabajo, reportar valores <em>p</em> puede tener poco sentido,
+y mucho menos tiene sentido aceptar algo <em>verdadero</em> cuando pasa un umbral de significancia dado.</p>
+<p>Nuestro interés principal al hacer análisis es: expresar correctamente, y de manera útil, la incertidumbre
+asociada a las conclusiones o patrones que mostramos
+(asociada a variación muestral, por ejemplo) con el objetivo que el proceso de toma de decisiones sea informado. <strong>Un</strong> resumen de <strong>un número</strong> (valor <em>p</em>, o el que sea) no puede ser tomado como criterio para tomar una decisión que generalmente es compleja.
+En la siguiente sección veremos cómo podemos mostrar parte de esa incertidumbre de manera más útil.</p>
+<p>Por otra parte, los estudios confirmatorios (donde se reportan valores <em>p</em>)
+también tienen un lugar. En áreas como la psicología, existen ahora movimientos fuertes en
+favor de la repetición de estudios prometedores pero donde hay sospecha
+de grados de libertad del investigador. Este movimiento
+sugiere dar valor a los <strong>estudios exploratorios</strong> que no reportan valor <em>p</em>,
+y posteriormente, si el estudio
+es de interés, puede intentarse una <strong>replicación confirmatoria, con potencia más alta y con planes de análisis predefinidos</strong>.</p>
+
+</div>
+</div>
+<h3>Referencias<a href="referencias.html#referencias" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-box78" class="csl-entry">
+Box, George EP, William H Hunter, Stuart Hunter, et al. 1978. <em>Statistics for Experimenters</em>. Vol. 664. John Wiley; sons New York.
+</div>
+<div id="ref-Chihara" class="csl-entry">
+Chihara, Laura M., and Tim C. Hesterberg. 2018. <em>Mathematical Statistics with Resampling and r</em>. 2nd ed. Hoboken, NJ: John Wiley &amp; Sons. <a href="https://sites.google.com/site/chiharahesterberg/home">https://sites.google.com/site/chiharahesterberg/home</a>.
+</div>
+<div id="ref-cookwasps" class="csl-entry">
+Chowdhury, Niladri Roy, Dianne Cook, Heike Hofmann, Mahbubul Majumder, Eun-Kyung Lee, and Amy L Toth. 2015. <span>“Using Visual Statistical Inference to Better Understand Random Class Separations in High Dimension, Low Sample Size Data.”</span> <em>Computational Statistics</em> 30 (2): 293–316.
+</div>
+<div id="ref-cleveland93" class="csl-entry">
+Cleveland, William S. 1993. <em>Visualizing Data</em>. Hobart Press.
+</div>
+<div id="ref-Efron" class="csl-entry">
+Efron, Bradley, and Robert J. Tibshirani. 1993. <em>An Introduction to the Bootstrap</em>. Monographs on Statistics and Applied Probability 57. Boca Raton, Florida, USA: Chapman &amp; Hall/CRC.
+</div>
+<div id="ref-timboot14" class="csl-entry">
+Hesterberg, Tim C. 2015a. <span>“What Teachers Should Know about the Bootstrap: Resampling in the Undergraduate Statistics Curriculum.”</span> <em>The American Statistician</em> 69 (4): 371–86.
+</div>
+<div id="ref-graphical-tests" class="csl-entry">
+Hofmann, Heike, Lendie Follett, Mahbubul Majumder, and Dianne Cook. 2012. <span>“Graphical Tests for Power Comparison of Competing Designs.”</span> <em>IEEE Transactions on Visualization and Computer Graphics</em> 18 (12): 2441–48.
+</div>
+<div id="ref-falsefindings" class="csl-entry">
+Ioannidis, John PA. 2005. <span>“Why Most Published Research Findings Are False.”</span> <em>PLoS Medicine</em> 2 (8): e124.
+</div>
+<div id="ref-lineup" class="csl-entry">
+Wickham, Hadley, Dianne Cook, Heike Hofmann, and Andreas Buja. 2010. <span>“Graphical Inference for Infovis.”</span> <em>IEEE Transactions on Visualization and Computer Graphics</em> 16 (6): 973–79.
+</div>
+<div id="ref-nullabor" class="csl-entry">
+Wickham, H, NR Chowdhury, and D Cook. 2012. <span>“Nullabor: Tools for Graphical Inference.”</span> <em>R Package Version 0.2</em> 1: 213.
+</div>
+</div>
+<script type="text/javascript">smartify();</script>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="tipos-de-estudio-y-experimentos.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="apéndice-principios-de-visualizacion.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/03-pruebas-de-hipotesis.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["fundamentos-estadistica.Rmd"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
