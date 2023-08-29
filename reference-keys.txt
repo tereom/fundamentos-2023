@@ -3,3 +3,4 @@ fig:unnamed-chunk-2
 análisis-exploratorio
 tipos-de-estudio-y-experimentos
 pruebas-de-hipótesis
+estimación-y-distribución-de-muestreo-1

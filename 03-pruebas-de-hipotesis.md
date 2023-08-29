@@ -147,7 +147,7 @@ hiciéramos muchos páneles.
 ## Comparando distribuciones {-}
 
 Ahora intentamos un ejemplo más típico. Supongamos que tenemos *muestras* para 
-tres grupos `a`, `b` y `c`,  esto es que dentro de cada grupo, el proceso de 
+tres grupos `a`, `b` y `c`, esto es que dentro de cada grupo, el proceso de 
 selección de los elementos se hace al azar y de manera simétrica (por ejemplo cada elemento tiene a misma probabiidad de ser seleccionado,
 y las extracciones se hacen de manera independiente.)
 
@@ -262,6 +262,7 @@ grafica_cuantiles(reps |>  mutate(grupo_escondido = factor(digest::digest2int(gr
 ```
 
 <img src="03-pruebas-de-hipotesis_files/figure-html/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" />
+
 Podemos distinguir más o menos claramente que está localizada en valores
 más altos y tiene mayor dispersión. En este caso, como en general podemos identificar los
 datos, obtenemos evidencia en contra de que los tres grupos tienen distribuciones iguales.
