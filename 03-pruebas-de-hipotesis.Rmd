@@ -398,7 +398,7 @@ dif_obs |> round(3)
 Ahora construimos nuestra distribución nula o de referencia:
 
 ```{r permutaciones-lineup}
-reps <- lineup(null_permute("how"), te_azucar, n = 10000)
+reps <- lineup(null_permute("how"), te_azucar, n = 50000)
 
 glimpse(reps)
 
@@ -439,7 +439,7 @@ percentil_obs <- dist_perm(dif_obs)
 g_1 <- ggplot(valores_ref, aes(sample = diferencia)) + geom_qq(distribution = stats::qunif)  +
   xlab("f") + ylab("diferencia") + labs(subtitle = "Distribución nula o de referencia") +
   geom_hline(yintercept = dif_obs, colour = "red") +
-  annotate("text", x = 0.3, y = dif_obs - 0.05, label = "diferencia observada", colour = "red")
+  annotate("text", x = 0.35, y = dif_obs - 0.03, label = "diferencia observada", colour = "red")
 g_2 <- ggplot(valores_ref, aes(x = diferencia)) + geom_histogram(binwidth = 0.04) +
   coord_flip() + xlab("") + labs(subtitle = " ") +
   geom_vline(xintercept = dif_obs, colour = "red") +
@@ -545,7 +545,7 @@ Por otro lado, podemos calcular:
 que observamos**?
 
 Considerando este caso interpretamos *extrema* como qué tan lejos cae del centro de 
-masa de la distribución. De tal orma que podemos calcular el valor *p* como sigue.
+masa de la distribución. De tal forma que podemos calcular el valor *p* como sigue.
 A partir del valor observado, consideramos cuál dato es menor: la probabilidad
 bajo lo hipótesis nula de observar una diferencia mayor de la que observamos, o
 la probabilidad de observar una diferencia menor a la que observamos. Tomamos
@@ -716,7 +716,7 @@ propina en cena vs en comidas.
 
 
 
-## Pruebas de permutación: problemas en implementación. {-}
+## Pruebas de permutación: implementación. {-}
 
 Hasta ahora nos hemos centrado en ejemplos de diferencias en medias. Podemos
 extender las pruebas de permutación a $\bar{X}$ (la media de la primera muestra),
@@ -765,9 +765,7 @@ media es igual a 5?
 de las diferencias: como ¿son iguales las medias o medianas de dos grupos de
 datos? ¿Tienen dispersión similar?
 
-Las pruebas de permutaciones no están tan perfectamente adaptadas a este
-problema, pues prueban *todos* los aspectos de las distribuciones que se
-comparan, aún cuando escojamos una estadística particular que pretende medir.
+Es común aplicar pruebas de permutaciones a este segundo problema, sin embargo, no están tan perfectamente adaptadas a el, pues prueban *todos* los aspectos de las distribuciones que se comparan, aún cuando escojamos una estadística particular que pretende medir.
 Por ejemplo, cuando trabajamos con la diferencia de medias. Eso quiere decir que podemos 
 rechazar igualdad de medias, por ejemplo, cuando en realidad otra característica de las
 distribuciones es la que difiere mucho en las poblaciones.
@@ -1123,7 +1121,7 @@ y mucho menos tiene sentido aceptar algo *verdadero* cuando pasa un umbral de si
 
 Nuestro interés principal al hacer análisis es: expresar correctamente, y de manera útil, la incertidumbre
 asociada a las conclusiones o patrones que mostramos
-(asociada a variación muestral, por ejemplo) con el objetivo que el proceso de toma de decisiones sea informado. **Un** resumen de **un número** (valor *p*, o el que sea) no puede ser tomado como criterio para tomar una decisión que generalmente es compleja.
+(asociada a variación muestral, por ejemplo) con el objetivo que el proceso de toma de decisiones sea informado. Un resumen de **un número** (valor *p*, o el que sea) no puede ser tomado como criterio para tomar una decisión que generalmente es compleja.
 En la siguiente sección veremos cómo podemos mostrar parte de esa incertidumbre de manera más útil.
 
 Por otra parte, los estudios confirmatorios (donde se reportan valores *p*)
