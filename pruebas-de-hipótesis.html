@@ -237,7 +237,7 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#prueba-de-permutaciones-para-proporciones"><i class="fa fa-check"></i>Prueba de permutaciones para proporciones</a></li>
 <li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#pruebas-de-hipótesis-tradicionales"><i class="fa fa-check"></i>Pruebas de hipótesis tradicionales</a></li>
 <li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#tomadores-de-té-continuación"><i class="fa fa-check"></i>Tomadores de té (continuación)</a></li>
-<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#pruebas-de-permutación-problemas-en-implementación."><i class="fa fa-check"></i>Pruebas de permutación: problemas en implementación.</a></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#pruebas-de-permutación-implementación."><i class="fa fa-check"></i>Pruebas de permutación: implementación.</a></li>
 <li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#ejemplo-tiempos-de-fusión"><i class="fa fa-check"></i>Ejemplo: tiempos de fusión</a></li>
 <li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#ejemplo-tiempos-de-fusión-continuación"><i class="fa fa-check"></i>Ejemplo: tiempos de fusión (continuación)</a></li>
 <li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#separación-de-grupos"><i class="fa fa-check"></i>Separación de grupos</a>
@@ -642,10 +642,10 @@ permutadas.</li>
 <div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="pruebas-de-hipótesis.html#cb66-1" aria-hidden="true" tabindex="-1"></a>dif_obs <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">3</span>)</span></code></pre></div>
 <pre><code>## [1] 0.093</code></pre>
 <p>Ahora construimos nuestra distribución nula o de referencia:</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="pruebas-de-hipótesis.html#cb68-1" aria-hidden="true" tabindex="-1"></a>reps <span class="ot">&lt;-</span> <span class="fu">lineup</span>(<span class="fu">null_permute</span>(<span class="st">&quot;how&quot;</span>), te_azucar, <span class="at">n =</span> <span class="dv">10000</span>)</span>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="pruebas-de-hipótesis.html#cb68-1" aria-hidden="true" tabindex="-1"></a>reps <span class="ot">&lt;-</span> <span class="fu">lineup</span>(<span class="fu">null_permute</span>(<span class="st">&quot;how&quot;</span>), te_azucar, <span class="at">n =</span> <span class="dv">50000</span>)</span>
 <span id="cb68-2"><a href="pruebas-de-hipótesis.html#cb68-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb68-3"><a href="pruebas-de-hipótesis.html#cb68-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(reps)</span></code></pre></div>
-<pre><code>## Rows: 3,000,000
+<pre><code>## Rows: 15,000,000
 ## Columns: 3
 ## $ how     &lt;chr&gt; &quot;bolsa_exclusivo&quot;, &quot;bolsa_exclusivo&quot;, &quot;suelto o bolsa&quot;, &quot;suelt…
 ## $ sugar   &lt;chr&gt; &quot;sugar&quot;, &quot;No.sugar&quot;, &quot;No.sugar&quot;, &quot;sugar&quot;, &quot;No.sugar&quot;, &quot;No.suga…
@@ -677,7 +677,7 @@ Podemos graficar otra vez marcando el valor observado:</p>
 <div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="pruebas-de-hipótesis.html#cb73-1" aria-hidden="true" tabindex="-1"></a>g_1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(valores_ref, <span class="fu">aes</span>(<span class="at">sample =</span> diferencia)) <span class="sc">+</span> <span class="fu">geom_qq</span>(<span class="at">distribution =</span> stats<span class="sc">::</span>qunif)  <span class="sc">+</span></span>
 <span id="cb73-2"><a href="pruebas-de-hipótesis.html#cb73-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;f&quot;</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;diferencia&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">&quot;Distribución nula o de referencia&quot;</span>) <span class="sc">+</span></span>
 <span id="cb73-3"><a href="pruebas-de-hipótesis.html#cb73-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> dif_obs, <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
-<span id="cb73-4"><a href="pruebas-de-hipótesis.html#cb73-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">x =</span> <span class="fl">0.3</span>, <span class="at">y =</span> dif_obs <span class="sc">-</span> <span class="fl">0.05</span>, <span class="at">label =</span> <span class="st">&quot;diferencia observada&quot;</span>, <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>)</span>
+<span id="cb73-4"><a href="pruebas-de-hipótesis.html#cb73-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">x =</span> <span class="fl">0.35</span>, <span class="at">y =</span> dif_obs <span class="sc">-</span> <span class="fl">0.03</span>, <span class="at">label =</span> <span class="st">&quot;diferencia observada&quot;</span>, <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>)</span>
 <span id="cb73-5"><a href="pruebas-de-hipótesis.html#cb73-5" aria-hidden="true" tabindex="-1"></a>g_2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(valores_ref, <span class="fu">aes</span>(<span class="at">x =</span> diferencia)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.04</span>) <span class="sc">+</span></span>
 <span id="cb73-6"><a href="pruebas-de-hipótesis.html#cb73-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">&quot;&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">&quot; &quot;</span>) <span class="sc">+</span></span>
 <span id="cb73-7"><a href="pruebas-de-hipótesis.html#cb73-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> dif_obs, <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
@@ -772,7 +772,7 @@ hipótesis nula admite valores grandes, el valor p se calcula como <span class="
 nuestra observación cae en la distribución generada por las permutación (valor
 <em>p</em> de una cola).</p>
 <div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="pruebas-de-hipótesis.html#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">dist_perm</span>(dif_obs)</span></code></pre></div>
-<pre><code>## [1] 0.0425</code></pre>
+<pre><code>## [1] 0.04344</code></pre>
 <p>Por otro lado, podemos calcular:</p>
 <ul>
 <li><strong>Valor p de dos colas</strong>: Si la hipótesis nula es cierta, ¿cuál es la
@@ -780,13 +780,13 @@ nuestra observación cae en la distribución generada por las permutación (valo
 que observamos</strong>?</li>
 </ul>
 <p>Considerando este caso interpretamos <em>extrema</em> como qué tan lejos cae del centro de
-masa de la distribución. De tal orma que podemos calcular el valor <em>p</em> como sigue.
+masa de la distribución. De tal forma que podemos calcular el valor <em>p</em> como sigue.
 A partir del valor observado, consideramos cuál dato es menor: la probabilidad
 bajo lo hipótesis nula de observar una diferencia mayor de la que observamos, o
 la probabilidad de observar una diferencia menor a la que observamos. Tomamos
 el mínimo y multiplicamos por dos <span class="citation">(<a href="#ref-timboot14" role="doc-biblioref">Tim C. Hesterberg 2015a</a>)</span>:</p>
 <div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="pruebas-de-hipótesis.html#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="fu">min</span>(<span class="fu">dist_perm</span>(dif_obs), (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">dist_perm</span>(dif_obs)))</span></code></pre></div>
-<pre><code>## [1] 0.085</code></pre>
+<pre><code>## [1] 0.08688</code></pre>
 <p>Este valor <em>p</em> se considera como evidencia <em>moderada</em> en contra de la hipótesis
 nula. Valores <em>p</em> chicos (observaciones más extremas en comparación con la
 referencia) aportan más evidencia <strong>en contra</strong> de la hipótesis nula, y valores
@@ -996,8 +996,8 @@ Calcula el valor <em>p</em> (dos colas).
 </ul>
 </div>
 </div>
-<div id="pruebas-de-permutación-problemas-en-implementación." class="section level2 unnumbered hasAnchor">
-<h2>Pruebas de permutación: problemas en implementación.<a href="pruebas-de-hipótesis.html#pruebas-de-permutación-problemas-en-implementación." class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="pruebas-de-permutación-implementación." class="section level2 unnumbered hasAnchor">
+<h2>Pruebas de permutación: implementación.<a href="pruebas-de-hipótesis.html#pruebas-de-permutación-implementación." class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Hasta ahora nos hemos centrado en ejemplos de diferencias en medias. Podemos
 extender las pruebas de permutación a <span class="math inline">\(\bar{X}\)</span> (la media de la primera muestra),
 <span class="math inline">\(n\bar{X}\)</span> (la suma de las observaciones en la primera muestra), y más.</p>
@@ -1040,9 +1040,7 @@ media es igual a 5?</p></li>
 de las diferencias: como ¿son iguales las medias o medianas de dos grupos de
 datos? ¿Tienen dispersión similar?</p></li>
 </ul>
-<p>Las pruebas de permutaciones no están tan perfectamente adaptadas a este
-problema, pues prueban <em>todos</em> los aspectos de las distribuciones que se
-comparan, aún cuando escojamos una estadística particular que pretende medir.
+<p>Es común aplicar pruebas de permutaciones a este segundo problema, sin embargo, no están tan perfectamente adaptadas a el, pues prueban <em>todos</em> los aspectos de las distribuciones que se comparan, aún cuando escojamos una estadística particular que pretende medir.
 Por ejemplo, cuando trabajamos con la diferencia de medias. Eso quiere decir que podemos
 rechazar igualdad de medias, por ejemplo, cuando en realidad otra característica de las
 distribuciones es la que difiere mucho en las poblaciones.</p>
@@ -1324,7 +1322,7 @@ En este tipo de trabajo, reportar valores <em>p</em> puede tener poco sentido,
 y mucho menos tiene sentido aceptar algo <em>verdadero</em> cuando pasa un umbral de significancia dado.</p>
 <p>Nuestro interés principal al hacer análisis es: expresar correctamente, y de manera útil, la incertidumbre
 asociada a las conclusiones o patrones que mostramos
-(asociada a variación muestral, por ejemplo) con el objetivo que el proceso de toma de decisiones sea informado. <strong>Un</strong> resumen de <strong>un número</strong> (valor <em>p</em>, o el que sea) no puede ser tomado como criterio para tomar una decisión que generalmente es compleja.
+(asociada a variación muestral, por ejemplo) con el objetivo que el proceso de toma de decisiones sea informado. Un resumen de <strong>un número</strong> (valor <em>p</em>, o el que sea) no puede ser tomado como criterio para tomar una decisión que generalmente es compleja.
 En la siguiente sección veremos cómo podemos mostrar parte de esa incertidumbre de manera más útil.</p>
 <p>Por otra parte, los estudios confirmatorios (donde se reportan valores <em>p</em>)
 también tienen un lugar. En áreas como la psicología, existen ahora movimientos fuertes en
