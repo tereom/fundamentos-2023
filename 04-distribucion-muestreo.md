@@ -242,7 +242,7 @@ replicaciones_1 <- replicar_muestreo(marco_casas, m = 1500, n = 100)
 ```
 
 Y el siguiente histograma nos dice qué podemos esperar de la variación de
-nuestras estimadores, y donde es más probable que una estimación particular caiga:
+nuestras estimaciones, y donde es más probable que una estimación particular caiga:
 
 
 ```r
@@ -445,7 +445,7 @@ grande de uniformes? ¿Qué pasa con el error estándar de la media muestral de 
 ### Ejemplo: valor de casas {-}
 
 Consideramos el error estándar del estimador del total del inventario vendido, usando
-una muestra de 250 con el estimador del total que consideramos. Como aproximamos con
+una muestra de 250 con el estimador del total que describimos arriba. Como aproximamos con
 simulación la distribución de muestreo, podemos hacer:
 
 

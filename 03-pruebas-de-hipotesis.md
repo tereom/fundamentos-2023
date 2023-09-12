@@ -788,18 +788,12 @@ $n\bar{X}$ (la suma de las observaciones en la primera muestra), y más.
 <p><strong>Teorema.</strong> En pruebas de permutación, si dos
 estadísticas de prueba <span class="math inline">\(T_1\)</span> y <span
 class="math inline">\(T_2\)</span> están relacionadas por una función
-estríctamente creciente, <span
+estríctamente monótona, <span
 class="math inline">\(T_1(X^*)=f(T_2(X^*))\)</span> donde <span
 class="math inline">\(X^*\)</span> es una remuestra de permutación de
 los datos originales, entonces los valores <em>p</em> serán los mismos
 en las pruebas de permutación.</p>
 </div>
-
-**Agregar uno al numerador y denominador.** Cuando se calcula el valor *p* en la
-implementación de muestreo, podemos agregar un uno al numerador y denominador. Esto
-corresponde a incluir los datos como una remuestra adicional y sirve para evitar
-reportar el valor *p* $= 0,$ que es imposible pues siempre hay una remuestra con un
-valor al menos tan extremo como los datos observados (los datos mismos).
 
 **Muestras con reemplazo de la Distribución Nula.** En la implementación de
 muestreo, no nos aseguramos que las remuestras sean únicas. Sería más acertado
