@@ -2,7 +2,7 @@ fig:grafica-pcr
 fig:unnamed-chunk-2
 fig:mundo-real
 fig:mundo-bootstrap
-fig:unnamed-chunk-83
+fig:unnamed-chunk-85
 análisis-exploratorio
 tipos-de-estudio-y-experimentos
 pruebas-de-hipótesis

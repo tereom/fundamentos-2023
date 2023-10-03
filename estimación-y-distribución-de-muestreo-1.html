@@ -53,10 +53,6 @@
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" 
-integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous">
-  </script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/fnaufel/smartify/smartify.min.js"></script>
 
 
 <style type="text/css">
@@ -151,7 +147,6 @@ div.csl-indent {
 }
 </style>
 
-<link rel="stylesheet" href="css/style.css" type="text/css" />
 </head>
 
 <body>
@@ -874,16 +869,16 @@ y esta es la distribución de muestreo de nuestra estadística <span class="math
 que hicimos.</p>
 <p>Podemos checar este resultado con simulación, por ejemplo para una
 muestra de tamaño <span class="math inline">\(n=15\)</span> con <span class="math inline">\(\lambda = 1\)</span>:</p>
-<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="estimación-y-distribución-de-muestreo-1.html#cb128-1" aria-hidden="true" tabindex="-1"></a>replicar_muestreo_exp <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">est =</span> mean, m, <span class="at">n =</span> <span class="dv">15</span>, <span class="at">lambda =</span> <span class="dv">1</span>){</span>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="estimación-y-distribución-de-muestreo-1.html#cb128-1" aria-hidden="true" tabindex="-1"></a>replicar_muestreo_exp <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">est =</span> mean, m, <span class="at">n =</span> <span class="dv">150</span>, <span class="at">lambda =</span> <span class="dv">1</span>){</span>
 <span id="cb128-2"><a href="estimación-y-distribución-de-muestreo-1.html#cb128-2" aria-hidden="true" tabindex="-1"></a>  valores_est <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(<span class="dv">1</span><span class="sc">:</span>m, <span class="sc">~</span> <span class="fu">est</span>(<span class="fu">rexp</span>(n, lambda)))</span>
 <span id="cb128-3"><a href="estimación-y-distribución-de-muestreo-1.html#cb128-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">id_muestra =</span> <span class="dv">1</span><span class="sc">:</span>m, <span class="at">estimacion =</span> valores_est)</span>
 <span id="cb128-4"><a href="estimación-y-distribución-de-muestreo-1.html#cb128-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb128-5"><a href="estimación-y-distribución-de-muestreo-1.html#cb128-5" aria-hidden="true" tabindex="-1"></a>sim_estimador_1 <span class="ot">&lt;-</span> <span class="fu">replicar_muestreo_exp</span>(sum, <span class="dv">4000</span>, <span class="at">n =</span> <span class="dv">15</span>)</span>
+<span id="cb128-5"><a href="estimación-y-distribución-de-muestreo-1.html#cb128-5" aria-hidden="true" tabindex="-1"></a>sim_estimador_1 <span class="ot">&lt;-</span> <span class="fu">replicar_muestreo_exp</span>(sum, <span class="dv">4000</span>, <span class="at">n =</span> <span class="dv">150</span>)</span>
 <span id="cb128-6"><a href="estimación-y-distribución-de-muestreo-1.html#cb128-6" aria-hidden="true" tabindex="-1"></a>teorica <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">35</span>, <span class="fl">0.001</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb128-7"><a href="estimación-y-distribución-de-muestreo-1.html#cb128-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">f_dens =</span> <span class="fu">dgamma</span>(x, <span class="at">shape =</span> <span class="dv">15</span>, <span class="at">rate =</span> <span class="dv">1</span>))</span>
+<span id="cb128-7"><a href="estimación-y-distribución-de-muestreo-1.html#cb128-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">f_dens =</span> <span class="fu">dgamma</span>(x, <span class="at">shape =</span> <span class="dv">150</span>, <span class="at">rate =</span> <span class="dv">1</span>))</span>
 <span id="cb128-8"><a href="estimación-y-distribución-de-muestreo-1.html#cb128-8" aria-hidden="true" tabindex="-1"></a><span class="co"># graficar aprox de distribución de muestreo</span></span>
 <span id="cb128-9"><a href="estimación-y-distribución-de-muestreo-1.html#cb128-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sim_estimador_1) <span class="sc">+</span></span>
-<span id="cb128-10"><a href="estimación-y-distribución-de-muestreo-1.html#cb128-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> estimacion, <span class="at">y =</span> ..density..), <span class="at">bins =</span> <span class="dv">40</span>) <span class="sc">+</span></span>
+<span id="cb128-10"><a href="estimación-y-distribución-de-muestreo-1.html#cb128-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> estimacion, <span class="at">y =</span> ..density..), <span class="at">bins =</span> <span class="dv">35</span>) <span class="sc">+</span></span>
 <span id="cb128-11"><a href="estimación-y-distribución-de-muestreo-1.html#cb128-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> teorica, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> f_dens), <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>, <span class="at">size =</span> <span class="fl">1.2</span>)</span></code></pre></div>
 <p><img src="04-distribucion-muestreo_files/figure-html/unnamed-chunk-26-1.png" width="480" style="display: block; margin: auto;" /></p>
 </div>
@@ -1081,7 +1076,8 @@ meustreo de esta estadística (<span class="math inline">\(n=250\)</span>):</p>
 ## 10 10                46519.       4.58               213.
 ## # ℹ 1,490 more rows</code></pre>
 <div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="estimación-y-distribución-de-muestreo-1.html#cb139-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(replicaciones_2, <span class="fu">aes</span>(<span class="at">sample =</span> est_total_millones)) <span class="sc">+</span></span>
-<span id="cb139-2"><a href="estimación-y-distribución-de-muestreo-1.html#cb139-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span> <span class="fu">geom_qq_line</span>(<span class="at">colour =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<span id="cb139-2"><a href="estimación-y-distribución-de-muestreo-1.html#cb139-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span> </span>
+<span id="cb139-3"><a href="estimación-y-distribución-de-muestreo-1.html#cb139-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>(<span class="at">colour =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
 <p><img src="04-distribucion-muestreo_files/figure-html/unnamed-chunk-37-1.png" width="384" style="display: block; margin: auto;" />
 Y vemos que en efecto el TCL aplica en este ejemplo, y la aproximación es buena.
 Aunque la población original es sesgada, la descripción de la distribución de
@@ -1168,7 +1164,6 @@ conviene hacer <em>correcciones de continuidad</em>, como se explica en <span cl
 Chihara, Laura M., and Tim C. Hesterberg. 2018. <em>Mathematical Statistics with Resampling and r</em>. 2nd ed. Hoboken, NJ: John Wiley &amp; Sons. <a href="https://sites.google.com/site/chiharahesterberg/home">https://sites.google.com/site/chiharahesterberg/home</a>.
 </div>
 </div>
-<script type="text/javascript">smartify();</script>
             </section>
 
           </div>
@@ -1192,7 +1187,7 @@ gitbook.start({
 "sharing": {
 "github": true,
 "facebook": false,
-"twitter": true,
+"twitter": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
@@ -1223,7 +1218,8 @@ gitbook.start({
 "options": null
 },
 "toc": {
-"collapse": "subsection"
+"collapse": "section",
+"depth": 1
 }
 });
 });

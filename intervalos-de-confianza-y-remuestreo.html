@@ -53,10 +53,6 @@
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" 
-integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous">
-  </script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/fnaufel/smartify/smartify.min.js"></script>
 
 
 <style type="text/css">
@@ -151,7 +147,6 @@ div.csl-indent {
 }
 </style>
 
-<link rel="stylesheet" href="css/style.css" type="text/css" />
 </head>
 
 <body>
@@ -460,7 +455,7 @@ que es la muestra.</li>
 <strong>replicaciones bootstrap</strong>.</li>
 <li>A la distribución de las replicaciones le llamamos <strong>distribución bootstrap</strong> o
 <strong>distribución de remuestreo</strong> del estimador.</li>
-<li>Usamos la distribución bootstrap de la muestra para estimar la variabilidad
+<li>Usamos la distribución bootstrap para estimar la variabilidad
 en nuestra estimación con <strong>la muestra original</strong>.</li>
 </ol>
 <p>Veamos que sucede para un ejemplo concreto, donde nos interesa estimar
@@ -497,7 +492,7 @@ podíamos muestrear repetidamente la población y calcular el valor del
 estimador en cada una de estas muestras. Aquí no tenemos la población,
 <strong>pero tenemos una estimación de la población</strong>: la muestra obtenida.</p>
 <p>Así que para evaluar la variabilidad de nuestro estimador, entramos en el mundo
-boostrap, y consideramos que la población es nuestra muestra.</p>
+bootstrap, y consideramos que la población es nuestra muestra.</p>
 <p>Podemos entonces extraer un número grande de muestras con reemplazo de tamaño
 200 <strong>de la muestra</strong>: el muestreo debe ser análogo al que se tomó para nuestra
 muestra original. Evaluamos nuestra estadística (en este caso la media) en cada
@@ -511,7 +506,7 @@ una de estas remuestras:</p>
 <span id="cb155-3"><a href="intervalos-de-confianza-y-remuestreo.html#cb155-3" aria-hidden="true" tabindex="-1"></a>g_histograma <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(bootstrap, <span class="fu">aes</span>(<span class="at">x =</span> media)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">2</span>)</span>
 <span id="cb155-4"><a href="intervalos-de-confianza-y-remuestreo.html#cb155-4" aria-hidden="true" tabindex="-1"></a>g_cuantiles <span class="sc">+</span> g_histograma</span></code></pre></div>
 <p><img src="05-remuestreo_files/figure-html/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto;" />
-A esta le llamamos la distribución de remuestreo de la media, que definimos más
+A esta le llamamos la distribución bootstrap (o de remuestreo) de la media, que definimos más
 abajo. Ahora podemos calcular un intervalo de confianza del 90% simplemente
 calculando los cuantiles de esta distribución (no son los cuantiles de la
 muestra original!):</p>
@@ -533,7 +528,7 @@ distribución de muestreo:</p>
 <p><strong>Definición.</strong> Sea <span class="math inline">\(X_1,X_2,\ldots,X_n\)</span> una muestra independiente y idénticamente
 distribuida, y <span class="math inline">\(T=t(X_1, X_2, \ldots, X_n)\)</span> una estadística. Supongamos que sus valores
 que obervamos son <span class="math inline">\(x_1, x_2,\ldots, x_n\)</span>.</p>
-<p>La <strong>distribución de remuestreo</strong> de <span class="math inline">\(T\)</span> es la
+<p>La <strong>distribución bootstrap</strong>, o distribución de remuestreo, de <span class="math inline">\(T\)</span> es la
 distribución de <span class="math inline">\(T^*=t(X_1^*, X_2^*, \dots X_n^*)\)</span>, donde cada <span class="math inline">\(X_i^*\)</span> se obtiene
 tomando al azar uno de los valores de <span class="math inline">\(x_1,x_2,\ldots, x_n\)</span>.</p>
 </div>
@@ -585,10 +580,10 @@ así sucesivamente.</p>
 <li>Tenemos una fórmula para la cantidad poblacional de interés en términos de la
 distribución poblacional.<br />
 </li>
-<li>Tenemos una muestra, que usamos para estimar la cantidad poblacional. La
-distribución que da una muestra se llama distribución <em>empírica</em>.</li>
-<li>Contruimos nuestro estimador “enchufando” la distribución empírica de la
-muestra en la fórmula del estimador.</li>
+<li>Tenemos una muestra, la distribución que da esta muestra se llama distribución
+<em>empírica</em> (<span class="math inline">\(\hat{F}(x) = \frac{1}{n}\{\#valores \le x\}\)</span>).</li>
+<li>Contruimos nuestro estimador, de la cantidad poblacional de interés, “enchufando”
+la distribución empírica de la muestra en la fórmula del estimador.</li>
 </ul>
 <p>En el bootstrap aplicamos este principio simple a la <strong>distribución de
 muestreo</strong>:</p>
@@ -596,8 +591,8 @@ muestreo</strong>:</p>
 <li><em>Si tenemos la población</em>, podemos <em>calcular</em> la distribución de muestreo de
 nuestro estimador tomando muchas muestras de la <em>población</em>.</li>
 <li>Estimamos la <em>poblacion</em> con la <em>muestra</em> y enchufamos en la frase anterior:</li>
-<li>Podemos <em>estimar</em> la distribucion de muestreo de nuestro estimador
-tomando muchas muestras de la <em>muestra</em> (bootstrap).</li>
+<li>Podemos <em>estimar</em> la distribución de muestreo de nuestro estimador
+tomando muchas muestras de la <em>muestra</em>.</li>
 </ul>
 <p>Nótese que el proceso de muestreo en el último paso <strong>debe ser el mismo</strong> que
 se usó para tomar la muestra original. Estas dos imágenes simuladas con base en
@@ -609,7 +604,7 @@ Figure 5.1: Mundo Real
 </p>
 </div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:mundo-bootstrap"></span>
-<img src="05-remuestreo_files/figure-html/mundo-bootstrap-1.png" alt="Mundo Bootstrap" width="672" />
+<img src="05-remuestreo_files/figure-html/mundo-bootstrap-1.png" alt="Mundo Bootstrap" width="768" />
 <p class="caption">
 Figure 5.2: Mundo Bootstrap
 </p>
@@ -653,7 +648,7 @@ de té que prefiere el té negro usando nuestra muestra:</p>
 ## 1      0.247   300</code></pre>
 <p>¿Cómo evaluamos la precisión de este estimador? Supondremos que el estudio se
 hizo tomando una muestra aleatoria simple de tamaño 300 de la población de tomadores de té que
-nos interesa. Podemos entonces usar el boostrap:</p>
+nos interesa. Podemos entonces usar el bootstrap:</p>
 <div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="intervalos-de-confianza-y-remuestreo.html#cb166-1" aria-hidden="true" tabindex="-1"></a><span class="co"># paso 1: define el estimador</span></span>
 <span id="cb166-2"><a href="intervalos-de-confianza-y-remuestreo.html#cb166-2" aria-hidden="true" tabindex="-1"></a>calc_estimador <span class="ot">&lt;-</span> <span class="cf">function</span>(datos){</span>
 <span id="cb166-3"><a href="intervalos-de-confianza-y-remuestreo.html#cb166-3" aria-hidden="true" tabindex="-1"></a>  prop_negro <span class="ot">&lt;-</span> datos <span class="sc">|&gt;</span> </span>
@@ -707,7 +702,7 @@ de muestreo, o para “mejorar” la estimación remuestreando.</p>
 <p>En nuestro ejemplo, podemos ver varias muestras (por ejemplo 20) de tamaño 200, y
 vemos cómo se ve la aproximación a la distribución de la población:</p>
 <p><img src="05-remuestreo_files/figure-html/unnamed-chunk-19-1.png" width="384" style="display: block; margin: auto;" /></p>
-<p>Podemos calcular las distribuciones de remuestreo para cada muestra bootstrap,
+<p>Podemos calcular las distribuciones de remuestreo (bootstrap) para cada muestra,
 y compararlas con la distribución de muestreo real.</p>
 <div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="intervalos-de-confianza-y-remuestreo.html#cb169-1" aria-hidden="true" tabindex="-1"></a><span class="co"># paso 1: define el estimador</span></span>
 <span id="cb169-2"><a href="intervalos-de-confianza-y-remuestreo.html#cb169-2" aria-hidden="true" tabindex="-1"></a>calc_estimador <span class="ot">&lt;-</span> <span class="cf">function</span>(datos){</span>
@@ -1578,22 +1573,22 @@ Comenzaremos con definiciones para entender el problema.</p>
 <span id="cb226-9"><a href="intervalos-de-confianza-y-remuestreo.html#cb226-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">media_escuela =</span> <span class="fu">rnorm</span>(n_escuelas, media_tipo, <span class="dv">30</span>), </span>
 <span id="cb226-10"><a href="intervalos-de-confianza-y-remuestreo.html#cb226-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_estudiantes =</span> <span class="fu">round</span>(<span class="fu">rnorm</span>(n_escuelas, <span class="dv">30</span>, <span class="dv">4</span>)))</span>
 <span id="cb226-11"><a href="intervalos-de-confianza-y-remuestreo.html#cb226-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb226-12"><a href="intervalos-de-confianza-y-remuestreo.html#cb226-12" aria-hidden="true" tabindex="-1"></a>estudiantes <span class="ot">&lt;-</span> <span class="fu">uncount</span>(escuela, n_estudiantes) <span class="sc">%&gt;%</span> </span>
+<span id="cb226-12"><a href="intervalos-de-confianza-y-remuestreo.html#cb226-12" aria-hidden="true" tabindex="-1"></a>estudiantes <span class="ot">&lt;-</span> <span class="fu">uncount</span>(escuela, n_estudiantes, <span class="at">.id =</span> <span class="st">&quot;id_estudiante&quot;</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb226-13"><a href="intervalos-de-confianza-y-remuestreo.html#cb226-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
 <span id="cb226-14"><a href="intervalos-de-confianza-y-remuestreo.html#cb226-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">calif =</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, media_escuela, <span class="dv">70</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb226-15"><a href="intervalos-de-confianza-y-remuestreo.html#cb226-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>()</span></code></pre></div>
-<p>Imaginemos que tenemos una población de 5000,
+<p>Imaginemos que tenemos una población de 5000 escuelas,
 y queremos estimar la media de las calificaciones de los estudiantes en una prueba.</p>
 <div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="intervalos-de-confianza-y-remuestreo.html#cb227-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(estudiantes)</span></code></pre></div>
-<pre><code>## # A tibble: 6 × 5
-##   ind_escuela tipo   media_tipo media_escuela calif
-##         &lt;int&gt; &lt;chr&gt;       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;
-## 1           1 urbano        550          561.  488.
-## 2           1 urbano        550          561.  574.
-## 3           1 urbano        550          561.  456.
-## 4           1 urbano        550          561.  507.
-## 5           1 urbano        550          561.  598.
-## 6           1 urbano        550          561.  527.</code></pre>
+<pre><code>## # A tibble: 6 × 6
+##   ind_escuela tipo   media_tipo media_escuela id_estudiante calif
+##         &lt;int&gt; &lt;chr&gt;       &lt;dbl&gt;         &lt;dbl&gt;         &lt;int&gt; &lt;dbl&gt;
+## 1           1 urbano        550          561.             1  488.
+## 2           1 urbano        550          561.             2  574.
+## 3           1 urbano        550          561.             3  456.
+## 4           1 urbano        550          561.             4  507.
+## 5           1 urbano        550          561.             5  598.
+## 6           1 urbano        550          561.             6  527.</code></pre>
 <p>La primera idea sería tomar una muestra aleatoria (MAS, muestreo aleatorio simple),
 donde todos los estudiantes tienen igual probabilidad de ser seleccionados. Con
 estas condiciones el presupuesto alcanza para seleccionar a 60 estudiantes, hacemos
@@ -1621,13 +1616,15 @@ la probabilidad de seleccionar muestras que lleven a estimaciones alejadas del
 verdadero valor poblacional podríamos tomar muestras más grandes.</p>
 <p>Pero usualmente los costos limitan el tamaño de muestra. Una alternativa es
 estratificar, supongamos que sabemos el tipo de cada escuela (urbana, rural o
-indígena) y sabemos también que sabemos que la calificación de los estudiantes de escuelas urbanas tiende a ser distinta a las calificaciones que los estudiantes de
+indígena) y sabemos también que la calificación de los estudiantes de escuelas urbanas tiende a ser distinta a las calificaciones que los estudiantes de
 escuelas rurales o indígenas.</p>
+<p>En esta caso un diseño más eficiente consiste en tomar muestras independientes
+dentro de cada estrato.</p>
 <div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="intervalos-de-confianza-y-remuestreo.html#cb234-1" aria-hidden="true" tabindex="-1"></a>muestra_estrat <span class="ot">&lt;-</span> estudiantes <span class="sc">%&gt;%</span> </span>
 <span id="cb234-2"><a href="intervalos-de-confianza-y-remuestreo.html#cb234-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(tipo) <span class="sc">%&gt;%</span> </span>
 <span id="cb234-3"><a href="intervalos-de-confianza-y-remuestreo.html#cb234-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sample_frac</span>(<span class="fl">0.0004</span>)</span>
 <span id="cb234-4"><a href="intervalos-de-confianza-y-remuestreo.html#cb234-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(muestra_estrat)</span></code></pre></div>
-<pre><code>## [1] 60  5</code></pre>
+<pre><code>## [1] 60  6</code></pre>
 <div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="intervalos-de-confianza-y-remuestreo.html#cb236-1" aria-hidden="true" tabindex="-1"></a>muestrea_estrat <span class="ot">&lt;-</span> <span class="cf">function</span>(){</span>
 <span id="cb236-2"><a href="intervalos-de-confianza-y-remuestreo.html#cb236-2" aria-hidden="true" tabindex="-1"></a>    muestra <span class="ot">&lt;-</span> estudiantes <span class="sc">%&gt;%</span> </span>
 <span id="cb236-3"><a href="intervalos-de-confianza-y-remuestreo.html#cb236-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">group_by</span>(tipo) <span class="sc">%&gt;%</span> </span>
@@ -1635,50 +1632,57 @@ escuelas rurales o indígenas.</p>
 <span id="cb236-5"><a href="intervalos-de-confianza-y-remuestreo.html#cb236-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mean</span>(muestra<span class="sc">$</span>calif)</span>
 <span id="cb236-6"><a href="intervalos-de-confianza-y-remuestreo.html#cb236-6" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb236-7"><a href="intervalos-de-confianza-y-remuestreo.html#cb236-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb236-8"><a href="intervalos-de-confianza-y-remuestreo.html#cb236-8" aria-hidden="true" tabindex="-1"></a>medias_estrat <span class="ot">&lt;-</span> <span class="fu">rerun</span>(<span class="dv">1000</span>, <span class="fu">muestrea_estrat</span>()) <span class="sc">%&gt;%</span> <span class="fu">flatten_dbl</span>()</span>
-<span id="cb236-9"><a href="intervalos-de-confianza-y-remuestreo.html#cb236-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(medias_estrat)</span></code></pre></div>
-<pre><code>## [1] 10.20239</code></pre>
-<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="intervalos-de-confianza-y-remuestreo.html#cb238-1" aria-hidden="true" tabindex="-1"></a>hist_estrat <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="fu">tibble</span>(medias_estrat), <span class="fu">aes</span>(<span class="at">x =</span> medias_estrat)) <span class="sc">+</span></span>
-<span id="cb238-2"><a href="intervalos-de-confianza-y-remuestreo.html#cb238-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">6</span>) <span class="sc">+</span></span>
-<span id="cb238-3"><a href="intervalos-de-confianza-y-remuestreo.html#cb238-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(estudiantes<span class="sc">$</span>calif), <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
-<span id="cb238-4"><a href="intervalos-de-confianza-y-remuestreo.html#cb238-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlim</span>(<span class="dv">410</span>, <span class="dv">520</span>)</span>
-<span id="cb238-5"><a href="intervalos-de-confianza-y-remuestreo.html#cb238-5" aria-hidden="true" tabindex="-1"></a>qq_estrat <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="fu">tibble</span>(medias_estrat), <span class="fu">aes</span>(<span class="at">sample =</span> medias_estrat)) <span class="sc">+</span></span>
-<span id="cb238-6"><a href="intervalos-de-confianza-y-remuestreo.html#cb238-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_qq</span>(<span class="at">distribution =</span> stats<span class="sc">::</span>qunif) <span class="sc">+</span></span>
-<span id="cb238-7"><a href="intervalos-de-confianza-y-remuestreo.html#cb238-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylim</span>(<span class="dv">410</span>, <span class="dv">520</span>)</span>
-<span id="cb238-8"><a href="intervalos-de-confianza-y-remuestreo.html#cb238-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb238-9"><a href="intervalos-de-confianza-y-remuestreo.html#cb238-9" aria-hidden="true" tabindex="-1"></a>hist_estrat <span class="sc">+</span> qq_estrat</span></code></pre></div>
-<p><img src="05-remuestreo_files/figure-html/unnamed-chunk-76-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>La estratificación nos sirve para reducir el error estándar de las estimaciones,
-por su parte los conglomerados reducen costos. Veamos cuantas escuelas tendría
+<span id="cb236-8"><a href="intervalos-de-confianza-y-remuestreo.html#cb236-8" aria-hidden="true" tabindex="-1"></a>medias_estrat <span class="ot">&lt;-</span> <span class="fu">rerun</span>(<span class="dv">1000</span>, <span class="fu">muestrea_estrat</span>()) <span class="sc">%&gt;%</span> <span class="fu">flatten_dbl</span>()</span></code></pre></div>
+<p>Notamos que la distribución muestral está más concentrada que el caso de
+MAS, el error estándar se reduce de 14.75 a</p>
+<p>10.2</p>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="intervalos-de-confianza-y-remuestreo.html#cb237-1" aria-hidden="true" tabindex="-1"></a>hist_estrat <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="fu">tibble</span>(medias_estrat), <span class="fu">aes</span>(<span class="at">x =</span> medias_estrat)) <span class="sc">+</span></span>
+<span id="cb237-2"><a href="intervalos-de-confianza-y-remuestreo.html#cb237-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">6</span>) <span class="sc">+</span></span>
+<span id="cb237-3"><a href="intervalos-de-confianza-y-remuestreo.html#cb237-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(estudiantes<span class="sc">$</span>calif), <span class="at">color =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb237-4"><a href="intervalos-de-confianza-y-remuestreo.html#cb237-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlim</span>(<span class="dv">410</span>, <span class="dv">520</span>)</span>
+<span id="cb237-5"><a href="intervalos-de-confianza-y-remuestreo.html#cb237-5" aria-hidden="true" tabindex="-1"></a>qq_estrat <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="fu">tibble</span>(medias_estrat), <span class="fu">aes</span>(<span class="at">sample =</span> medias_estrat)) <span class="sc">+</span></span>
+<span id="cb237-6"><a href="intervalos-de-confianza-y-remuestreo.html#cb237-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_qq</span>(<span class="at">distribution =</span> stats<span class="sc">::</span>qunif) <span class="sc">+</span></span>
+<span id="cb237-7"><a href="intervalos-de-confianza-y-remuestreo.html#cb237-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylim</span>(<span class="dv">410</span>, <span class="dv">520</span>)</span>
+<span id="cb237-8"><a href="intervalos-de-confianza-y-remuestreo.html#cb237-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb237-9"><a href="intervalos-de-confianza-y-remuestreo.html#cb237-9" aria-hidden="true" tabindex="-1"></a>hist_estrat <span class="sc">+</span> qq_estrat</span></code></pre></div>
+<p><img src="05-remuestreo_files/figure-html/unnamed-chunk-77-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Entonces, la estratificación nos sirve para reducir el error estándar de las
+estimaciones. Otro procedimiento común en muestreo es introducir conglomerados,
+a diferencia del muestreo estratificado, el propósito principal de los
+conglomerados es reducir costos. Veamos cuantas escuelas tendría
 que visitar en una muestra dada (con diseño estratificado).</p>
-<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="intervalos-de-confianza-y-remuestreo.html#cb239-1" aria-hidden="true" tabindex="-1"></a><span class="fu">n_distinct</span>(muestra_estrat<span class="sc">$</span>ind_escuela)</span></code></pre></div>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="intervalos-de-confianza-y-remuestreo.html#cb238-1" aria-hidden="true" tabindex="-1"></a><span class="fu">n_distinct</span>(muestra_estrat<span class="sc">$</span>ind_escuela)</span></code></pre></div>
 <pre><code>## [1] 60</code></pre>
 <p>Es fácil ver que visitar una escuela para aplicar solo uno o dos exámenes no es
 muy eficiente en cuestión de costos. Es por ello que se suelen tomar muestras
-considerando los conglomerados naturales, en este caso la escuela. No es difícil
-imaginar que una parte grande del costo del muestreo sea mandar al examinador a
-la escuela y que una vez ahí examine a todos los alumnos de sexto grado. Podemos
+considerando conglomerados naturales, en este caso la escuela. En nuestro ejemplo
+es razonable suponer que una parte grande del costo del muestreo sea mandar al
+examinador a la escuela, y que una vez en la escuela el costo de evaluar a todo
+sexto, en lugar de a un único alumno, es relativamente bajo. Podemos
 imaginar que considerando estos costos por visita de escuela nos alcance para
 visitar 40 escuelas y en cada una examinar a todos los estudiantes.</p>
-<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="intervalos-de-confianza-y-remuestreo.html#cb241-1" aria-hidden="true" tabindex="-1"></a>muestra_escuelas <span class="ot">&lt;-</span> escuela <span class="sc">%&gt;%</span> </span>
-<span id="cb241-2"><a href="intervalos-de-confianza-y-remuestreo.html#cb241-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(tipo) <span class="sc">%&gt;%</span> </span>
-<span id="cb241-3"><a href="intervalos-de-confianza-y-remuestreo.html#cb241-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sample_frac</span>(<span class="at">size =</span> <span class="fl">0.008</span>)</span>
-<span id="cb241-4"><a href="intervalos-de-confianza-y-remuestreo.html#cb241-4" aria-hidden="true" tabindex="-1"></a>muestra_cgl <span class="ot">&lt;-</span> muestra_escuelas <span class="sc">%&gt;%</span> </span>
-<span id="cb241-5"><a href="intervalos-de-confianza-y-remuestreo.html#cb241-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(estudiantes) </span>
-<span id="cb241-6"><a href="intervalos-de-confianza-y-remuestreo.html#cb241-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(muestra_cgl<span class="sc">$</span>calif)</span></code></pre></div>
+<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="intervalos-de-confianza-y-remuestreo.html#cb240-1" aria-hidden="true" tabindex="-1"></a>muestra_escuelas <span class="ot">&lt;-</span> escuela <span class="sc">%&gt;%</span> </span>
+<span id="cb240-2"><a href="intervalos-de-confianza-y-remuestreo.html#cb240-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(tipo) <span class="sc">%&gt;%</span> </span>
+<span id="cb240-3"><a href="intervalos-de-confianza-y-remuestreo.html#cb240-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sample_frac</span>(<span class="at">size =</span> <span class="fl">0.008</span>)</span>
+<span id="cb240-4"><a href="intervalos-de-confianza-y-remuestreo.html#cb240-4" aria-hidden="true" tabindex="-1"></a>muestra_cgl <span class="ot">&lt;-</span> muestra_escuelas <span class="sc">%&gt;%</span> </span>
+<span id="cb240-5"><a href="intervalos-de-confianza-y-remuestreo.html#cb240-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(estudiantes) </span>
+<span id="cb240-6"><a href="intervalos-de-confianza-y-remuestreo.html#cb240-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(muestra_cgl<span class="sc">$</span>calif)</span></code></pre></div>
 <pre><code>## [1] 462.5677</code></pre>
-<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="intervalos-de-confianza-y-remuestreo.html#cb243-1" aria-hidden="true" tabindex="-1"></a>muestrea_cgl <span class="ot">&lt;-</span> <span class="cf">function</span>(){</span>
-<span id="cb243-2"><a href="intervalos-de-confianza-y-remuestreo.html#cb243-2" aria-hidden="true" tabindex="-1"></a>    muestra_escuelas <span class="ot">&lt;-</span> escuela <span class="sc">%&gt;%</span> </span>
-<span id="cb243-3"><a href="intervalos-de-confianza-y-remuestreo.html#cb243-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">group_by</span>(tipo) <span class="sc">%&gt;%</span> </span>
-<span id="cb243-4"><a href="intervalos-de-confianza-y-remuestreo.html#cb243-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">sample_frac</span>(<span class="at">size =</span> <span class="fl">0.008</span>)</span>
-<span id="cb243-5"><a href="intervalos-de-confianza-y-remuestreo.html#cb243-5" aria-hidden="true" tabindex="-1"></a>  muestra_cgl <span class="ot">&lt;-</span> muestra_escuelas <span class="sc">%&gt;%</span> </span>
-<span id="cb243-6"><a href="intervalos-de-confianza-y-remuestreo.html#cb243-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">left_join</span>(estudiantes, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;ind_escuela&quot;</span>, <span class="st">&quot;tipo&quot;</span>))</span>
-<span id="cb243-7"><a href="intervalos-de-confianza-y-remuestreo.html#cb243-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(muestra_cgl<span class="sc">$</span>calif)</span>
-<span id="cb243-8"><a href="intervalos-de-confianza-y-remuestreo.html#cb243-8" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb243-9"><a href="intervalos-de-confianza-y-remuestreo.html#cb243-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb243-10"><a href="intervalos-de-confianza-y-remuestreo.html#cb243-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb243-11"><a href="intervalos-de-confianza-y-remuestreo.html#cb243-11" aria-hidden="true" tabindex="-1"></a>medias_cgl <span class="ot">&lt;-</span> <span class="fu">rerun</span>(<span class="dv">1000</span>, <span class="fu">muestrea_cgl</span>()) <span class="sc">%&gt;%</span> <span class="fu">flatten_dbl</span>()</span>
-<span id="cb243-12"><a href="intervalos-de-confianza-y-remuestreo.html#cb243-12" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(medias_cgl)</span></code></pre></div>
+<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="intervalos-de-confianza-y-remuestreo.html#cb242-1" aria-hidden="true" tabindex="-1"></a>muestrea_cgl <span class="ot">&lt;-</span> <span class="cf">function</span>(){</span>
+<span id="cb242-2"><a href="intervalos-de-confianza-y-remuestreo.html#cb242-2" aria-hidden="true" tabindex="-1"></a>  muestra_escuelas <span class="ot">&lt;-</span> escuela <span class="sc">%&gt;%</span> </span>
+<span id="cb242-3"><a href="intervalos-de-confianza-y-remuestreo.html#cb242-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(tipo) <span class="sc">%&gt;%</span> </span>
+<span id="cb242-4"><a href="intervalos-de-confianza-y-remuestreo.html#cb242-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sample_frac</span>(<span class="at">size =</span> <span class="fl">0.008</span>)</span>
+<span id="cb242-5"><a href="intervalos-de-confianza-y-remuestreo.html#cb242-5" aria-hidden="true" tabindex="-1"></a>  muestra_cgl <span class="ot">&lt;-</span> muestra_escuelas <span class="sc">%&gt;%</span> </span>
+<span id="cb242-6"><a href="intervalos-de-confianza-y-remuestreo.html#cb242-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(estudiantes, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;ind_escuela&quot;</span>, <span class="st">&quot;tipo&quot;</span>))</span>
+<span id="cb242-7"><a href="intervalos-de-confianza-y-remuestreo.html#cb242-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(muestra_cgl<span class="sc">$</span>calif)</span>
+<span id="cb242-8"><a href="intervalos-de-confianza-y-remuestreo.html#cb242-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb242-9"><a href="intervalos-de-confianza-y-remuestreo.html#cb242-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb242-10"><a href="intervalos-de-confianza-y-remuestreo.html#cb242-10" aria-hidden="true" tabindex="-1"></a>medias_cgl <span class="ot">&lt;-</span> <span class="fu">rerun</span>(<span class="dv">1000</span>, <span class="fu">muestrea_cgl</span>()) <span class="sc">%&gt;%</span> <span class="fu">flatten_dbl</span>()</span></code></pre></div>
+<p>En este caso, el número de estudiantes examinados es mucho mayor que en MAS
+y muestreo estratificado, notemos que el número de estudiantes evaluados cambiará
+de muestra a muestra dependiendo del número de alumnos en las escuelas
+seleccionadas.</p>
+<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="intervalos-de-confianza-y-remuestreo.html#cb243-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(medias_cgl)</span></code></pre></div>
 <pre><code>## [1] 5.337327</code></pre>
 <div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="intervalos-de-confianza-y-remuestreo.html#cb245-1" aria-hidden="true" tabindex="-1"></a>hist_cgl <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="fu">tibble</span>(medias_cgl), <span class="fu">aes</span>(<span class="at">x =</span> medias_cgl)) <span class="sc">+</span></span>
 <span id="cb245-2"><a href="intervalos-de-confianza-y-remuestreo.html#cb245-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">6</span>) <span class="sc">+</span></span>
@@ -1689,7 +1693,7 @@ visitar 40 escuelas y en cada una examinar a todos los estudiantes.</p>
 <span id="cb245-7"><a href="intervalos-de-confianza-y-remuestreo.html#cb245-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylim</span>(<span class="dv">410</span>, <span class="dv">520</span>)</span>
 <span id="cb245-8"><a href="intervalos-de-confianza-y-remuestreo.html#cb245-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb245-9"><a href="intervalos-de-confianza-y-remuestreo.html#cb245-9" aria-hidden="true" tabindex="-1"></a>hist_cgl <span class="sc">+</span> qq_cgl</span></code></pre></div>
-<p><img src="05-remuestreo_files/figure-html/unnamed-chunk-79-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="05-remuestreo_files/figure-html/unnamed-chunk-81-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div id="ejemplo-enigh" class="section level4 unnumbered hasAnchor">
 <h4>Ejemplo: ENIGH<a href="intervalos-de-confianza-y-remuestreo.html#ejemplo-enigh" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>La complejidad de los diseños de encuestas conlleva a que el cálculo de errores
@@ -1699,7 +1703,8 @@ bootstrap. El incremento en el poder de cómputo ha favorecido los métodos de
 remuestreo pues la linearización requiere del desarrollo de una fórmula para
 cada estimación y supuestos adicionales para simplificar.</p>
 <p>En 1988 <span class="citation">Rao and Wu (<a href="#ref-RaoWu" role="doc-biblioref">1988</a>)</span> propusieron un método de bootstrap para diseños
-estratificados multietápicos con reemplazo de UPMs que describimos a
+estratificados multietápicos con reemplazo de UPMs (Unidades Primarias de
+Muestreo) que describimos a
 continuación.</p>
 <p><strong>ENIGH</strong>. Usaremos como ejemplo la Encuesta Nacional de Ingresos y
 Gastos de los Hogares, ENIGH 2018 <span class="citation">(<a href="#ref-enigh" role="doc-biblioref">INEGI 2018</a>)</span>, esta encuesta usa un diseño de
@@ -1763,7 +1768,7 @@ ejemplo el ingreso trimestral total sería:</p>
 <p>La estimación del error estándar, por otro lado, no es sencilla y requiere
 usar aproximaciones, en la metodología de INEGI proponen una aproximación con
 series de Taylor.</p>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-83"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-85"></span>
 <img src="images/inegi_metodologia_razon.png" alt="Extracto de estimación de errores de muestreo, ENIGH 2018." width="700px" />
 <p class="caption">
 Figure 5.3: Extracto de estimación de errores de muestreo, ENIGH 2018.
@@ -1906,7 +1911,7 @@ la muestra se seleccionó sin reemplazo.</p></li>
 en R también hay alternativas que pueden resultar convenientes, mencionamos 3:</p>
 <ol style="list-style-type: decimal">
 <li>El paquete <code>rsample</code> (forma parte de la colección <a href="https://www.tidyverse.org/articles/2018/08/tidymodels-0-0-1/">tidymodels</a>)
-y tiene una función <code>bootsrtraps()</code> que regresa un arreglo cuadrangular
+y tiene una función <code>bootstraps()</code> que regresa un arreglo cuadrangular
 (<code>tibble</code>, <code>data.frame</code>) que incluye una columna con las muestras bootstrap y un
 identificador del número y tipo de muestra.</li>
 </ol>
@@ -2016,7 +2021,7 @@ de funciones para calcular replicaciones y construir intervalos de confianza:
 <ul>
 <li>calculo de replicaciones bootstrap con la función <code>bootstrap()</code>,</li>
 <li>intervalos <span class="math inline">\(BC_a\)</span> con la función <code>bcanon()</code>,</li>
-<li>intevalos ABC con la función `abcnon().</li>
+<li>intevalos ABC con la función <code>abcnon()</code>.</li>
 </ul></li>
 </ol>
 </div>
@@ -2032,7 +2037,7 @@ remuestras.</p></li>
 cuando no contamos con fórmulas para hacerlo de manera analítica y sin
 supuestos distribucionales de la población.</p></li>
 <li><p>Hay muchas opciones para construir intervalos bootstrap, los que tienen
-mejores propiedades son los intervalos <span class="math inline">\(BC_a\)</span>, sin embargo los más comunes son
+mejores propiedades son los intervalos <span class="math inline">\(BC_a\)</span>, sin embargo, los más comunes son
 los intervalos normales con error estándar bootstrap y los intervalos de
 percentiles de la distribución bootstrap.</p></li>
 <li><p>Antes de hacer intervalos normales vale la pena
@@ -2071,7 +2076,6 @@ Rao, Jon NK, and CFJ Wu. 1988. <span>“Resampling Inference with Complex Survey
 Wasserman, Larry. 2013. <em>All of Statistics: A Concise Course in Statistical Inference</em>. Springer Science &amp; Business Media.
 </div>
 </div>
-<script type="text/javascript">smartify();</script>
             </section>
 
           </div>
@@ -2095,7 +2099,7 @@ gitbook.start({
 "sharing": {
 "github": true,
 "facebook": false,
-"twitter": true,
+"twitter": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
@@ -2126,7 +2130,8 @@ gitbook.start({
 "options": null
 },
 "toc": {
-"collapse": "subsection"
+"collapse": "section",
+"depth": 1
 }
 });
 });

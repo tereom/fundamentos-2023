@@ -119,7 +119,7 @@ que es la muestra.
 **replicaciones bootstrap**.
 6. A la distribución de las replicaciones le llamamos **distribución bootstrap** o
 **distribución de remuestreo** del estimador.
-7. Usamos la distribución bootstrap de la muestra para estimar la variabilidad
+7. Usamos la distribución bootstrap para estimar la variabilidad
 en nuestra estimación con **la muestra original**.
 
 
@@ -188,7 +188,7 @@ estimador en cada una de estas muestras. Aquí no tenemos la población,
 **pero tenemos una estimación de la población**: la muestra obtenida.
 
 Así que para evaluar la variabilidad de nuestro estimador, entramos en el mundo
-boostrap, y consideramos que la población es nuestra muestra.
+bootstrap, y consideramos que la población es nuestra muestra.
 
 Podemos entonces extraer un número grande de muestras con reemplazo de tamaño
 200 **de la muestra**: el muestreo debe ser análogo al que se tomó para nuestra
@@ -213,7 +213,7 @@ g_cuantiles + g_histograma
 ```
 
 <img src="05-remuestreo_files/figure-html/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto;" />
-A esta le llamamos la distribución de remuestreo de la media, que definimos más
+A esta le llamamos la distribución bootstrap (o de remuestreo) de la media, que definimos más
 abajo. Ahora podemos calcular un intervalo de confianza del 90\% simplemente
 calculando los cuantiles de esta distribución (no son los cuantiles de la
 muestra original!):
@@ -254,7 +254,7 @@ round(ee_boot, 2)
 distribuida, y $T=t(X_1, X_2, \ldots, X_n)$ una estadística. Supongamos que sus valores
 que obervamos son $x_1, x_2,\ldots, x_n$.
 
-La **distribución de remuestreo** de $T$ es la
+La **distribución bootstrap**, o distribución de remuestreo, de $T$ es la
 distribución de $T^*=t(X_1^*, X_2^*, \dots X_n^*)$, donde cada $X_i^*$ se obtiene
 tomando al azar uno de los valores de $x_1,x_2,\ldots, x_n$.
 </div>\EndKnitrBlock{mathblock}
@@ -323,10 +323,10 @@ En todos estos casos, lo que estamos haciendo es:
 
 - Tenemos una fórmula para la cantidad poblacional de interés en términos de la
 distribución poblacional.  
-- Tenemos una muestra, que usamos para estimar la cantidad poblacional. La
-distribución que da una muestra se llama distribución *empírica*.
-- Contruimos nuestro estimador "enchufando" la distribución empírica de la
-muestra en la fórmula del estimador.
+- Tenemos una muestra, la distribución que da esta muestra se llama distribución 
+*empírica* ($\hat{F}(x) = \frac{1}{n}\{\#valores \le x\}$).
+- Contruimos nuestro estimador, de la cantidad poblacional de interés, "enchufando" 
+la distribución empírica de la muestra en la fórmula del estimador.
 
 En el bootstrap aplicamos este principio simple a la **distribución de 
 muestreo**:
@@ -334,8 +334,8 @@ muestreo**:
 - *Si tenemos la población*, podemos *calcular* la distribución de muestreo de
 nuestro estimador tomando muchas muestras de la *población*.
 - Estimamos la *poblacion* con la *muestra* y enchufamos en la frase anterior:
-- Podemos *estimar* la distribucion de muestreo de nuestro estimador
-tomando muchas muestras de la *muestra* (bootstrap).
+- Podemos *estimar* la distribución de muestreo de nuestro estimador
+tomando muchas muestras de la *muestra*.
 
 Nótese que el proceso de muestreo en el último paso **debe ser el mismo** que
 se usó para tomar la muestra original. Estas dos imágenes simuladas con base en 
@@ -349,7 +349,7 @@ un ejemplo de @Chihara muestran lo que acabamos de describir:
 
 
 <div class="figure" style="text-align: center">
-<img src="05-remuestreo_files/figure-html/mundo-bootstrap-1.png" alt="Mundo Bootstrap" width="672" />
+<img src="05-remuestreo_files/figure-html/mundo-bootstrap-1.png" alt="Mundo Bootstrap" width="768" />
 <p class="caption">(\#fig:mundo-bootstrap)Mundo Bootstrap</p>
 </div>
 
@@ -402,7 +402,7 @@ te |> mutate(negro = ifelse(Tea == "black", 1, 0)) |>
 
 ¿Cómo evaluamos la precisión de este estimador? Supondremos que el estudio se
 hizo tomando una muestra aleatoria simple de tamaño 300 de la población de tomadores de té que
-nos interesa. Podemos entonces usar el boostrap:
+nos interesa. Podemos entonces usar el bootstrap:
 
 
 ```r
@@ -472,7 +472,7 @@ vemos cómo se ve la aproximación a la distribución de la población:
 
 <img src="05-remuestreo_files/figure-html/unnamed-chunk-19-1.png" width="384" style="display: block; margin: auto;" />
 
-Podemos calcular las distribuciones de remuestreo para cada muestra bootstrap,
+Podemos calcular las distribuciones de remuestreo (bootstrap) para cada muestra,
 y compararlas con la distribución de muestreo real.
 
 
@@ -1565,13 +1565,13 @@ escuela <- tibble(ind_escuela = 1:n_escuelas, tipo,
     media_escuela = rnorm(n_escuelas, media_tipo, 30), 
     n_estudiantes = round(rnorm(n_escuelas, 30, 4)))
 
-estudiantes <- uncount(escuela, n_estudiantes) %>% 
+estudiantes <- uncount(escuela, n_estudiantes, .id = "id_estudiante") %>% 
     rowwise() %>% 
     mutate(calif = rnorm(1, media_escuela, 70)) %>% 
     ungroup()
 ```
 
-Imaginemos que tenemos una población de 5000,
+Imaginemos que tenemos una población de 5000 escuelas,
 y queremos estimar la media de las calificaciones de los estudiantes en una prueba.
 
 
@@ -1580,16 +1580,17 @@ head(estudiantes)
 ```
 
 ```
-## # A tibble: 6 × 5
-##   ind_escuela tipo   media_tipo media_escuela calif
-##         <int> <chr>       <dbl>         <dbl> <dbl>
-## 1           1 urbano        550          561.  488.
-## 2           1 urbano        550          561.  574.
-## 3           1 urbano        550          561.  456.
-## 4           1 urbano        550          561.  507.
-## 5           1 urbano        550          561.  598.
-## 6           1 urbano        550          561.  527.
+## # A tibble: 6 × 6
+##   ind_escuela tipo   media_tipo media_escuela id_estudiante calif
+##         <int> <chr>       <dbl>         <dbl>         <int> <dbl>
+## 1           1 urbano        550          561.             1  488.
+## 2           1 urbano        550          561.             2  574.
+## 3           1 urbano        550          561.             3  456.
+## 4           1 urbano        550          561.             4  507.
+## 5           1 urbano        550          561.             5  598.
+## 6           1 urbano        550          561.             6  527.
 ```
+
 La primera idea sería tomar una muestra aleatoria (MAS, muestreo aleatorio simple), 
 donde todos los estudiantes tienen igual probabilidad de ser seleccionados. Con
 estas condiciones el presupuesto alcanza para seleccionar a 60 estudiantes, hacemos 
@@ -1640,8 +1641,11 @@ verdadero valor poblacional podríamos tomar muestras más grandes.
 
 Pero usualmente los costos limitan el tamaño de muestra. Una alternativa es
 estratificar, supongamos que sabemos el tipo de cada escuela (urbana, rural o 
-indígena) y sabemos también que sabemos que la calificación de los estudiantes de escuelas urbanas tiende a ser distinta a las calificaciones que los estudiantes de
+indígena) y sabemos también que la calificación de los estudiantes de escuelas urbanas tiende a ser distinta a las calificaciones que los estudiantes de
 escuelas rurales o indígenas.
+
+En esta caso un diseño más eficiente consiste en tomar muestras independientes
+dentro de cada estrato.
 
 
 ```r
@@ -1652,7 +1656,7 @@ dim(muestra_estrat)
 ```
 
 ```
-## [1] 60  5
+## [1] 60  6
 ```
 
 ```r
@@ -1664,12 +1668,13 @@ muestrea_estrat <- function(){
 }
 
 medias_estrat <- rerun(1000, muestrea_estrat()) %>% flatten_dbl()
-sd(medias_estrat)
 ```
 
-```
-## [1] 10.20239
-```
+Notamos que la distribución muestral está más concentrada que el caso de
+MAS, el error estándar se reduce de 14.75 a 
+
+10.2
+
 
 ```r
 hist_estrat <- ggplot(tibble(medias_estrat), aes(x = medias_estrat)) +
@@ -1683,10 +1688,12 @@ qq_estrat <- ggplot(tibble(medias_estrat), aes(sample = medias_estrat)) +
 hist_estrat + qq_estrat
 ```
 
-<img src="05-remuestreo_files/figure-html/unnamed-chunk-76-1.png" width="672" style="display: block; margin: auto;" />
+<img src="05-remuestreo_files/figure-html/unnamed-chunk-77-1.png" width="672" style="display: block; margin: auto;" />
 
-La estratificación nos sirve para reducir el error estándar de las estimaciones, 
-por su parte los conglomerados reducen costos. Veamos cuantas escuelas tendría 
+Entonces, la estratificación nos sirve para reducir el error estándar de las 
+estimaciones. Otro procedimiento común en muestreo es introducir conglomerados,
+a diferencia del muestreo estratificado, el propósito principal de los 
+conglomerados es reducir costos. Veamos cuantas escuelas tendría 
 que visitar en una muestra dada (con diseño estratificado).
 
 
@@ -1703,9 +1710,10 @@ n_distinct(muestra_estrat$ind_escuela)
 
 Es fácil ver que visitar una escuela para aplicar solo uno o dos exámenes no es
 muy eficiente en cuestión de costos. Es por ello que se suelen tomar muestras 
-considerando los conglomerados naturales, en este caso la escuela. No es difícil 
-imaginar que una parte grande del costo del muestreo sea mandar al examinador a
-la escuela y que una vez ahí examine a todos los alumnos de sexto grado. Podemos 
+considerando conglomerados naturales, en este caso la escuela. En nuestro ejemplo
+es razonable suponer que una parte grande del costo del muestreo sea mandar al 
+examinador a la escuela, y que una vez en la escuela el costo de evaluar a todo 
+sexto, en lugar de a un único alumno, es relativamente bajo. Podemos 
 imaginar que considerando estos costos por visita de escuela nos alcance para
 visitar 40 escuelas y en cada una examinar a todos los estudiantes.
 
@@ -1725,16 +1733,24 @@ mean(muestra_cgl$calif)
 
 ```r
 muestrea_cgl <- function(){
-    muestra_escuelas <- escuela %>% 
-        group_by(tipo) %>% 
-        sample_frac(size = 0.008)
+  muestra_escuelas <- escuela %>% 
+    group_by(tipo) %>% 
+    sample_frac(size = 0.008)
   muestra_cgl <- muestra_escuelas %>% 
-      left_join(estudiantes, by = c("ind_escuela", "tipo"))
+    left_join(estudiantes, by = c("ind_escuela", "tipo"))
   mean(muestra_cgl$calif)
-        
 }
 
 medias_cgl <- rerun(1000, muestrea_cgl()) %>% flatten_dbl()
+```
+
+En este caso, el número de estudiantes examinados es mucho mayor que en MAS
+y muestreo estratificado, notemos que el número de estudiantes evaluados cambiará
+de muestra a muestra dependiendo del número de alumnos en las escuelas 
+seleccionadas.
+
+
+```r
 sd(medias_cgl)
 ```
 
@@ -1754,7 +1770,8 @@ qq_cgl <- ggplot(tibble(medias_cgl), aes(sample = medias_cgl)) +
 hist_cgl + qq_cgl
 ```
 
-<img src="05-remuestreo_files/figure-html/unnamed-chunk-79-1.png" width="672" style="display: block; margin: auto;" />
+<img src="05-remuestreo_files/figure-html/unnamed-chunk-81-1.png" width="672" style="display: block; margin: auto;" />
+
 
 
 
@@ -1768,7 +1785,8 @@ remuestreo pues la linearización requiere del desarrollo de una fórmula para
 cada estimación y supuestos adicionales para simplificar.
 
 En 1988 @RaoWu propusieron un método de bootstrap para diseños 
-estratificados multietápicos con reemplazo de UPMs que describimos a 
+estratificados multietápicos con reemplazo de UPMs (Unidades Primarias de 
+Muestreo) que describimos a 
 continuación.
 
 **ENIGH**. Usaremos como ejemplo la Encuesta Nacional de Ingresos y 
@@ -1864,7 +1882,7 @@ series de Taylor.
 
 <div class="figure" style="text-align: center">
 <img src="images/inegi_metodologia_razon.png" alt="Extracto de estimación de errores de muestreo, ENIGH 2018." width="700px" />
-<p class="caption">(\#fig:unnamed-chunk-83)Extracto de estimación de errores de muestreo, ENIGH 2018.</p>
+<p class="caption">(\#fig:unnamed-chunk-85)Extracto de estimación de errores de muestreo, ENIGH 2018.</p>
 </div>
 
 Veamos ahora como calcular el error estándar siguiendo el bootstrap de Rao y Wu:
@@ -2048,7 +2066,7 @@ Es común crear nuestras propias funciones cuando usamos bootstrap, sin embargo,
 en R también hay alternativas que pueden resultar convenientes, mencionamos 3:
 
 1. El paquete `rsample` (forma parte de la colección [tidymodels](https://www.tidyverse.org/articles/2018/08/tidymodels-0-0-1/)) 
-y tiene una función `bootsrtraps()` que regresa un arreglo cuadrangular 
+y tiene una función `bootstraps()` que regresa un arreglo cuadrangular 
 (`tibble`, `data.frame`) que incluye una columna con las muestras bootstrap y un 
 identificador del número y tipo de muestra.
 
@@ -2219,7 +2237,7 @@ replicaciones bootstrap y para construir intervalos de confianza usando bootstra
 de funciones para calcular replicaciones y construir intervalos de confianza:
     + calculo de replicaciones bootstrap con la función `bootstrap()`,
     + intervalos $BC_a$ con la función `bcanon()`, 
-    + intevalos ABC con la función `abcnon().
+    + intevalos ABC con la función `abcnon()`.
 
 
 ## Conclusiones y observaciones {-}
@@ -2235,7 +2253,7 @@ cuando no contamos con fórmulas para hacerlo de manera analítica y sin
 supuestos distribucionales de la población.
 
 * Hay muchas opciones para construir intervalos bootstrap, los que tienen 
-mejores propiedades son los intervalos $BC_a$, sin embargo los más comunes son 
+mejores propiedades son los intervalos $BC_a$, sin embargo, los más comunes son 
 los intervalos normales con error estándar bootstrap y los intervalos de 
 percentiles de la distribución bootstrap.
 

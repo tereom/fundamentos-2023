@@ -586,16 +586,16 @@ muestra de tamaño $n=15$ con $\lambda = 1$:
 
 
 ```r
-replicar_muestreo_exp <- function(est = mean, m, n = 15, lambda = 1){
+replicar_muestreo_exp <- function(est = mean, m, n = 150, lambda = 1){
   valores_est <- map_dbl(1:m, ~ est(rexp(n, lambda)))
   tibble(id_muestra = 1:m, estimacion = valores_est)
 }
-sim_estimador_1 <- replicar_muestreo_exp(sum, 4000, n = 15)
+sim_estimador_1 <- replicar_muestreo_exp(sum, 4000, n = 150)
 teorica <- tibble(x = seq(0, 35, 0.001)) |>
-  mutate(f_dens = dgamma(x, shape = 15, rate = 1))
+  mutate(f_dens = dgamma(x, shape = 150, rate = 1))
 # graficar aprox de distribución de muestreo
 ggplot(sim_estimador_1) +
-  geom_histogram(aes(x = estimacion, y = ..density..), bins = 40) +
+  geom_histogram(aes(x = estimacion, y = ..density..), bins = 35) +
   geom_line(data = teorica, aes(x = x, y = f_dens), colour = "red", size = 1.2)
 ```
 
@@ -858,7 +858,8 @@ replicaciones_2
 
 ```r
 ggplot(replicaciones_2, aes(sample = est_total_millones)) +
-  geom_qq(alpha = 0.3) + geom_qq_line(colour = "red")
+  geom_qq(alpha = 0.3) + 
+  geom_qq_line(colour = "red")
 ```
 
 <img src="04-distribucion-muestreo_files/figure-html/unnamed-chunk-37-1.png" width="384" style="display: block; margin: auto;" />
