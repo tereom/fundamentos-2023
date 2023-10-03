@@ -1,10 +1,12 @@
 bookdown::gitbook:
-  includes:
-    in_header: html/in_header.html
-    after_body: html/after_body.html
-  css: [css/style.css]
+  # includes:
+  #   in_header: html/in_header.html
+  #   after_body: html/after_body.html
+  # css: [css/style.css]
   config:
     toc:
+      depth: 1
+      collapse: section
       before: |
         <li><a href="./">Fundamentos de Estadística con Remuestreo</a></li>
       after: |
@@ -14,6 +16,7 @@ bookdown::gitbook:
     sharing:
       github: yes
       facebook: no
+      twitter: no
 # bookdown::pdf_book:
 #   includes:
 #     in_header: latex/preamble.tex
