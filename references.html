@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Apéndice: Principios de visualizacion | Fundamentos de Estadística con Remuestreo</title>
+  <title>Sección 1 References | Fundamentos de Estadística con Remuestreo</title>
   <meta name="description" content="Curso de Fundamentos de Estadística con Remuestreo, maestría en Ciencia de Datos, ITAM, Otoño 2023." />
   <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Apéndice: Principios de visualizacion | Fundamentos de Estadística con Remuestreo" />
+  <meta property="og:title" content="Sección 1 References | Fundamentos de Estadística con Remuestreo" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="Curso de Fundamentos de Estadística con Remuestreo, maestría en Ciencia de Datos, ITAM, Otoño 2023." />
   <meta name="github-repo" content="tereom/fundamentos-2023" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Apéndice: Principios de visualizacion | Fundamentos de Estadística con Remuestreo" />
+  <meta name="twitter:title" content="Sección 1 References | Fundamentos de Estadística con Remuestreo" />
   
   <meta name="twitter:description" content="Curso de Fundamentos de Estadística con Remuestreo, maestría en Ciencia de Datos, ITAM, Otoño 2023." />
   
@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="bootstrap-paramétrico.html"/>
-<link rel="next" href="tareas.html"/>
+<link rel="prev" href="temario.html"/>
+<link rel="next" href="análisis-exploratorio.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -367,368 +367,94 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="apéndice-principios-de-visualizacion" class="section level1 unnumbered hasAnchor">
-<h1>Apéndice: Principios de visualizacion<a href="apéndice-principios-de-visualizacion.html#apéndice-principios-de-visualizacion" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<blockquote>
-<p>“The simple graph has brought more information to the data analyst’s
-mind than any other device.”</p>
-<p>— John Tukey</p>
-</blockquote>
-<div id="el-cuarteto-de-anscombe" class="section level2 unnumbered hasAnchor">
-<h2>El cuarteto de Anscombe<a href="apéndice-principios-de-visualizacion.html#el-cuarteto-de-anscombe" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>En 1971 un estadístico llamado Frank Anscombe (fundador del departamento de
-Estadística de la Universidad de Yale) publicó cuatro conjuntos de dato. Cada
-uno consiste de 11 observaciones. La peculariedad de estos conjuntos es
-que tienen las mismas propiedades estadísticas.</p>
-<p>Sin embargo, cuando analizamos los datos de manera gráfica en un histograma
-encontramos rápidamente que los conjuntos de datos son muy distintos.</p>
-<div style="float:left;top:-10px;width:500px;">
-<p><img src="88-visualizacion_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
-</div>
-<p></br>
-</br></p>
-<p>Media de <span class="math inline">\(x\)</span>: 9<br />
-Varianza muestral de <span class="math inline">\(x\)</span>: 11<br />
-Media de <span class="math inline">\(y\)</span>: 7.50<br />
-Varianza muestral de <span class="math inline">\(y\)</span>: 4.12<br />
-Correlación entre <span class="math inline">\(x\)</span> y <span class="math inline">\(y\)</span>: 0.816<br />
-Línea de regresión lineal: <span class="math inline">\(y = 3.00 + 0.500x\)</span></p>
-<div style="clear:both">
-
-</div>
-<p>En la gráfica del primer conjunto de datos, se ve clara una
-relación lineal simple con un modelo que cumple los supuestos de
-normalidad. La segunda gráfica (arriba a la derecha) muestra unos datos que
-tienen una asociación pero definitivamente no es lineal. En la tercera gráfica
-(abajo a la izquierda) están puntos alineados perfectamente en una línea recta,
-excepto por uno de ellos. En la última gráfica podemos ver un ejemplo en el cual
-basta tener una observación atípica para que se produzca un coeficiente de
-correlación alto aún cuando en realidad no existe una asociación lineal entre
-las dos variables.</p>
-<div style="clear:both">
-
-</div>
-<div style="float:right;padding=10px; top:-10px; width:350px">
-<p><img src="images/datasaurus.gif" /><!-- --></p>
-</div>
-<p>El cuarteto de Ascombe inspiró una técnica reciente para crear datos que comparten las
-mismas propiedades estadísticas al igual que en el cuarteto, pero que producen gráficas
-muy distintas (<a href="https://www.autodeskresearch.com/publications/samestats">Matejka,
-Fitzmaurice</a>).</p>
-<div style="clear:both">
-
-</div>
-</div>
-<div id="introducción" class="section level2 unnumbered hasAnchor">
-<h2>Introducción<a href="apéndice-principios-de-visualizacion.html#introducción" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>La visualización de datos no trata de hacer gráficas “bonitas” o “divertidas”,
-ni de simplificar lo complejo o ayudar a una persona “que no entiende mucho” a
-entender ideas complejas. Más bien, trata de aprovechar nuestra gran capacidad
-de procesamiento visual para exhibir de manera clara aspectos importantes de los
-datos.</p>
-<p>El siguiente ejemplo de <span class="citation">(<a href="#ref-tufte06" role="doc-biblioref">Tufte 2006</a>)</span>, ilustra claramente la diferencia entre estos
-dos enfoques. A la izquierda están gráficas (más o menos típicas de Powerpoint)
-basadas en la filosofía de simplificar, de intentar no “ahogar” al lector con
-datos. El resultado es una colección incoherente, de bajo contenido, que no
-tiene mucho qué decir y que es, “indeferente al contenido y la evidencia”.
-A la derecha está una variación del rediseño de Tufte en forma de tabla, que en
-este caso particular es una manera eficiente de mostrar claramente los patrones
-que hay en este conjunto simple de datos.</p>
-<p>¿Qué principios son los que soportan la efectividad de esta tabla sobre la
-gráfica de la derecha? Veremos que hay dos conjuntos de principios importantes:
-unos relacionados con el diseño y otros con la naturaleza del análisis de datos,
-independientemente del método de visualización.</p>
-<p><img src="images/tufte_cancer.jpg" width="88%" style="display: block; margin: auto;" /></p>
-</div>
-<div id="visualización-popular-de-datos" class="section level2 unnumbered hasAnchor">
-<h2>Visualización popular de datos<a href="apéndice-principios-de-visualizacion.html#visualización-popular-de-datos" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Publicaciones populares (periódicos, revistas, sitios internet) muchas veces
-incluyen visualización de datos como parte de sus artículos o reportajes. En
-general siguen el mismo patrón que en la visión tradicionalista de la
-estadística: sirven más para divertir que para explicar, tienden a explicar
-ideas simples y conjuntos chicos de datos, y se consideran como una “ayuda”
-para los “lectores menos sofisticados”. Casi siempre se trata de gráficas
-triviales (muchas veces con errores graves) que no aportan mucho a artículos que
-tienen un nivel de complejidad mucho mayor (es la filosofía: lo escrito para el
-adulto, lo graficado para el niño).</p>
-<p><img src="images/nyt.png" width="88%" style="display: block; margin: auto;" /></p>
-</div>
-<div id="teoría-de-visualización-de-datos" class="section level2 unnumbered hasAnchor">
-<h2>Teoría de visualización de datos<a href="apéndice-principios-de-visualizacion.html#teoría-de-visualización-de-datos" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Existe teoría fundamentada acerca de la visualización. Después del trabajo
-pionero de Tukey, los principios e indicadores de Tufte se basan en un estudio
-de la historia de la graficación y ejercicios de muestreo de la práctica gráfica
-a lo largo de varias disciplinas (¿cuáles son las mejores gráficas? ¿por qué?)
-El trabajo de Cleveland es orientado a la práctica del análisis de datos
-(¿cuáles gráficas nos han ayudado a mostrar claramente los resultados del
-análisis?), por una parte, y a algunos estudios de percepción visual.</p>
-<p>En resumen, hablaremos de las siguientes guías:</p>
-<div id="principios-generales-del-diseño-analítico" class="section level3 unnumbered hasAnchor">
-<h3>Principios generales del diseño analítico<a href="apéndice-principios-de-visualizacion.html#principios-generales-del-diseño-analítico" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Aplicables a una presentación o análisis completos, y como guía para construir
-nuevas visualizaciones <span class="citation">(<a href="#ref-tufte06" role="doc-biblioref">Tufte 2006</a>)</span>.</p>
-<div class="caja">
-<p>
-<strong>Principio 1.</strong> Muestra comparaciones, contrastes,
-diferencias.<br />
-<strong>Principio 2.</strong> Muestra causalidad, mecanismo,
-explicación, estructura sistemática.<br />
-<strong>Principio 3.</strong> Muestra datos multivariados, es decir, más
-de una o dos variables.<br />
-<strong>Principio 4.</strong> Integra palabras, números, imágenes y
-diagramas.<br />
-<strong>Principio 5.</strong> Describe la totalidad de la evidencia.
-Muestra fuentes usadas y problemas relevantes.<br />
-<strong>Principio 6.</strong> Las presentaciones analíticas, a fin de
-cuentas, se sostienen o caen dependiendo de la calidad, relevancia e
-integridad de su contenido.
-</p>
-</div>
-</div>
-<div id="técnicas-de-visualización" class="section level3 unnumbered hasAnchor">
-<h3>Técnicas de visualización<a href="apéndice-principios-de-visualizacion.html#técnicas-de-visualización" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Esta categoría incluye técnicas específicas que dependen de la forma de nuestros
-datos y el tipo de pregunta que queremos investigar (<span class="citation">Tukey (<a href="#ref-tukey77" role="doc-biblioref">1977</a>)</span>, <span class="citation">William S. Cleveland (<a href="#ref-cleveland93" role="doc-biblioref">1993</a>)</span>,
-<span class="citation">W. S. Cleveland (<a href="#ref-cleveland94" role="doc-biblioref">1994</a>)</span>, <span class="citation">Tufte (<a href="#ref-tufte06" role="doc-biblioref">2006</a>)</span>).</p>
-<div class="caja">
-<p>
-<strong>Tipos de gráficas:</strong> cuantiles, histogramas, caja y
-brazos, gráficas de dispersión, puntos/barras/ líneas, series de
-tiempo.<br />
-<strong>Técnicas para mejorar gráficas:</strong> Transformación de
-datos, transparencia, vibración, banking 45, suavizamiento y bandas de
-confianza.<br />
-<strong>Pequeños múltiplos</strong>
-</p>
-</div>
-</div>
-<div id="indicadores-de-calidad-gráfica" class="section level3 unnumbered hasAnchor">
-<h3>Indicadores de calidad gráfica<a href="apéndice-principios-de-visualizacion.html#indicadores-de-calidad-gráfica" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Aplicables a cualquier gráfica en particular. Estas son guías concretas y
-relativamente objetivas para evaluar la calidad de una gráfica <span class="citation">(<a href="#ref-tufte86" role="doc-biblioref">Tufte 1986</a>)</span>.</p>
-<div class="caja">
-<p>
-<strong>Integridad Gráfica.</strong> El factor de engaño, es decir,
-la distorsión gráfica de las cantidades representadas, debe ser
-mínimo.<br />
-<strong>Chartjunk.</strong> Minimizar el uso de decoración gráfica que
-interfiera con la interpretación de los datos: 3D, rejillas, rellenos
-con patrones.<br />
-<strong>Tinta de datos.</strong> Maximizar la proporción de tinta de
-datos vs. tinta total de la gráfica. <em>For non-data- ink, less is
-more. For data-ink, less is a bore.</em><br />
-<strong>Densidad de datos.</strong> Las mejores gráficas tienen mayor
-densidad de datos, que es la razón entre el tamaño del conjunto de datos
-y el área de la gráfica. Las gráficas se pueden encoger mucho.
-Percepción visual. Algunas tareas son más fáciles para el ojo humano que
-otras <span class="citation"><span class="citation">(<a href="#ref-cleveland94" role="doc-biblioref">W. S. Cleveland 1994</a>)</span></span>.
-</p>
-</div>
-</div>
-<div id="factor-de-engaño-y-chartjunk" class="section level3 unnumbered hasAnchor">
-<h3>Factor de engaño y Chartjunk<a href="apéndice-principios-de-visualizacion.html#factor-de-engaño-y-chartjunk" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div style="float:right;position: relative; top: -10px;width:140px">
-<p><img src="images/pies.jpg" /></p>
-</div>
-<p>El <strong>factor de engaño</strong> es el cociente entre el efecto mostrado en una gráfica y
-el efecto correspondiente en los datos. Idealmente, el factor de engaño debe ser
-1 (ninguna distorsión).</p>
-<p>El <strong>chartjunk</strong> son aquellos elementos gráficos que no corresponden a variación
-de datos, o que entorpecen la interpretación de una gráfica.<br />
-Estos son los indicadores de calidad más fáciles de entender y aplicar, y
-afortunadamente cada vez son menos comunes.</p>
-<p>Un diseño popular que califica como chartjunk y además introduce factores de
-engaño es el <em>pie</em> de 3D. En la gráfica de la derecha, podemos ver como la
-rebanada C se ve más grande que la rebanada A, aunque claramente ese no es el
-caso (factor de engaño). La razón es la variación en la perspectiva que no
-corresponde a variación en los datos (chartjunk).</p>
-<div id="crítica-gráfica-gráfica-de-pie" class="section level4 unnumbered hasAnchor">
-<h4>Crítica gráfica: Gráfica de <em>pie</em><a href="apéndice-principios-de-visualizacion.html#crítica-gráfica-gráfica-de-pie" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>Todavía elementos que pueden mejorar la comprensión de nuestra
-gráfica de <em>pie</em>: se trata de la
-decodificiación que hay que hacer categoría - color - cuantificación. Podemos
-agregar las etiquetas como se muestra en la serie de la derecha, pero entonces:
-¿por qué no mostrar simplemente la tabla de datos? ¿qué agrega el <em>pie</em> a la
-interpretación?</p>
-<p>La deficiencias en el <em>pie</em> se pueden ver claramente al intentar graficar más
-categorías (13) . En el primer <em>pie</em> no podemos distinguir realmente cuáles son
-las categorías grandes y cuáles las chicas, y es muy difícil tener una imagen
-mental clara de estos datos. Agregar los porcentajes ayuda, pero entonces, otra
-vez, preguntamos cuál es el propósito del pie. La tabla de la izquierda hace
-todo el trabajo (una vez que ordenamos las categrías de la más grande a la más
-chica). Es posible hacer una gráfica de barras como la de abajo a la izquierda.</p>
-<div style="clear:both">
-
-</div>
-<div style="float:left;top: -0px;width:300px">
-<p><img src="images/barras_pie.jpg" /></p>
-</div>
-<p>Hay otros tipos de <strong>chartjunk</strong> comunes: uno es la textura de barras, por ejemplo.
-El efecto es la producción de un efecto moiré que es desagradable y quita la
-atención de los datos, como en la gráfica de barras de abajo. Otro común son las
-rejillas, como mostramos en las gráficas de la izquierda. Nótese como en estos
-casos hay efectos ópticos no planeados que degradan la percepción de los
-patrones en los datos.</p>
-<p><img src="images/barras_moire.jpg" width="100%" /></p>
-</div>
-</div>
-<div id="pequeños-múltiplos-y-densidad-gráfica" class="section level3 unnumbered hasAnchor">
-<h3>Pequeños múltiplos y densidad gráfica<a href="apéndice-principios-de-visualizacion.html#pequeños-múltiplos-y-densidad-gráfica" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>La densidad de una gráfica es el tamaño del conjunto de datos que se grafica
-comparado con el área total de la gráfica. En el siguiente ejemplo, graficamos
-en logaritmo-10 de millones de cabezas de ganado en Francia (cerdos, res, ovejas y
-caballos). La gráfica de la izquierda es pobre en densidad pues sólo representa
-4 datos. La manera más fácil de mejorar la densidad es hacer más chica la
-gráfica:</p>
-<p><img src="images/france_plot.jpg" width="98%" /></p>
-<p>La razón de este encogimiento es una que tiene qué ver con las oportunidades perdidas de una gráfica grande. Si repetimos este mismo patrón (misma escala, mismos tipos de ganado) para distintos países obtenemos la siguiente gráfica:</p>
-<div style="float:left;top: -10px;width:500px">
-<p><img src="images/europe_plot.jpg" /></p>
-</div>
-<p>Esta es una gráfica de puntos. Es útil como sustituto de una gráfica de barras,
-y es superior en el sentido de que una mayor proporción de la tinta que se usa
-es tinta de datos. Otra vez, mayor proporción de tinta de datos representa más
-oportunidades que se pueden capitalizar.</p>
-<div style="clear:both">
-
-</div>
-<div id="más-pequeños-múltiplos" class="section level4 unnumbered hasAnchor">
-<h4>Más pequeños múltiplos<a href="apéndice-principios-de-visualizacion.html#más-pequeños-múltiplos" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>Los pequeños múltiplos presentan oportunidades para mostrar más acerca
-de nuestro problema de interés. Consideramos por ejemplo la relación
-de radiación solar y niveles de ozono:</p>
-<p><img src="88-visualizacion_files/figure-html/unnamed-chunk-10-1.png" width="45%" style="display: block; margin: auto;" /></p>
-<p>En el ejemplo anterior incluyendo
-una variable adicional (velocidad del viento) podemos entender más
-acerca de la relación de radiación solar y niveles de ozono:</p>
-<p><img src="88-visualizacion_files/figure-html/unnamed-chunk-11-1.png" width="95%" style="display: block; margin: auto;" /></p>
-</div>
-</div>
-<div id="tinta-de-datos" class="section level3 unnumbered hasAnchor">
-<h3>Tinta de datos<a href="apéndice-principios-de-visualizacion.html#tinta-de-datos" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Maximizar la proporción de tinta de datos en nuestras gráficas tiene beneficios
-inmediatos. La regla es: si hay tinta que no representa variación en los datos,
-o la eliminación de esa tinta no representa pérdidas de significado, esa tinta
-debe ser eliminada. El ejemplo más claro es el de las rejillas en gráficas y
-tablas:</p>
-<p><img src="images/tinta_datos.jpg" width="95%" style="display: block; margin: auto;" /></p>
-<p><img src="images/tabla_tinta_datos.jpg" width="63%" style="display: block; margin: auto;" /></p>
-<p>¿Por qué usar grises en lugar de negros? La respuesta tiene qué ver con el
-principio de tinta de datos: si marcamos las diferencias sutil pero claramente,
-tenemos más oportunidades abiertas para hacer énfasis en lo que nos interesa: a
-una gráfica o tabla saturada no se le puede hacer más - es difícil agregar
-elementos adicionales que ayuden a la comprensión. Si comenzamos marcando con
-sutileza, entonces se puede hacer más. Los mapas geográficos son un buen ejemplo
-de este principio.</p>
-<p>El espacio en blanco es suficientemente bueno para indicar las fronteras en una
-tabla, y facilita la lectura:</p>
-<p><img src="images/tabla_2_tinta_datos.jpg" width="65%" style="display: block; margin: auto;" /></p>
-<p>Para un ejemplo del proceso de rediseño de una tabla, ver <a href="https://www.darkhorseanalytics.com/blog/clear-off-the-table">aquí</a>.
-Finalmente, podemos ver un ejemplo que intenta incorporar
-los elementos del diseño analítico, incluyendo pequeños múltiplos:</p>
-<p><img src="images/ejemplo_enigh.png" width="100%" style="display: block; margin: auto;" /></p>
-</div>
-<div id="decoración" class="section level3 unnumbered hasAnchor">
-<h3>Decoración<a href="apéndice-principios-de-visualizacion.html#decoración" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p><img src="images/ejemplo_csi.png" width="100%" style="display: block; margin: auto;" /></p>
-</div>
-<div id="percepción-de-escala" class="section level3 unnumbered hasAnchor">
-<h3>Percepción de escala<a href="apéndice-principios-de-visualizacion.html#percepción-de-escala" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Entre la percepción visual y la interpretación de una gráfica están implícitas
-tareas visuales específicas que las personas debemos realizar para ver
-correctamente la gráfica. En la década de los ochenta, William S. Cleveland y
-Robert McGill realizaron algunos experimentos identificando y clasificando estas
-tareas para diferentes tipos de gráficos <span class="citation">(<a href="#ref-cleveland84" role="doc-biblioref">William S. Cleveland and McGill 1984</a>)</span>.
-En estos, se le pregunta a la persona que compare dos valores dentro de una
-gráfica, por ejemplo, en dos barras en una gráfica de barras, o dos rebanadas de
-una gráfica de pie.</p>
-<p><img src="images/cleveland_tasks.png" width="95%" style="display: block; margin: auto;" /></p>
-<p>Los resultados de Cleveland y McGill fueron replicados por Heer y Bostock en
-2010 y los resultados se muestran en las gráficas de la derecha:</p>
-<p><img src="images/heer-bostock_results.png" width="50%" style="display: block; margin: auto;" /></p>
-</div>
-</div>
-<div id="ejemplo-gráfica-de-minard" class="section level2 unnumbered hasAnchor">
-<h2>Ejemplo: gráfica de Minard<a href="apéndice-principios-de-visualizacion.html#ejemplo-gráfica-de-minard" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Concluimos esta sección con una gráfica que, aunque poco común, ejemplifica
-los principios de una buena gráfica, y es reconocida como una de las mejores
-visualizaciones de la historia.</p>
-<blockquote>
-<p>Una gráfica excelente, presenta datos interesantes de forma bien
-diseñada: es una cuestión de fondo, de diseño, y estadística… [Se] compone de
-ideas complejas comunicadas con claridad, precisión y eficiencia. … [Es] lo
-que da al espectador la mayor cantidad de ideas, en el menor tiempo, con
-la menor cantidad de tinta, y en el espacio más pequeño. … Es casi siempre
-multivariado. … Una excelente gráfica debe decir la verdad acerca de los
-datos. (Tufte, 1983)</p>
-</blockquote>
-<p>La <a href="https://upload.wikimedia.org/wikipedia/commons/2/29/Minard.png">famosa visualización</a> de Charles Joseph Minard de la marcha de Napoleón sobre
-Moscú, ilustra los principios de una buena gráfica. Tufte señala que esta imagen
-“bien podría ser el mejor gráfico estadístico jamás dibujado”, y sostiene que
-“cuenta una historia rica y coherente con sus datos multivariados, mucho más
-esclarecedora que un solo número que rebota en el tiempo”. Se representan seis
-variables: el tamaño del ejército, su ubicación en una superficie bidimensional,
-la dirección del movimiento del ejército y la temperatura en varias fechas
-durante la retirada de Moscú”.</p>
-<p><img src="images/minard.png" width="100%" style="display: block; margin: auto;" /></p>
-<p>Hoy en día Minard es reconocido como uno de los principales contribuyentes a la
-teoría de análisis de datos y creación de <strong>infografías</strong> con un fundamento
-estadístico.</p>
-<p>Se grafican 6 variables: el número de tropas de Napoleón, la distancia, la
-temperatura, la latitud y la longitud, la dirección en que viajaban las tropas
-y la localización relativa a fechas específicas.</p>
-<p>La gráfica de Minard, como la describe E.J. Marey, parece “desafiar la pluma del
-historiador con su brutal elocuencia”, la combinación de datos del mapa, y la
-serie de tiempo, dibujados en 1869, “retratan una secuencia de pérdidas
-devastadoras que sufrieron las tropas de Napoleón en 1812”. Comienza en la
-izquierda, en la frontera de Polonia y Rusia, cerca del río Niemen. La línea
-gruesa dorada muestra el tamaño de la Gran Armada (422,000) en el momento en que
-invadía Rusia en junio de 1812.</p>
-<p>El ancho de esta banda indica el tamaño de la armada en cada punto del mapa. En
-septiembre, la armada llegó a Moscú, que ya había sido saqueada y dejada
-desértica, con sólo 100,000 hombres.</p>
-<p>El camino del retiro de Napoleón desde Moscú está representado por la línea
-oscura (gris) que está en la parte inferior, que está relacionada a su vez con
-la temperatura y las fechas en el diagrama de abajo. Fue un invierno muy frío,
-y muchos se congelaron en su salida de Rusia. Como se muestra en el mapa, cruzar
-el río Berezina fue un desastre, y el ejército de Napoleón logró regresar a
-Polonia con tan sólo 10,000 hombres.</p>
-<p>También se muestran los movimientos de las tropas auxiliaries, que buscaban
-proteger por atrás y por la delantera mientras la armada avanzaba hacia Moscú.
-La gráfica de Minard cuenta una historia rica y cohesiva, coherente con datos
-multivariados y con los hechos históricos, y que puede ser más ilustrativa que
-tan sólo representar un número rebotando a lo largo del tiempo.</p>
-
-</div>
-</div>
-<h3>References</h3>
+<div id="references" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Sección 1</span> References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-cleveland94" class="csl-entry">
+<div class="csl-entry">
+Box, George EP, William H Hunter, Stuart Hunter, et al. 1978. <em>Statistics for Experimenters</em>. Vol. 664. John Wiley; sons New York.
+</div>
+<div class="csl-entry">
+Chihara, Laura M., and Tim C. Hesterberg. 2018. <em>Mathematical Statistics with Resampling and r</em>. 2nd ed. Hoboken, NJ: John Wiley &amp; Sons. <a href="https://sites.google.com/site/chiharahesterberg/home">https://sites.google.com/site/chiharahesterberg/home</a>.
+</div>
+<div class="csl-entry">
+Chowdhury, Niladri Roy, Dianne Cook, Heike Hofmann, Mahbubul Majumder, Eun-Kyung Lee, and Amy L Toth. 2015. <span>“Using Visual Statistical Inference to Better Understand Random Class Separations in High Dimension, Low Sample Size Data.”</span> <em>Computational Statistics</em> 30 (2): 293–316.
+</div>
+<div class="csl-entry">
 Cleveland, W. S. 1994. <em>The Elements of Graphing Data</em>. AT&amp;T Bell Laboratories. <a href="https://books.google.com.mx/books?id=KMsZAQAAIAAJ">https://books.google.com.mx/books?id=KMsZAQAAIAAJ</a>.
 </div>
-<div id="ref-cleveland93" class="csl-entry">
+<div class="csl-entry">
+Cleveland, William S. 1979. <span>“Robust Locally Weighted Regression and Smoothing Scatterplots.”</span> <em>Journal of the American Statistical Association</em> 74 (368): 829–36.
+</div>
+<div class="csl-entry">
 Cleveland, William S. 1993. <em>Visualizing Data</em>. Hobart Press.
 </div>
-<div id="ref-cleveland84" class="csl-entry">
+<div class="csl-entry">
 Cleveland, William S., and Robert McGill. 1984. <span>“Graphical Perception: Theory, Experimentation, and Application to the Development of Graphical Methods.”</span> <em>Journal of the American Statistical Association</em> 79 (387): pp. 531–554. <a href="http://www.jstor.org/stable/2288400">http://www.jstor.org/stable/2288400</a>.
 </div>
-<div id="ref-tufte86" class="csl-entry">
+<div class="csl-entry">
+Davison, A. C., and D. V. Hinkley. 1997. <em>Bootstrap Methods and Their Applications</em>. Cambridge: Cambridge University Press. <a href="http://statwww.epfl.ch/davison/BMA/">http://statwww.epfl.ch/davison/BMA/</a>.
+</div>
+<div class="csl-entry">
+Efron, Bradley, and Robert J. Tibshirani. 1993. <em>An Introduction to the Bootstrap</em>. Monographs on Statistics and Applied Probability 57. Boca Raton, Florida, USA: Chapman &amp; Hall/CRC.
+</div>
+<div class="csl-entry">
+Guber, D. 1999. <span>“Getting What You Pay for: The Debate over Equity in Public School Expenditures.”</span> <em>Journal of Statistics Education</em> 7 (2).
+</div>
+<div class="csl-entry">
+Hesterberg, Tim C. 2015a. <span>“What Teachers Should Know about the Bootstrap: Resampling in the Undergraduate Statistics Curriculum.”</span> <em>The American Statistician</em> 69 (4): 371–86.
+</div>
+<div class="csl-entry">
+Hesterberg, Tim C. 2015b. <span>“What Teachers Should Know about the Bootstrap: Resampling in the Undergraduate Statistics Curriculum.”</span> <em>The American Statistician</em> 69 (4): 371–86. <a href="https://doi.org/10.1080/00031305.2015.1089789">https://doi.org/10.1080/00031305.2015.1089789</a>.
+</div>
+<div class="csl-entry">
+Hofmann, Heike, Lendie Follett, Mahbubul Majumder, and Dianne Cook. 2012. <span>“Graphical Tests for Power Comparison of Competing Designs.”</span> <em>IEEE Transactions on Visualization and Computer Graphics</em> 18 (12): 2441–48.
+</div>
+<div class="csl-entry">
+INEGI. 2018. <span>“Encuesta Nacional de Ingresos y Gastos de Los Hogares (ENIGH-2018). Diseño Muestral.”</span> <a href="http://internet.contenidos.inegi.org.mx/contenidos/Productos/prod_serv/contenidos/espanol/bvinegi/productos/nueva_estruc/702825070359.pdf">http://internet.contenidos.inegi.org.mx/contenidos/Productos/prod_serv/contenidos/espanol/bvinegi/productos/nueva_estruc/702825070359.pdf</a>.
+</div>
+<div class="csl-entry">
+Ioannidis, John PA. 2005. <span>“Why Most Published Research Findings Are False.”</span> <em>PLoS Medicine</em> 2 (8): e124.
+</div>
+<div class="csl-entry">
+Kruschke, John. 2015. <em>Doing Bayesian Data Analysis (Second Edition)</em>. Academic Press.
+</div>
+<div class="csl-entry">
+Lê, Sébastien, Julie Josse, François Husson, et al. 2008. <span>“FactoMineR: An r Package for Multivariate Analysis.”</span> <em>Journal of Statistical Software</em> 25 (1): 1–18.
+</div>
+<div class="csl-entry">
+Ramsey, Fred, and Daniel Schafer. 2012. <em>The Statistical Sleuth: A Course in Methods of Data Analysis</em>. Cengage Learning.
+</div>
+<div class="csl-entry">
+Rao, Jon NK, and CFJ Wu. 1988. <span>“Resampling Inference with Complex Survey Data.”</span> <em>Journal of the American Statistical Association</em> 83 (401): 231–41.
+</div>
+<div class="csl-entry">
 Tufte, Edward R. 1986. <em>The Visual Display of Quantitative Information</em>. Cheshire, CT, USA: Graphics Press.
 </div>
-<div id="ref-tufte06" class="csl-entry">
+<div class="csl-entry">
 ———. 2006. <em>Beautiful Evidence</em>. Cheshire, CT: Graphics Press.
 </div>
-<div id="ref-tukey77" class="csl-entry">
+<div class="csl-entry">
 Tukey, J. W. 1977. <em>Exploratory Data Analysis</em>. Addison-Wesley Series in Behavioral Science. Addison-Wesley Publishing Company. <a href="https://books.google.com.mx/books?id=UT9dAAAAIAAJ">https://books.google.com.mx/books?id=UT9dAAAAIAAJ</a>.
 </div>
+<div class="csl-entry">
+Wasserman, Larry. 2013. <em>All of Statistics: A Concise Course in Statistical Inference</em>. Springer Science &amp; Business Media.
+</div>
+<div class="csl-entry">
+Wickham, Hadley, Dianne Cook, Heike Hofmann, and Andreas Buja. 2010. <span>“Graphical Inference for Infovis.”</span> <em>IEEE Transactions on Visualization and Computer Graphics</em> 16 (6): 973–79.
+</div>
+<div class="csl-entry">
+Wickham, H, NR Chowdhury, and D Cook. 2012. <span>“Nullabor: Tools for Graphical Inference.”</span> <em>R Package Version 0.2</em> 1: 213.
+</div>
+</div>
+
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="bootstrap-paramétrico.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="tareas.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="temario.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="análisis-exploratorio.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -759,7 +485,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/88-visualizacion.Rmd",
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/index.Rmd",
 "text": "Edit"
 },
 "history": {

@@ -3,9 +3,11 @@ fig:unnamed-chunk-2
 fig:mundo-real
 fig:mundo-bootstrap
 fig:unnamed-chunk-85
+references
 análisis-exploratorio
 tipos-de-estudio-y-experimentos
 pruebas-de-hipótesis
 estimación-y-distribución-de-muestreo-1
 intervalos-de-confianza-y-remuestreo
 estimación-por-máxima-verosimilitud
+bootstrap-paramétrico

@@ -1927,35 +1927,35 @@ est_upm <- hogar %>%
   arrange(upm)
 
 hogar_factor <- est_upm %>% 
-    group_by(est_dis) %>% # dentro de cada estrato tomamos muestra (n_h-1)
-    sample_n(size = first(n) - 1, replace = TRUE) %>% 
-    add_count(est_dis, upm, name = "m_hi") %>% # calculamos m_hi*
-    left_join(hogar, by = c("est_dis", "upm", "n")) %>% 
-    mutate(factor_b = factor * m_hi * n / (n - 1))
+  group_by(est_dis) %>% # dentro de cada estrato tomamos muestra (n_h-1)
+  sample_n(size = first(n) - 1, replace = TRUE) %>% 
+  add_count(est_dis, upm, name = "m_hi") %>% # calculamos m_hi*
+  left_join(hogar, by = c("est_dis", "upm", "n")) %>% 
+  mutate(factor_b = factor * m_hi * n / (n - 1))
 
 # unimos los pasos anteriores en una función para replicar en cada muestra bootstrap
 svy_boot <- function(est_upm, hogar){
-    m_hi <- est_upm %>% 
-        group_split(est_dis) %>% 
-        map(~sample(.$upm, size = first(.$n) - 1, replace = TRUE)) %>% 
-        flatten_int() %>% 
-        plyr::count() %>% 
-        select(upm = x, m_h = freq)
-    m_hi %>% 
-        left_join(hogar, by = c("upm")) %>% 
-        mutate(factor_b = factor * m_h * n / (n - 1))
+  m_hi <- est_upm %>% 
+    group_split(est_dis) %>% 
+    map(~sample(.$upm, size = first(.$n) - 1, replace = TRUE)) %>% 
+    flatten_int() %>% 
+    plyr::count() %>% 
+    select(upm = x, m_h = freq)
+  m_hi %>% 
+    left_join(hogar, by = c("upm")) %>% 
+    mutate(factor_b = factor * m_h * n / (n - 1))
 }
 set.seed(1038984)
 boot_rep <- rerun(500, svy_boot(est_upm, hogar))
 
 # Aplicación a ingreso medio
 wtd_mean <- function(w, x, na.rm = FALSE) {
-    sum(w * x, na.rm = na.rm) / sum(w, na.rm = na.rm)
+  sum(w * x, na.rm = na.rm) / sum(w, na.rm = na.rm)
 } 
 
 # La media es:
 hogar %>% 
-    summarise(media = wtd_mean(factor, ing_cor))
+  summarise(media = wtd_mean(factor, ing_cor))
 ```
 
 ```
@@ -1993,16 +1993,16 @@ library(survey)
 library(srvyr)
 
 enigh_design <- hogar %>% 
-    as_survey_design(ids = upm, weights = factor, strata = est_dis)
+  as_survey_design(ids = upm, weights = factor, strata = est_dis)
 
 # 2. Elegimos bootstrap como el método para el cálculo de errores estándar
 set.seed(7398731)
 enigh_boot <- enigh_design %>% 
-    as_survey_rep(type = "subbootstrap", replicates = 500)
+  as_survey_rep(type = "subbootstrap", replicates = 500)
 
 # 3. Así calculamos la media
 enigh_boot %>% 
-    srvyr::summarise(mean_ingcor = survey_mean(ing_cor))
+  srvyr::summarise(mean_ingcor = survey_mean(ing_cor))
 ```
 
 ```
@@ -2014,7 +2014,7 @@ enigh_boot %>%
 
 ```r
 enigh_boot %>% 
-    srvyr::summarise(mean_ingcor = survey_mean(ing_cor, vartype =  "ci"))
+  srvyr::summarise(mean_ingcor = survey_mean(ing_cor, vartype =  "ci"))
 ```
 
 ```
@@ -2026,9 +2026,9 @@ enigh_boot %>%
 
 ```r
 # por estado
-  enigh_boot %>% 
-    group_by(edo) %>% 
-    srvyr::summarise(mean_ingcor = survey_mean(ing_cor)) 
+enigh_boot %>% 
+  group_by(edo) %>% 
+  srvyr::summarise(mean_ingcor = survey_mean(ing_cor)) 
 ```
 
 ```
