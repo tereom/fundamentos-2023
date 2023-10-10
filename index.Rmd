@@ -82,9 +82,8 @@ Referencias: [@Chihara], [@Wasserman]
 
 Referencias: [@Chihara], [@Wasserman]
 
-13. Pruebas de hipótesis para medias y proporciones: una y dos poblaciones.[^index-2] 
+13. Pruebas de hipótesis para medias y proporciones: una y dos poblaciones. 
 
-[^index-2]: Material para revisión por parte del estudiante.
 
 #### Introducción a inferencia bayesiana {.unnumbered}
 
@@ -104,4 +103,6 @@ Se evaluará mediante tareas semanales y dos exámenes:
 * Examen final a casa (40%)
 
 
+# References
 
+<div id="refs"></div>
