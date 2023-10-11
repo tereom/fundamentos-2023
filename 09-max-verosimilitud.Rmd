@@ -75,7 +75,7 @@ usando máxima verosimilitud.
 
 **Nota**: Cuando decimos *muestra* en general nos referimos a observaciones
 independientes obtenidas del mismo proceso (ver la sección de distribución de muestreo) para ver qué 
-significa que sea independientes). Este esquema es un supuesto
+significa que sea independientes. Este esquema es un supuesto
 que simplifica mucho los cálculos, como discutimos antes. Muchas veces este supuesto
 sale del diseño de la muestra o del estudio, pero en todo caso es importante considerar
 si es razonable o no para nuestro problema particular.
@@ -178,7 +178,7 @@ Ahora definimos qué es un estimador de máxima verosimilitud.
 \begin{align}
 \hat \theta_{\textsf{MLE}} =  \underset{\theta \, \in \, \Theta}{\arg\max}\,  \mathcal{L}(\theta; x_1, \ldots, x_n),
 \end{align}
-donde $\theta$ denota el espacio parametral. Es decir, el espacio válido de búsqueda congruente con la definición del modelo. 
+donde $\Theta$ denota el espacio parametral. Es decir, el espacio válido de búsqueda congruente con la definición del modelo. 
 ```
 
 ```{block, type = 'ejercicio'}
@@ -239,22 +239,23 @@ estas probabilidades para cada observación $r_1$:
 
 ```{r}
 calc_verosim <- function(r){
-  q_func <- 0.03^r*(0.97)^(10-r)
-  q_falla <- 0.2^r*(0.8)^(10-r)
+  q_func <- 0.03 ^ r * (0.97) ^ (10 - r)
+  q_falla <- 0.2 ^ r * (0.8) ^ (10 - r)
   function(p){
     #nota: esta no es la mejor manera de calcularlo, hay 
     # que usar logaritmos.
-    prod(p*q_func + (1-p)*q_falla)
+    prod(p * q_func + (1 - p) * q_falla)
   }
 }
-verosim <- calc_verosim(c(1, 0, 0, 3, 0, 0, 0, 2, 1, 0, 0))
+verosim <- calc_verosim(r = c(1, 0, 0, 3, 0, 0, 0, 2, 1, 0, 0))
 verosim(0.1)
 ```
 
 ```{r}
-dat_verosim <- tibble(x = seq(0,1, 0.001)) %>% mutate(prob = map_dbl(x, verosim))
+dat_verosim <- tibble(x = seq(0, 1, 0.001)) %>% 
+  mutate(prob = map_dbl(x, verosim))
 ggplot(dat_verosim, aes(x = x, y = prob)) + geom_line() +
-  geom_vline(xintercept = 0.8, color = "red") +
+  geom_vline(xintercept = 0.773, color = "red") +
   xlab("prop funcionado")
 ```
 
@@ -343,10 +344,6 @@ $$\ell_n(\theta) = \log \left(\mathcal{L}_n(\theta)\right),$$
 donde hemos suprimido la dependencia en la muestra por conveniencia.
 ```
 
-```{block, type = 'ejercicio'}
-Considera una muestra de variables aleatorias Gaussianas con media $\mu$ y varianza $\sigma^2.$ Escribe la 
-verosimilitud para una muestra de tamaño $n,$ y después escribe la función de log-verosimilitud.
-```
 
 **Ejemplo.** En nuestro primer ejemplo,
 
@@ -376,7 +373,7 @@ calc_log_verosim <- function(r){
   function(p){
     #nota: esta no es la mejor manera de calcularlo, hay 
     # que usar logaritmos.
-    sum(log(p*q_func + (1-p)*q_falla))
+    sum(log(p * q_func + (1 - p) * q_falla))
   }
 }
 log_verosim <- calc_log_verosim(c(1, 0, 0, 3, 0, 0, 0, 2, 1, 0, 0))
@@ -494,7 +491,7 @@ dos veces más grande que nuestra estimación puntual por máxima verosimilitud.
 
 **Ejemplo.** Este es un ejemplo donde mostramos que cuando el soporte
 de las densidades teóricas es acotado hay que tener cuidado en la definición de la 
-verosimilitud. En particular, el soporte de la variable aleatoria es el párametro de interés. Supongamos
+verosimilitud. En este caso, el soporte de la variable aleatoria es el párametro de interés. Supongamos
 que nuestros datos son generados por medio de una distribución uniforme en el intervalo $[0,b].$
 Contamos con una muestra de $n$ observaciones generadas 
 de manera independiente $X_i \sim U[0,b]$ para $i= 1, \ldots, n.$
