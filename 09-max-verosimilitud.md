@@ -67,7 +67,7 @@ usando máxima verosimilitud.
 
 **Nota**: Cuando decimos *muestra* en general nos referimos a observaciones
 independientes obtenidas del mismo proceso (ver la sección de distribución de muestreo) para ver qué 
-significa que sea independientes). Este esquema es un supuesto
+significa que sea independientes. Este esquema es un supuesto
 que simplifica mucho los cálculos, como discutimos antes. Muchas veces este supuesto
 sale del diseño de la muestra o del estudio, pero en todo caso es importante considerar
 si es razonable o no para nuestro problema particular.
@@ -183,7 +183,7 @@ denotamos por <span class="math inline">\(\hat
 class="math display">\[\begin{align}
 \hat \theta_{\textsf{MLE}} =  \underset{\theta \, \in \,
 \Theta}{\arg\max}\,  \mathcal{L}(\theta; x_1, \ldots, x_n),
-\end{align}\]</span> donde <span class="math inline">\(\theta\)</span>
+\end{align}\]</span> donde <span class="math inline">\(\Theta\)</span>
 denota el espacio parametral. Es decir, el espacio válido de búsqueda
 congruente con la definición del modelo.</p>
 </div>
@@ -254,15 +254,15 @@ estas probabilidades para cada observación $r_1$:
 
 ```r
 calc_verosim <- function(r){
-  q_func <- 0.03^r*(0.97)^(10-r)
-  q_falla <- 0.2^r*(0.8)^(10-r)
+  q_func <- 0.03 ^ r * (0.97) ^ (10 - r)
+  q_falla <- 0.2 ^ r * (0.8) ^ (10 - r)
   function(p){
     #nota: esta no es la mejor manera de calcularlo, hay 
     # que usar logaritmos.
-    prod(p*q_func + (1-p)*q_falla)
+    prod(p * q_func + (1 - p) * q_falla)
   }
 }
-verosim <- calc_verosim(c(1, 0, 0, 3, 0, 0, 0, 2, 1, 0, 0))
+verosim <- calc_verosim(r = c(1, 0, 0, 3, 0, 0, 0, 2, 1, 0, 0))
 verosim(0.1)
 ```
 
@@ -272,9 +272,10 @@ verosim(0.1)
 
 
 ```r
-dat_verosim <- tibble(x = seq(0,1, 0.001)) %>% mutate(prob = map_dbl(x, verosim))
+dat_verosim <- tibble(x = seq(0, 1, 0.001)) %>% 
+  mutate(prob = map_dbl(x, verosim))
 ggplot(dat_verosim, aes(x = x, y = prob)) + geom_line() +
-  geom_vline(xintercept = 0.8, color = "red") +
+  geom_vline(xintercept = 0.773, color = "red") +
   xlab("prop funcionado")
 ```
 
@@ -376,13 +377,6 @@ usualmente por <span class="math display">\[\ell_n(\theta) = \log
 dependencia en la muestra por conveniencia.</p>
 </div>
 
-<div class="ejercicio">
-<p>Considera una muestra de variables aleatorias Gaussianas con media
-<span class="math inline">\(\mu\)</span> y varianza <span
-class="math inline">\(\sigma^2.\)</span> Escribe la verosimilitud para
-una muestra de tamaño <span class="math inline">\(n,\)</span> y después
-escribe la función de log-verosimilitud.</p>
-</div>
 
 **Ejemplo.** En nuestro primer ejemplo,
 
@@ -397,7 +391,7 @@ ggplot(dat_verosim, aes(x = x, y = log_prob)) + geom_line() +
   xlab("p")
 ```
 
-<img src="09-max-verosimilitud_files/figure-html/unnamed-chunk-9-1.png" width="480" style="display: block; margin: auto;" />
+<img src="09-max-verosimilitud_files/figure-html/unnamed-chunk-8-1.png" width="480" style="display: block; margin: auto;" />
 
 Obtenemos el mismo máximo. Podemos incluso resolver numéricamente:
 
@@ -421,7 +415,7 @@ calc_log_verosim <- function(r){
   function(p){
     #nota: esta no es la mejor manera de calcularlo, hay 
     # que usar logaritmos.
-    sum(log(p*q_func + (1-p)*q_falla))
+    sum(log(p * q_func + (1 - p) * q_falla))
   }
 }
 log_verosim <- calc_log_verosim(c(1, 0, 0, 3, 0, 0, 0, 2, 1, 0, 0))
@@ -440,7 +434,7 @@ ggplot(dat_verosim, aes(x = x, y = log_verosimilitud)) + geom_line() +
   xlab("prop funcionado")
 ```
 
-<img src="09-max-verosimilitud_files/figure-html/unnamed-chunk-12-1.png" width="480" style="display: block; margin: auto;" />
+<img src="09-max-verosimilitud_files/figure-html/unnamed-chunk-11-1.png" width="480" style="display: block; margin: auto;" />
 
 Nótese que la verosimilitud la consideramos **función de los parámetros**,
 donde **los datos están fijos**.
@@ -481,7 +475,7 @@ tibble(x = seq(0,1,0.001)) %>%
     geom_vline(xintercept = 0.5, color = 'red')
 ```
 
-<img src="09-max-verosimilitud_files/figure-html/unnamed-chunk-15-1.png" width="480" style="display: block; margin: auto;" />
+<img src="09-max-verosimilitud_files/figure-html/unnamed-chunk-14-1.png" width="480" style="display: block; margin: auto;" />
 
 **Ejemplo.** Supongamos que en una población de transacciones hay un porcentaje $p$ (desconocido) 
 que son fraudulentas. Tenemos un sistema de clasificación humana que que marca transacciones como sospechosas. 
@@ -521,12 +515,12 @@ log_verosim <- crear_log_verosim(n = 2000, n_sosp = 4)
 
 A continuación la mostramos de manera gráfica.
 
-<img src="09-max-verosimilitud_files/figure-html/unnamed-chunk-18-1.png" width="480" style="display: block; margin: auto;" />
+<img src="09-max-verosimilitud_files/figure-html/unnamed-chunk-17-1.png" width="480" style="display: block; margin: auto;" />
 
 No se ve muy claro dónde ocurre el máximo, pero podemos ampliar cerca de cero la 
 misma gráfica:
 
-<img src="09-max-verosimilitud_files/figure-html/unnamed-chunk-19-1.png" width="480" style="display: block; margin: auto;" />
+<img src="09-max-verosimilitud_files/figure-html/unnamed-chunk-18-1.png" width="480" style="display: block; margin: auto;" />
 
 
 
@@ -541,7 +535,7 @@ dos veces más grande que nuestra estimación puntual por máxima verosimilitud.
 
 **Ejemplo.** Este es un ejemplo donde mostramos que cuando el soporte
 de las densidades teóricas es acotado hay que tener cuidado en la definición de la 
-verosimilitud. En particular, el soporte de la variable aleatoria es el párametro de interés. Supongamos
+verosimilitud. En este caso, el soporte de la variable aleatoria es el párametro de interés. Supongamos
 que nuestros datos son generados por medio de una distribución uniforme en el intervalo $[0,b].$
 Contamos con una muestra de $n$ observaciones generadas 
 de manera independiente $X_i \sim U[0,b]$ para $i= 1, \ldots, n.$
@@ -606,7 +600,7 @@ ggplot() +
   geom_rug(data = tibble(x = x), aes(x = x), colour = "red")
 ```
 
-<img src="09-max-verosimilitud_files/figure-html/unnamed-chunk-23-1.png" width="480" style="display: block; margin: auto;" />
+<img src="09-max-verosimilitud_files/figure-html/unnamed-chunk-22-1.png" width="480" style="display: block; margin: auto;" />
 
 Podemos escribir en una fórmula como:
 
@@ -763,7 +757,7 @@ muestra <- map_dbl(1:200, ~ sim_formas(0.3, 0.75))
 qplot(muestra)
 ```
 
-<img src="09-max-verosimilitud_files/figure-html/unnamed-chunk-30-1.png" width="480" style="display: block; margin: auto;" />
+<img src="09-max-verosimilitud_files/figure-html/unnamed-chunk-29-1.png" width="480" style="display: block; margin: auto;" />
 
 Supongamos que no conocemos la probabildad de contestar correctamente  ni la
 proporción de estudiantes que contestó al azar. ¿Como estimamos estas dos cantidades?
