@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Tareas | Fundamentos de Estadística con Remuestreo</title>
+  <title>Sección 8 Propiedades teóricas de MLE | Fundamentos de Estadística con Remuestreo</title>
   <meta name="description" content="Curso de Fundamentos de Estadística con Remuestreo, maestría en Ciencia de Datos, ITAM, Otoño 2023." />
   <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Tareas | Fundamentos de Estadística con Remuestreo" />
+  <meta property="og:title" content="Sección 8 Propiedades teóricas de MLE | Fundamentos de Estadística con Remuestreo" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="Curso de Fundamentos de Estadística con Remuestreo, maestría en Ciencia de Datos, ITAM, Otoño 2023." />
   <meta name="github-repo" content="tereom/fundamentos-2023" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Tareas | Fundamentos de Estadística con Remuestreo" />
+  <meta name="twitter:title" content="Sección 8 Propiedades teóricas de MLE | Fundamentos de Estadística con Remuestreo" />
   
   <meta name="twitter:description" content="Curso de Fundamentos de Estadística con Remuestreo, maestría en Ciencia de Datos, ITAM, Otoño 2023." />
   
@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="apéndice-principios-de-visualizacion.html"/>
-<link rel="next" href="referencias-1.html"/>
+<link rel="prev" href="bootstrap-paramétrico.html"/>
+<link rel="next" href="más-de-pruebas-de-hipótesis-e-intervalos.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -423,427 +423,415 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="tareas" class="section level1 unnumbered hasAnchor">
-<h1>Tareas<a href="tareas.html#tareas" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<ul>
-<li><p>Las tareas se envían por correo a <a href="mailto:teresa.ortiz.mancera@gmail.com" class="email">teresa.ortiz.mancera@gmail.com</a> con título:
-fundamentos-tareaXX (donde XX corresponde al número de tarea, 01, 02, …), todas las tareas del semestre se deben enviar desde el mismo correo.</p></li>
-<li><p>Las tareas deben incluir código y explicar claramente los resultados (si conocen <a href="https://rmarkdown.rstudio.com">Rmarkdown</a> o
-<a href="https://quarto.org/">Quarto</a> es muy conveniente para este propósito).</p></li>
-</ul>
-<!-- ## 1. Visualización {-} -->
-<!-- 1. Describe 2 casos de cualquiera de las siguientes categorías: 1) dudas, 2) ejemplos que recuerdes de visualizaciones de baja calidad, 3) ejemplos de visualizaciones de alta calidad ó 3) conceptos que llamaron tu atención. Recuerda enviarla por -->
-<!-- correo electrónico con título *fundamentos-tarea01*. -->
-<div id="análisis-exploratorio-1" class="section level2 unnumbered hasAnchor">
-<h2>1. Análisis Exploratorio<a href="tareas.html#análisis-exploratorio-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<ol style="list-style-type: decimal">
-<li>Realiza los ejercicios de los scripts 01_exploratorio.R, y 02_exploratorio.R del
-proyecto <em>01-clase-exploratorio</em> ubicado en <a href="https://posit.cloud/">posit.cloud</a>. Puedes elegir
-entre el ejercicio de propinas y el de casas, y debes hacer el de tomadores de té.</li>
-</ol>
+<div id="propiedades-teóricas-de-mle" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">Sección 8</span> Propiedades teóricas de MLE<a href="propiedades-teóricas-de-mle.html#propiedades-teóricas-de-mle" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>El método de máxima verosimiltud es uno de los métodos más utilizados en la
+inferencia estadística paramétrica. En esta sección estudiaremos las propiedades
+teóricas que cumplen los estimadores de máxima verosimilitud (<span class="math inline">\(\textsf{MLE}\)</span>) y que
+han ayudado en su <em>casi</em> adopción universal.</p>
+<p>Estas propiedades de los <span class="math inline">\(\textsf{MLE}\)</span> son válidas siempre y cuando el modelo
+<span class="math inline">\(f(x; \theta)\)</span> satisfaga ciertas condiciones de regularidad. En particular
+veremos las condiciones para que los estimadores de máxima verosimilitud sean:
+consistentes, asintóticamente normales, asintóticamente insesgados,
+asintóticamente eficientes, y equivariantes.</p>
+<div class="comentario">
+<p>
+Los estimadores <span class="math inline"><span class="math inline">\(\textsf{MLE}\)</span></span> en
+ocasiones son malinterpretados como una estimación puntual en la
+inferencia, y por ende, incapaces de cuantificar incertidumbre. A lo
+largo de estas notas hemos visto cómo extraer intervalos de confianza
+por medio de simulación y por lo tanto incorporar incertidumbre en la
+estimación. Sin embargo, hay otros maneras de reportar incertidumbre
+para <span class="math inline"><span class="math inline">\(\textsf{MLE}\)</span></span>. Y hablaremos de
+ello en esta sección.
+</p>
 </div>
-<div id="análisis-exploratorio---loess" class="section level2 unnumbered hasAnchor">
-<h2>2. Análisis Exploratorio - loess<a href="tareas.html#análisis-exploratorio---loess" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<ol style="list-style-type: decimal">
-<li>Realiza los ejercicios en el proyecto 02-tarea-loess.</li>
-</ol>
+<p>A lo largo de esta sección asumiremos muestras de la forma
+<span class="math display">\[\begin{align}
+  X_1, \ldots, X_n \overset{\text{iid}}{\sim} f(x; \theta^*),
+\end{align}\]</span>
+donde <span class="math inline">\(\theta^*\)</span> es el valor verdadero —que suponemos desconocido pero fijo—
+del parámetro <span class="math inline">\(\theta \in \Theta\)</span>, y sea <span class="math inline">\(\hat \theta_n\)</span> el estimador de máxima
+verosimilitud de <span class="math inline">\(\theta.\)</span></p>
+<div id="ejemplo-10" class="section level3 unnumbered hasAnchor">
+<h3>Ejemplo<a href="propiedades-teóricas-de-mle.html#ejemplo-10" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Usaremos este ejemplo para ilustrar los diferentes puntos teóricos a lo largo de
+esta sección. Consideremos el caso de una muestra de variables binarias que
+registran el éxito o fracaso de un experimento. Es decir, <span class="math inline">\(X_1, \ldots, X_n \sim \textsf{Bernoulli}(p),\)</span> donde el párametro desconocido es el procentaje de
+éxitos. Éste último denotado por <span class="math inline">\(p.\)</span> Este ejemplo lo hemos estudiado en
+secciones pasadas, y sabemos que el <span class="math inline">\(\textsf{MLE}\)</span> es
+<span class="math display">\[\begin{align}
+  \hat p_n = \frac{S_n}{n} = \bar X_n,
+\end{align}\]</span>
+donde <span class="math inline">\(S_n= \sum_i X_i\)</span> es el número total de éxitos en la muestra.</p>
+<p>La figura siguiente ilustra el estimador <span class="math inline">\(\hat p_n\)</span> como función del número de
+observaciones en nuestra muestra. Podemos apreciar cómo el promedio parece
+estabilizarse alrededor del verdadero valor de <span class="math inline">\(p^* = 0.25\)</span> cuando tenemos una
+cantidad suficientemente grande de observaciones.</p>
+<p><img src="11-propiedades-mle_files/figure-html/unnamed-chunk-2-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>Como es de esperarse, diferentes muestras tendrán diferentes valores de <span class="math inline">\(n\)</span> dónde las
+trayectorias parezca que se haya estabilizado (Ver figura siguiente). Sin embargo,
+se puede notar que este comportamiento parece estar controlado y son <em>raras</em> las
+trayectorias que se encuentran más lejos.</p>
+<p><img src="11-propiedades-mle_files/figure-html/unnamed-chunk-3-1.png" width="480" style="display: block; margin: auto;" />
+Los conceptos siguientes nos permitirán cuantificar el porcentaje de
+trayectorias que se mantienen cercanas a <span class="math inline">\(p^*,\)</span> en el caso límite de un número
+grande de observaciones, cuando trabajemos con estimadores de máxima
+verosimilitud. Más aún, nos permitirán cracterizar la distribución para dicho
+límite y aprenderemos de otras propiedades bajo este supuesto asintótico.</p>
 </div>
-<div id="tipos-de-estudio-y-pgd" class="section level2 unnumbered hasAnchor">
-<h2>3. Tipos de estudio y PGD<a href="tareas.html#tipos-de-estudio-y-pgd" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Para cada uno de los siguientes estudios, ubícalos en el recuadro y contesta lo
-que se pide. Envíen las respuestas por correo electrónico (con título
-fundamentos-tarea03).</p>
-<div class="figure">
-<img src="images/03_inferencia-estudio.png" alt="" />
-<p class="caption">Inferencia estadística de acuerdo al tipo del diseño <span class="citation">(<a href="#ref-ramsey" role="doc-biblioref">Ramsey and Schafer 2012</a>)</span>.</p>
+<div id="consistencia" class="section level2 unnumbered hasAnchor">
+<h2>Consistencia<a href="propiedades-teóricas-de-mle.html#consistencia" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Es prudente pensar que para un estimador, lo que nos interesa es que conforme
+más información tengamos, más cerca esté del valor desconocido. Esta propiedad
+la representamos por medio del concepto de <em>consistencia</em>. Para hablar de
+esta propiedad necesitamos definir un tipo de convergencia para una
+secuencia de variables aleatorias, <strong>convergencia en probabilidad.</strong></p>
+
+<div class="mathblock">
+<strong>Definición.</strong> Una sucesión de variables aleatorias <span class="math inline">\(X_n\)</span> converge en
+probabilidad a la variable aleatoria <span class="math inline">\(X,\)</span> lo cual denotamos por
+<span class="math inline">\(X_n \overset{P}{\rightarrow} X\)</span>, si para toda <span class="math inline">\(\epsilon \gt 0\)</span>,
 </div>
-<ol style="list-style-type: decimal">
-<li><p>En 1930 se realizó un experimento en 20,000 niños de edad escolar de Inglaterra.
-Los maestros fueron los responsables de asignar a los niños de manera aleatoria al
-grupo de tratamiento -que consistía en recibir 350 ml de leche diaria - o al
-grupo de control, que no recibía suplementos alimenticios. Se registraron peso y
-talla antes y después del experimento. El estudio descubrió que los niños que
-recibieron la leche ganaron más en peso en el lapso del estudio. Una
-investigación posterior descubrió que los niños del grupo control eran de mayor
-peso y talla que los del grupo de intervención, antes de iniciar el tratamiento.
-¿Qué pudo haber ocurrido? ¿Podemos
-utilizar los resultados del estudio para inferir causalidad?</p></li>
-<li><p>Supongamos que de los registros de un conjunto de doctores se slecciona una
-muestra aleatoria de individuos americanos caucásicos y de americanos de
-ascendencia china, con el objetivo de comparar la presión arterial de las dos
-poblaciones. Supongamos que a los seleccionados se les pregunta si quieren
-participar y algunos rechazan. Se compara la distribución de presión arterial
-entre los que accedieron a participar. ¿En que cuadro cae este estudio? ¿Qué
-supuesto es necesario para permitir inferencias a las poblaciones muestreadas?</p></li>
-<li><p>Un grupo de investigadores reportó que el consumo moderado de alcohol estaba
-asociado con un menor riesgo de demencia (Mukamal et al. (2003)). Su muestra
-consistía en 373 personas con demencia y 373 sin demencia. A los participantes
-se les pregintó cuánta cerveza, vino, o licor consumían. Se observó que aquellos
-que consumían de 1-6 bebidas por semana tenían una incidencia menor de demencia
-comparado a aquellos que se abstenían del alcohol. ¿se puede inferir causalidad?</p></li>
-<li><p>Un estudio descubrió que los niños que ven más de dos horas diarias de
-televisión tienden a tener mayores niveles de colesterol que los que ven menos
-de dos horas diarias. ¿Cómo se pueden utilizar estos resultados?</p></li>
-<li><p>Más gente se enferma de gripa en temporada de invierno, ¿esto prueba que las
-temperaturas bajas ocasionan las gripas? ¿Qué otras variables podrían estar
-involucradas?</p></li>
-<li><p>¿Cuál es la diferencia entre un experimento aleatorizado y una muestra
-aleatoria?</p></li>
-</ol>
-<!-- ## 4. Pruebas de hipótesis visuales y de permutación {-} -->
-<!-- Resuelve la tarea-04 ubicada en nuestro RStudio.cloud,  -->
-<!-- encontrarás un archivo .qmd que describe los ejercicios a realizar y si lo deseas puedes -->
-<!-- utilizar este esqueleto para generar un archivo html con tus respuestas.  -->
-<!-- Envía tu tarea por correo electrónico con el título fundamentos-tarea04. -->
-<!-- ## 5. Distribución muestral {-} -->
-<!-- La tarea 5 es el proyecto de RStudio.Cloud con este nombre, el ejercicio está -->
-<!-- en un archvio de qmd. Envíen el reporte html por correo electrónico (con  -->
-<!-- título fundamentos-tarea05). -->
-<!-- ## 6. TCL e introducción a bootstrap {-} -->
-<!-- La tarea 6 es el proyecto de RStudio.Cloud con este nombre, los ejercicios -->
-<!-- están descritos en un archivo de R. Envíen un reporte por correo electrónico con  -->
-<!-- las respuestas (con título fundamentos-tarea06). -->
-<!-- ## 7. Tarea conteo rápido {-} -->
-<!-- Código de bootstrap -->
-<!-- ```{r, eval = FALSE} -->
-<!-- boot_conteo <- function(){ -->
-<!--   sample_2006 %>%  -->
-<!--     group_by(stratum) %>%  -->
-<!--     slice_sample(prop = 1, replace = TRUE) %>%  -->
-<!--     select(polling_id, stratum, pri_pvem:total) %>% # columnas relevantes -->
-<!--     pivot_longer(names_to = "party", values_to = "votes",  -->
-<!--                  cols = pri_pvem:otros) %>% # alargamos -->
-<!--     group_by(stratum, party) %>%  -->
-<!--     summarise(Y = sum(votes), X = sum(total), .groups = "drop") %>%  -->
-<!--     left_join(strata_sample_2006, by = "stratum") %>% # unimos tabla de pesos -->
-<!--     group_by(party) %>%  -->
-<!--     summarise(p_hat = 100 * sum(N / n * Y) / sum(N / n * X), .groups = "drop") -->
-<!-- } -->
-<!-- # Replicaciones bootstrap -->
-<!-- boot_reps <- map_df(1:1000, ~boot_conteo(), .id = "sim") -->
-<!-- ``` -->
-<!-- ## 8. Tarea ENIGH {-} -->
-<!-- Para este ejercicio usaremos los datos de la [ENIGH 2014](https://www.inegi.org.mx/programas/enigh/tradicional/2014/). En particular -->
-<!-- las variables alimentos, vestido, vivienda, salud, comunica, educacion y esparci  -->
-<!-- (esparcimiento) que indican el gasto trimestral en cada una de las categorías.  -->
-<!-- 1. Calcula los deciles de ingreso usando la variable de ingreso corriente (ing_cor). -->
-<!-- Debes tomar en cuenta el diseño de la muestra, puedes usar la función -->
-<!-- `survey_quantile()` del paquete `srvyr` o `svyquantile()` del paquete `survey`. -->
-<!-- Reporta las estimaciones y sus errores estándar usando el bootstrap de Rao y Wu. -->
-<!-- ```{r, message=FALSE, warning=FALSE} -->
-<!-- library(tidyverse) -->
-<!-- library(readr) -->
-<!-- library(dplyr) -->
-<!-- library(srvyr) -->
-<!-- concentrado_hogar <- read_csv("data/concentradohogar.csv") -->
-<!-- # para facilitar los cálculos ponemos las variables en un vector -->
-<!-- vars_cats <- c("alimentos", "vestido", "vivienda", "salud", "transporte", -->
-<!--                "comunica", "educacion", "esparci") -->
-<!-- hogar <- concentrado_hogar %>%  -->
-<!--   select(folioviv, foliohog, ubica_geo, est_dis, upm, factor_hog, ing_cor, -->
-<!--          all_of(vars_cats)) -->
-<!-- # creamos una variable con el gasto total y el porcentaje de gasto en cada categoría -->
-<!-- hogar_gastos <- hogar %>% -->
-<!--   mutate(gasto = alimentos + vestido + vivienda + salud + transporte +  -->
-<!--            comunica + educacion + esparci) %>%  -->
-<!--   dplyr::mutate_at(vars_cats, list(~. / gasto)) -->
-<!-- glimpse(hogar_gastos) -->
-<!-- ``` -->
-<!-- Para usar las funciones de `srvyr` lo primero es especificar el diseño de la  -->
-<!-- muestra. -->
-<!-- ```{r} -->
-<!-- enigh_design <- hogar_gastos %>%  -->
-<!--   as_survey_design(ids = upm, weights = factor_hog, strata = est_dis) -->
-<!-- enigh_design -->
-<!-- ``` -->
-<!-- Elegimos *bootstrap* de Rao y Wu. -->
-<!-- ```{r} -->
-<!-- enigh_boot <- enigh_design %>%  -->
-<!--   as_survey_rep(type = "subbootstrap", replicates = 300) -->
-<!-- deciles_ingcor <- enigh_boot %>% -->
-<!--   srvyr::summarise(q_ing_cor = survey_quantile(ing_cor, seq(0.1, 1, 0.1),  -->
-<!--                                                vartype = NULL)) %>%  -->
-<!--   tidyr::pivot_longer(cols = everything()) -->
-<!-- deciles_ingcor -->
-<!-- ``` -->
-<!-- Creamos una nueva variable con los deciles. -->
-<!-- ```{r, message=FALSE} -->
-<!-- library(Hmisc) -->
-<!-- enigh_boot_q <- enigh_boot %>% -->
-<!--   mutate(decil = cut2(ing_cor, cuts = deciles_ingcor$value,  -->
-<!--                       levels.mean = TRUE)) -->
-<!-- ``` -->
-<!-- Y realizamos las estimaciones por decil. -->
-<!-- ```{r} -->
-<!-- # estimaciones -->
-<!-- estimaciones <- enigh_boot_q %>%  -->
-<!--   group_by(decil) %>%  -->
-<!--   srvyr::summarise_at(vars_cats, survey_mean, na.rm = TRUE)  -->
-<!-- # errores estándar -->
-<!-- estimaciones_se <- estimaciones %>%  -->
-<!--   select(decil, contains("se")) %>%  -->
-<!--   pivot_longer(-decil, names_to = "campo", values_to = "se") %>%  -->
-<!--   mutate(campo = stringr::str_extract(campo, ".*(?=_)")) -->
-<!-- # unimos las dos para hacer la gráfica -->
-<!-- estimaciones_tidy <- estimaciones %>%  -->
-<!--   select(decil, all_of(vars_cats)) %>%  -->
-<!--   pivot_longer(-decil, names_to = "campo", values_to = "est") %>%  -->
-<!--   left_join(estimaciones_se) -->
-<!-- ``` -->
-<!-- Y graficamos. -->
-<!-- ```{r, fig.width=4.5, fig.height=3} -->
-<!-- ggplot(estimaciones_tidy) + -->
-<!--   geom_line(aes(x = as.integer(decil), y = est, group = campo, color = campo)) + -->
-<!--   scale_x_continuous("decil", breaks = 1:10) -->
-<!-- ``` -->
-<!-- Podemos hacer páneles para ver la variación en cada categoría. -->
-<!-- ```{r, fig.width=6.5, fig.height=4} -->
-<!-- ggplot(estimaciones_tidy) + -->
-<!--   geom_line(aes(x = as.integer(decil), y = est, group = campo, color = campo),  -->
-<!--             show.legend = FALSE) + -->
-<!--   facet_wrap(~ campo, scales = "free_y", nrow = 2) + -->
-<!--   scale_x_continuous("decil", breaks = 1:10) -->
-<!-- ``` -->
-<!-- Y finalmente agregamos errores estándar. -->
-<!-- ```{r, fig.width=6.5, fig.height=4} -->
-<!-- ggplot(estimaciones_tidy) + -->
-<!--   geom_line(aes(x = as.integer(decil), y = est, group = campo, color = campo),  -->
-<!--             show.legend = FALSE, alpha = 0.8) + -->
-<!--   geom_linerange(aes(x = as.integer(decil), ymin = est - 2 * se, ymax = est + 2 * se,  -->
-<!--                      group = campo, color = campo), show.legend = FALSE, alpha = 0.8) + -->
-<!--   facet_wrap(~ campo, scales = "free_y", nrow = 2) + -->
-<!--   scale_x_continuous("decil", breaks = 1:10) -->
-<!-- ``` -->
-<!-- ### Mapas {-} -->
-<!-- Si quisieran hacer un mapa con la mediana de ingreso corriente trimestral por -->
-<!-- estado. -->
-<!-- 1. Lo primero que debemos hacer es agregar la variable entidad a tus datos.  -->
-<!-- De acuerdo al diccionario de datos de la ENIGH la variable *ubicacion_geo* -->
-<!-- contiene la clave de entidad. -->
-<!--     *ubica_geo: Ubicación geográfica, contiene la ubicación geográfica de la vivienda.  -->
-<!--     Los dos primeros dígitos representan la clave de la entidad, los siguientes tres  -->
-<!--     la clave del municipio y los últimos cuatro la clave de la localidad. Éstas  -->
-<!--     corresponden al Catálogo de claves de entidades federativas, municipios y  -->
-<!--     localidades, que está disponible en el sitio del INEGI.* -->
-<!-- Por lo tanto debemos comenzar creando una variable de entidad, para ello usamos -->
-<!-- la función `str_sub()` del paquete `stringr`. -->
-<!-- ```{r} -->
-<!-- library(stringr) -->
-<!-- enigh_boot_edo <- enigh_boot %>%  -->
-<!--   mutate(edo = str_sub(ubica_geo, 1, 2)) -->
-<!-- ``` -->
-<!-- 2. Una vez que tenemos la variable en el diseño usamos `group_by()` y `svy_median()` -->
-<!-- para calcular la mediana en cada estado y el error estándar de las estimaciones. -->
-<!-- ```{r} -->
-<!-- edo_ing_cor <- enigh_boot_edo %>%  -->
-<!--   group_by(edo) %>%  -->
-<!--   summarise(mediana = survey_median(ing_cor, vartype = "se"))  -->
-<!-- ``` -->
-<!-- Ahora vemos como hacer un mapa con los resultados de nuestro análisis, para ello -->
-<!-- usaremos el paquete [mxmaps](https://www.diegovalle.net/mxmaps/index.html). En este  -->
-<!-- caso el `data.frame` con la información de ingreso corriente por estado se  -->
-<!-- llama `edo_ing_cor`. -->
-<!-- ```{r, eval =FALSE} -->
-<!-- library(mxmaps) -->
-<!-- data(mxstate.map) # datos para hacer el mapa instalar de github diegovalle/mxmaps -->
-<!-- ``` -->
-<!-- ```{r, echo = FALSE, eval=FALSE} -->
-<!-- #readr::write_rds(mxstate.map, path = "data/mxstate_map.Rdata") -->
-<!-- mxstate.map <- read_rds("data/mxstate_map.Rdata") -->
-<!-- ``` -->
-<!-- ```{r, fig.width=6.5, fig.height=5, eval=FALSE} -->
-<!-- mxstate_ing_cor <- mxstate.map %>%  -->
-<!--   left_join(edo_ing_cor, by = c("region" = "edo")) -->
-<!-- # este es el mapa básico -->
-<!-- mapa_ingcor <- ggplot(mxstate_ing_cor, aes(long, lat, group = group)) +  -->
-<!--   geom_polygon(aes(fill = mediana), color = "darkgray") + -->
-<!--   coord_map() -->
-<!-- mapa_ingcor -->
-<!-- ``` -->
-<!-- Podemos agregar interactividad con el paquete `plotly`. -->
-<!-- ```{r, fig.width=6.5, fig.height=4.5, eval=FALSE} -->
-<!-- library(plotly) -->
-<!-- # función para formatear con comas los datos de ingreso -->
-<!-- comma <- function(x) format(x, digits = 2, big.mark = ",") -->
-<!-- mapa_ingcor <- ggplot(mxstate_ing_cor %>% mutate(ee = round(mediana_se)),  -->
-<!--                       aes(long, lat, group = group,  -->
-<!--                           text = str_c("ingreso corriente: ",   -->
-<!--                                        comma(mediana)), label = ee)) +  -->
-<!--   geom_polygon(aes(fill = mediana), color = "darkgray", size = 0.1) + -->
-<!--   scale_fill_distiller(palette = "YlGnBu", type = "div") + #paleta  -->
-<!--   labs(title = "Mediana de ingreso corriente", fill = "") +  -->
-<!--   theme_void() + -->
-<!--   coord_map() -->
-<!-- ggplotly(mapa_ingcor, tooltip = c("text", "label")) -->
-<!-- ``` -->
-<!-- ## 9. Máxima verosimilitud y bootstrap paramétrico {-} -->
-<!-- Sean $X_1,...,X_n \sim N(\mu, 1)$ y $\theta = e^{\mu}$. Simula una muestra de   -->
-<!-- tamaño $n = 100$ usando $\mu = 5$. -->
-<!-- * Usa bootstrap paramétrico para construir un intervalo del 95% de confianza. -->
-<!-- * Usa bootstrap no paramétrico y compara tus respuestas. -->
-<!-- * Realiza un histograma de replicaciones bootstrap para cada método, estas son estimaciones de la distribución $\hat{\theta}$. Comparalos con la verdadera distribución de $\hat{\theta}$ -->
-<!-- (que puedes obtener vía simulación). ¿Cuál es la aproximación más cercana a la verdadera distribución? -->
-<!-- ## 10. Bootstrap y más pruebas de hipótesis {-} -->
-<!-- 1. Comparando dos tratamientos. Supongamos que a $n_1$ personas se les asigna el  -->
-<!-- tratamiento 1 y a $n_2$ se les asigna el tratamiento 2. Sean $X_1$ el número de -->
-<!-- personas que responden de manera favorable al tratamiento uno y $X_2$ el  -->
-<!-- número de personas que responden de manera favorable al tratamiento 2.  -->
-<!-- Suponemos $X_1 \sim Binomial(n_1, p_1)$ y $X_2 \sim Binomial(n_2, p_2)$. Sea -->
-<!-- $\psi = p_1 - p_2$ la cantidad de interés: -->
-<!-- * Encuentra el estimador de máxima verosimilitud para $\psi$.   -->
-<!-- * (Opcinal) Usa el método [delta para más de un parámetro](https://en.wikipedia.org/wiki/Delta_method#Multivariate_delta_method)  -->
-<!-- para encontrar el error estándaar asintótico de $\hat{\psi}_{MLE}$.   -->
-<!-- * Supongamos $n_1 = n_2 = 200$, $X_1 = 160$ y $X_2 = 148$ construye un intervalo -->
-<!-- del 90% de confianza para $\psi$ usando bootstrap paramétrico y (opcional) el  -->
-<!-- método delta. -->
-<!-- 1. (Chihara) Los niveles de calcio en adultos saludables se distribuyen de acuerdo -->
-<!-- a una Normal con media 9.5 mg/dl y desviación estándar desconocida. Un médico  -->
-<!-- sospecha que la media de los niveles de calcio para mujeres en su comunidad es  -->
-<!-- distinta. Colecta mediciones de 20 mujeres saludables y encuentra que la media  -->
-<!-- es de 9.2 y la desviación estándar muestral de 1.1. Escribe la hipótesis nula,  -->
-<!-- realiza una prueba de hipótesis e interpreta los resultados. -->
-<!-- ```{r, eval = FALSE} -->
-<!-- # Respuestas -->
-<!-- #Ejercicio 1: bootstrap -->
-<!-- n_1 <- 200; n_2 <-  200 -->
-<!-- X_1 = 160; X_2 <- 148 -->
-<!-- p_1 <- X_1/n_1 -->
-<!-- p_2 <- X_2 / n_2 -->
-<!-- ee <- sqrt(p_1*(1 - p_1) / n_2 + p_2*(1 - p_2) / n_2) -->
-<!-- #delta -->
-<!-- (p_1 - p_2) - 1.645 * ee -->
-<!-- (p_1 - p_2) + 1.645 * ee -->
-<!-- # bootstarp -->
-<!-- dif_p <- function() { -->
-<!--   p_1_star <- rbinom(1, 200, 160/200) / 200 -->
-<!--   p_2_star <- rbinom(1, 200, 148/200) / 200 -->
-<!--   p_1_star - p_2_star -->
-<!-- } -->
-<!-- ee_boot <- rerun(1000, dif_p()) |> flatten_dbl() |> sd() -->
-<!-- (p_1 - p_2) - 1.645 * ee_boot -->
-<!-- (p_1 - p_2) + 1.645 * ee_boot -->
-<!-- # Ejercicio 2: t -->
-<!-- mu_0 <- 9.5 -->
-<!-- ee_hat <- 1.1 / sqrt(20) -->
-<!-- t <- (9.2 - mu_0) / ee_hat -->
-<!-- 2 * pt(t, df = 19) -->
-<!-- # podemos calcular el error estándar con boostrap paramétrico -->
-<!-- ee_boot_hat <- rerun(10000, rnorm(20, 9.5, 1.1) |> mean()) |> flatten_dbl() |> sd() -->
-<!-- ee_boot_hat -->
-<!-- ee_hat <- 1.1 / sqrt(20) -->
-<!-- t <- (9.2 - mu_0) / ee_boot_hat -->
-<!-- 2 * pt(t, df = 19) -->
-<!-- # Con simulación es equivalente a una prueba Wald, con la misma deficiencia que -->
-<!-- # una prueba de Wald que asume la varianza conocida y da resultados un poco -->
-<!-- # diferentes con tamaño de muestra chicos -->
-<!-- sims_mu <- rerun(20000, rnorm(20, 9.5, 1.1) |> mean()) |> flatten_dbl() -->
-<!-- 2 * mean(sims_mu <= 9.2) -->
-<!-- # Wald -->
-<!-- w <- (9.2 - mu_0) / ee_hat -->
-<!-- 2 * pnorm(w) -->
-<!-- # en este ejemplo era más apropuado la t por que n-1=19 si tiene diferencias -->
-<!-- # entre la t y la normal -->
-<!-- ``` -->
-<!-- ## 11. Más pruebas de hipótesis {-} -->
-<!-- 1. (Wasserman) Mendel criaba chícharos de semillas lisas amarillas y de semillas -->
-<!-- corrugadas verdes. Éstas daban lugar a 4 tipos de descendientes: amarrillas lisas, amarillas corrugadas, verdes lisas y verdes corrugadas. El número de cada una -->
-<!-- es multinomial con parámetro $p=(p_1, p_2, p_3, p_4)$. De acuerdo a su teoría de  -->
-<!-- herencia este vector de probabilidades es: -->
-<!-- $$p=(9/16,3/16,3/16,1/16)$$ -->
-<!-- A lo largo de $n=556$ experimentos observó $x=(315,101,108,32)$. Utiliza la prueba -->
-<!-- de cociente de verosimilitudes para probar $H_0:p=p_0$ contra $H_0:p\ne p_0$. -->
-<!-- 2. (Wasserman) Sea $X=(X_1,\dots,X_n)\sim Uniforme(0,\theta)$ y $T=max(X)$ (el  -->
-<!-- máximo de $X$). Queremos probar: -->
-<!-- $H_0: \theta=1/2$ contra $H_1:\theta>1/2$ -->
-<!-- En este caso la prueba Wald no es apropiada pues $T$ no converge a la Normal.  -->
-<!-- Supongamos que decidimos probar la hipótesis rechazando $H_0$ si $T>c$. -->
-<!--  * Encuentra la función de potencia   -->
-<!--  * ¿Qué valor de $c$ corresponde a un tamaño de prueba $\alpha=0.05$?   -->
-<!--  * En una muestra de tamaño $n=20$ con $T=0.48$ ¿cuál es el valor $p$?, ¿qué  -->
-<!--  concluyes acerca de $H_0$?   -->
-<!--  * En una muestra de tamaño $n=20$ con $T=0.52$ ¿cuál es el valor $p$?, ¿qué  -->
-<!--  concluyes acerca de $H_0$? -->
-<!-- 3. (Wasserman) Sean $X_1, ...X_n \sim Poisson(\lambda)$,  -->
-<!-- * Sea $\lambda_0>0$. ¿Cuál es la prueba Wald para  -->
-<!-- $H_0: \lambda = \lambda_0, H_1: \lambda \neq \lambda_0$ -->
-<!-- * Si $\lambda_0=1$, $n=20$ y $\alpha = 0.05$. Simula  $X_1, ...X_n \sim Poisson(\lambda_0)$ y realiza la prueba Wald, repite 1000 veces y registra -->
-<!-- el porcentaje de veces que rechazas $H_0$, qué tan cerca te queda el  -->
-<!-- error del tipo 1 de $0.05$? -->
-<!-- ## 12. Introducción a inferencia bayesiana {-} -->
-<!-- Revisa el ejercicio introductorio a inferencia bayesiana, experimenta con los  -->
-<!-- valores y contesta: -->
-<!-- - ¿Qué pasa cuando el número de soles es 0? ¿Cómo cambian las probabilidades -->
-<!-- posteriores de cada moneda? -->
-<!-- - Incrementa el número de volados, por ejemplo a 10. ¿Qué pasa si observaste -->
-<!-- 8 soles, por ejemplo? ¿Y si observaste 0? -->
-<!-- - ¿Qué pasa si cambias las probabilidades iniciales (por ejemplo incrementas -->
-<!-- la probabilidad inicial de la moneda 1 a 0.9)? -->
-<!-- Justifica las siguientes aseveraciones (para este ejemplo): -->
-<!-- - Las probabilidades posteriores o finales son una especie de punto intermedio -->
-<!-- entre verosimilitud y probablidades iniciales. -->
-<!-- - Si tenemos pocas observaciones, las probabilidades posteriores son similares -->
-<!-- a las iniciales. -->
-<!-- - Cuando tenemos muchos datos, las probabilidades posteriores están más -->
-<!-- concentradas, y no es tan importante la inicial. -->
-<!-- - Si la inicial está muy concentrada en algún valor, la posterior requiere de -->
-<!-- muchas observaciones para que se pueda concentrar en otros valores diferentes a -->
-<!-- los de la inicial. -->
-<!-- ## 13. Modelo Beta-Binomial {-} -->
-<!-- 1. Una compañía farmacéutica afirma que su nueva medicina incrementa la  -->
-<!-- probabilidad de concebir un niño (sexo masculino), pero aún no publican  -->
-<!-- estudios. Supón que conduces un experimento en el cual $50$ parejas se  -->
-<!-- seleccionan de manera aleatoria de la población, toman la medicina y conciben. -->
-<!-- Nacen 30 niños y 20 niñas. -->
-<!-- a) Quieres estimar la probabilidad de concebir un niño para parejas que  -->
-<!-- toman la medicina. ¿Cuál es una inicial apropiada (experimenta con la distribución  -->
-<!-- Beta para elegir)? No tiene que estar centrada -->
-<!-- en $0.5$ pues esta corresponde a personas que no toman la medicina, y la inicial  -->
-<!-- debe reflejar tu incertidumbre sobre el efecto de la droga.  -->
-<!-- b) Usando tu inicial de a) grafica la posterior y decide si es creíble que las -->
-<!-- parejas que toman la medicina tienen una probabilidad de $0.5$ de concebir un -->
-<!-- niño. -->
-<!-- c) Supón que la farmacéutica asevera que la probabilidad de concebir un niño -->
-<!-- cuando se toma la medicina es cercana al $60\%$ con alta certeza. Representa  -->
-<!-- esta postura con una distribución inicial $Beta(60,40)$. Comparala con la  -->
-<!-- inicial de un escéptico que afirma que la medicina no hace diferencia,  -->
-<!-- representa esta creencia con una inicial $Beta(50,50)$. ¿Cómo se compara la  -->
-<!-- probabilidad posterior de concebir un niño (usando las distintas iniciales)? -->
-<!-- 2. Supongamos que nos interesa analizar el IQ de una muestra de estudiantes del  -->
-<!-- ITAM y suponemos que el IQ de un estudiante tiene una distribución normal  -->
-<!-- $x \sim N(\theta, \sigma^2)$ **con $\sigma ^ 2$ conocida.** -->
-<!-- Considera que observamos el IQ de un estudiante $x$.  -->
-<!-- La verosimilitud del modelo es: -->
-<!-- $$p(x|\theta)=\frac{1}{\sqrt{2\pi\sigma^2}}exp\left(-\frac{1}{2\sigma^2}(x-\theta)^2\right)$$ -->
-<!-- Realizaremos un análisis bayesiano por lo que hace falta establer una  -->
-<!-- distribución inicial, elegimos $p(\theta)$ que se distribuya $N(\mu, \tau^2)$  -->
-<!-- donde elegimos los parámetros $\mu, \tau$ ($\tau$ desviación  -->
-<!-- estándar) que mejor describan nuestras creencias -->
-<!-- iniciales, por ejemplo si tengo mucha certeza de que el $IQ$ promedio se ubica -->
-<!-- en $150$, elegiría $\mu=150$ y una desviación estándar chica, por ejemplo  -->
-<!-- $\tau = 5$. Entonces la distribución inicial es: -->
-<!-- $$p(\theta)=\frac{1}{\sqrt{2\pi\tau^2}}exp\left(-\frac{1}{2\tau^2}(\theta-\mu)^2\right)$$ -->
-<!-- Calcula la distribución posterior $p(\theta|x) \propto p(x|\theta)p(\theta)$,  -->
-<!-- usando la inicial y verosimilitud que definimos arriba. Una vez que realices la -->
-<!-- multiplicación debes identificar el núcleo de una distribución Normal,  -->
-<!-- ¿cuáles son sus parámetros (media y varianza)? -->
-<!-- ## 14. Poisson-Gamma ([Bayes Rules](https://www.bayesrulesbook.com/chapter-5.html#exercises-4)) {-} -->
-<!-- Revisa el ejemplo de modelo Poisson de las notas. -->
-<!-- Sea $\lambda$ el número promedio de goles en el mundial de futból de mujeres. Analizaremos $\lambda$ usando el modelo Gamma-Poisson donde $X_i$ es el número observado de goles en una muestra de juegos del mundial: -->
-<!-- $$X_i|\lambda \sim Poisson(\lambda), X_1,...,X_n iid$$ -->
-<!-- $$\lambda \sim Gamma(1,0.25)$$ -->
-<!-- a. Simula de la distribución inicial para describir el conocimiento inicial de $\lambda$. Reporta un intervalo del 95% y la media. -->
-<!-- b. ¿Poqué sería razonable utilizar un modelo Poisson para los datos $X_i$? -->
-<!-- c. Los datos wwc_2019_matches incluídos en el paquete fivethirtyeight incluyen información del número de goles por equipo del mundial 2019. Describe, y grafica el número total de goles. -->
-<!-- d. Identifica la distribución posterior de $\lambda$ y calcula un intervalo del 95% de credibilidad para $\lambda$. -->
-<!-- e. Simula de la distribución predictiva posterior para diagnosticar si el modelo Poisson es apropiado para nuestros datos (revisa el ejemplo de clase, deberás simular conjuntos de datos del mismo tamaño que los datos observados. -->
-<!-- f. Utiliza la distribución predictiva posterior para crear un intervalo del 95% para una nueva observación. -->
+<p><span class="math display">\[\lim_{n \rightarrow \infty}  \mathbb{P}(|X_n - X| &gt; \epsilon) = 0.\]</span></p>
+Ahora, definimos un estimador consistente como:
+<div class="mathblock">
+<p>
+<strong>Definición.</strong> Un estimador <span class="math inline"><span class="math inline">\(\tilde \theta_n\)</span></span> es
+<strong>consistente</strong> si converge en probabilidad a <span class="math inline"><span class="math inline">\(\theta^*.\)</span></span> Donde <span class="math inline"><span class="math inline">\(\theta^*\)</span></span> denota el verdadero valor del
+parámetro, que asumimos fijo.
+</p>
+</div>
+En particular, los estimadores <span class="math inline">\(\textsf{MLE}\)</span> son consistentes.
+<div class="mathblock">
+<p>
+<strong>Teorema.</strong> Sea <span class="math inline"><span class="math inline">\(X_n \sim f(X; \theta^*),\)</span></span> una muestra iid, tal que <span class="math inline"><span class="math inline">\(f(X; \theta)\)</span></span> cumple con ciertas
+condiciones de regularidad. Entonces, <span class="math inline"><span class="math inline">\(\hat \theta_n,\)</span></span> el estimador de máxima verosimilitud, converge en
+probabilidad a <span class="math inline"><span class="math inline">\(\theta^*.\)</span></span> Es decir,
+<span class="math inline"><span class="math inline">\(\hat \theta_n\)</span></span> es consistente.
+</p>
+</div>
+<p>La demostración de este teorema la pueden encontrar en <span class="citation">Wasserman (<a href="#ref-Wasserman" role="doc-biblioref">2013</a>)</span>.</p>
+<div id="ejemplo-11" class="section level3 unnumbered hasAnchor">
+<h3>Ejemplo<a href="propiedades-teóricas-de-mle.html#ejemplo-11" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>El estimador <span class="math inline">\(\hat p_n\)</span> es <strong>consistente.</strong> Esto quiere decir que el
+estimador se vuelve más preciso conforme obtengamos más información. En general
+esta es una propiedad que los estimadores deben satisfacer para ser
+útiles en la práctica. La figura siguiente muestra el estimador <span class="math inline">\(\hat p_n\)</span> como
+función del número de observaciones utilizado. Distintas curvas corresponden a
+distintas realizaciones de muestras obtenidas del modelo (<span class="math inline">\(B = 500\)</span>).</p>
+<p><img src="11-propiedades-mle_files/figure-html/consistency-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Nota que la banda definida por <span class="math inline">\(\epsilon\)</span> se puede hacer tan pequeña como se requiera,
+lo único que sucederá es que necesitaremos un mayor número de observaciones para garantizar
+que las trayectorias de los estimadores <span class="math inline">\(\hat p_n\)</span> se mantengan dentro de las bandas con
+alta probabilidad conforme <span class="math inline">\(n\)</span> aumenta.</p>
+</div>
+</div>
+<div id="equivarianza-del-textsfmle" class="section level2 unnumbered hasAnchor">
+<h2>Equivarianza del <span class="math inline">\(\textsf{MLE}\)</span><a href="propiedades-teóricas-de-mle.html#equivarianza-del-textsfmle" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Muchas veces nos interesa reparametrizar la función de verosimilitud con el motivo
+de simplificar el problema de optimización asociado, o simplemente por conveniencia
+interpretativa. Por ejemplo, si el parámetro de interés es tal que <span class="math inline">\(\theta \in [a, b],\)</span> entonces
+encontrar el <span class="math inline">\(\textsf{MLE}\)</span> se traduce en optimizar la log-verosimilitud en el espacio restringido al
+intervalo <span class="math inline">\([a,b].\)</span> En este caso, los métodos tradicionales de búsqueda local por descenso en gradiente
+podrían tener problemas de estabilidad cuando la búsqueda se realice cerca de las cotas.</p>
+<p>El concepto de equivarianza nos dice que si el cambio de coordenadas
+parametrales está definida, y si este cambio de variable se realiza por medio de
+una función bien comportada (derivable y cuya derivada no es cero), entonces la solución de encontrar el <span class="math inline">\(\textsf{MLE}\)</span> en las
+coordenadas originales y transformar, es igual a realizar la inferencia en las
+coordenadas <em>fáciles.</em></p>
+<div class="mathblock">
+<p>
+<strong>Teorema.</strong> Sea <span class="math inline"><span class="math inline">\(\tau = g(\theta)\)</span></span> una función de <span class="math inline"><span class="math inline">\(\theta\)</span></span> bien comportada. Entonces si <span class="math inline"><span class="math inline">\(\hat \theta_n\)</span></span> es el <span class="math inline"><span class="math inline">\(\textsf{MLE}\)</span></span> de <span class="math inline"><span class="math inline">\(\theta,\)</span></span> entonces <span class="math inline"><span class="math inline">\(\hat \tau_n = g(\hat \theta_n)\)</span></span> es el
+<span class="math inline"><span class="math inline">\(\textsf{MLE}\)</span></span> de <span class="math inline"><span class="math inline">\(\tau.\)</span></span>
+</p>
+</div>
+<div id="ejemplo-12" class="section level3 unnumbered hasAnchor">
+<h3>Ejemplo<a href="propiedades-teóricas-de-mle.html#ejemplo-12" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>El concepto de equivarianza lo ilustraremos para nuestro ejemplo de esta sección. En
+particular la parametrización la realizamos por cuestiones de interpretación como un
+factor de riesgo.</p>
+<p>Como hemos visto estimador <span class="math inline">\(\hat p_n\)</span> es <strong>equivariante.</strong> Es importante
+mencionar que esta propiedad es general para cualquier tamaño de muestra. Es
+decir, no descansa en supuestos de muestras grandes. Supongamos que nos interesa estimar
+el momio de éxitos (bastante común en casas de apuestas). El momio está definido
+como
+<span class="math display">\[ \theta = \frac{p}{1-p},\]</span>
+y podemos rescribir la función de verosimilitud en términos de este parámetro.
+Sustituyendo <span class="math inline">\(p = \frac{\theta}{1+\theta}\)</span> en <span class="math inline">\(\mathcal{L}_n(p)\)</span>
+obtenemos
+<span class="math display">\[\begin{align}
+  \mathcal{L}_n(\theta) = \left( \frac{\theta}{1 + \theta} \right)^{S_n} \left(\frac{1}{1 + \theta} \right)^{n - S_n},
+\end{align}\]</span>
+cuya función encuentra su máximo en
+<span class="math display">\[\begin{align}
+\hat \theta_n = \frac{\bar X_n}{ 1 - \bar X_n}.
+\end{align}\]</span></p>
+<div class="ejercicio">
+<p>
+Comprueba que el estimador de arriba para <span class="math inline"><span class="math inline">\(\theta\)</span></span> es el MLE.
+</p>
+</div>
+</div>
+</div>
+<div id="normalidad-asintótica" class="section level2 unnumbered hasAnchor">
+<h2>Normalidad asintótica<a href="propiedades-teóricas-de-mle.html#normalidad-asintótica" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Está propiedad nos permite caracterizar la distribución asintótica del MLE. Es
+decir, nos permite caracterizar la incertidumbre asociada una muestra
+suficientemente grande por medio de una distribución Gaussiana. Esto es, bajo
+ciertas condiciones de regularidad,
+<span class="math display">\[\hat \theta_n \overset{.}{\sim} \mathsf{N}( \theta^*, \mathsf{ee}^2),\]</span></p>
+<p>donde <span class="math inline">\(\mathsf{ee}\)</span> denota el error estándar del <span class="math inline">\(\textsf{MLE},\)</span> <span class="math inline">\(\mathsf{ee} = \mathsf{ee}(\hat \theta_n) = \sqrt{\mathbb{V}(\hat \theta_n)}\)</span>.</p>
+<p>Esta distribución se puede caracterizar de manera aproximada por métodos analíticos.
+Para esto necesitamos las siguientes definiciones.</p>
+
+<div class="mathblock">
+<p><strong>Definición. </strong> La función de <em>score</em> está definida como
+<span class="math display">\[\begin{align}
+  s(X; \theta) = \frac{\partial \log f(X; \theta)}{\partial \theta}.
+\end{align}\]</span></p>
+<p>La <strong>información de Fisher</strong> está definida como
+<span class="math display">\[\begin{align}
+  I_n(\theta) &amp;= \mathbb{V}\left( \sum_{i = 1}^ns(X_i; \theta) \right) \\
+              &amp;= \sum_{i = 1}^n  \mathbb{V} \left(s(X_i; \theta) \right)
+\end{align}\]</span></p>
+</div>
+<p>Estas cantidades nos permiten evaluar qué tan fácil será identificar el mejor
+modelo dentro de la familia parámetrica <span class="math inline">\(f(X; \theta)\)</span>. La función de score nos
+dice qué tanto cambia locamente la distribución cuando cambiamos el valor del
+parámetro. Calcular la varianza, nos habla de la dispersión de dicho cambio a lo
+largo del soporte de la variable aleatoria <span class="math inline">\(X.\)</span> Si <span class="math inline">\(I_n(\theta)\)</span> es grande
+entonces el cambio de la distribución es muy importante. Esto quiere decir que
+la distribución es muy diferente de las <em>distribuciones cercanas</em> que se generen
+al evaluar en <span class="math inline">\(\theta\)</span>s diferentes. Por lo tanto, si <span class="math inline">\(I_n(\theta)\)</span> es grande, la
+distribución será fácil de identificar cuando hagamos observaciones.</p>
+<p>La información de Fisher también nos permite caracterizar de forma
+analítica la varianza asíntotica del <span class="math inline">\(\textsf{MLE}\)</span> pues la aproximación
+<span class="math inline">\(\mathsf{ee}^2 \approx \frac{1}{I_n(\theta^*)}\)</span> es válida.</p>
+<p>El siguiente resultado utiliza la propiedad de la función de score:
+<span class="math inline">\(\mathbb{E}[s(X; \theta)] = 0,\)</span> que implica que
+<span class="math inline">\(\mathbb{V} \left(s(X_i; \theta) \right) = \mathbb{E}[s^2(X; \theta)],\)</span> y
+permite a su vez un cómputo más sencillo de la información de Fisher.</p>
+<div class="mathblock">
+<p>
+<strong>Teorema.</strong> El cálculo de la información de Fisher para
+una muestra de tamaño <span class="math inline"><span class="math inline">\(n\)</span></span> se puede
+calcular de manera simplificada como <span class="math inline"><span class="math inline">\(I_n(\theta) = n \, I(\theta).\)</span></span> Por otro
+lado, tenemos la siguiente igualdad <span class="math display"><span class="math display">\[
+I(\theta) = - \mathbb{E}\left( \frac{\partial^2 \log f(X;
+\theta)}{\partial \theta^2}  \right).\]</span></span>
+</p>
+</div>
+<p>Con estas herramientas podemos formular el teorema siguiente.</p>
+<div class="mathblock">
+<p>
+<strong>Teorema.</strong> Bajo ciertas condiciones de regularidad se
+satisface que <span class="math inline"><span class="math inline">\(\mathsf{ee} \approx \sqrt{1/I_n(\theta^*)}\)</span></span> y <span class="math display"><span class="math display">\[ \hat
+\theta_n \overset{d}{\rightarrow} \mathsf{N}( \theta^*,
+\mathsf{ee}^2).\]</span></span>
+</p>
+</div>
+<p>El resultado anterior es teóricamente interesante y nos asegura un
+comportamiento controlado conforme tengamos más observaciones disponibles. Sin
+embargo, no es práctico pues no conocemos <span class="math inline">\(\theta^*\)</span> en la práctica y por
+consiguiente no conoceríamos la varianza. Sin embargo, también podemos aplicar
+el principio de <em>plug-in</em> y caracterizar la varianza de la distribución
+asintótica por medio de
+<span class="math display">\[\hat{\mathsf{ee}} = \sqrt{1/I_n(\hat \theta_n)}.\]</span></p>
+<p>Esto último nos permite constuir intervalos de confianza, por ejemplo al 95%, a través de
+<span class="math display">\[ \hat \theta_n \pm 2 \, \hat{\mathsf{ee}}.\]</span>
+Asimismo, el teorema de Normalidad asintótica nos permite establecer que el <span class="math inline">\(\textsf{MLE}\)</span> es <strong>asíntoticamente insesgado</strong>. Es decir,
+<span class="math display">\[\lim_{n \rightarrow n}\mathbb{E}[\hat \theta_n] =  \theta^*.\]</span></p>
+<div class="mathblock">
+<p>
+<strong>Definición.</strong> Sea una muestra <span class="math inline"><span class="math inline">\(X_1, \ldots, X_n \overset{iid}{\sim} f(X; \theta^*)\)</span></span>. Un estimador <span class="math inline"><span class="math inline">\(\tilde \theta_n\)</span></span> es insesgado si satisface que <span class="math display"><span class="math display">\[\mathbb{E}[\tilde \theta_n]
+=\theta^*.\]</span></span>
+</p>
+</div>
+<p>El sesgo del estimador es precisamente la diferencia: <span class="math inline">\(\textsf{Sesgo} = \mathbb{E}[\tilde \theta_n] - \theta^*.\)</span></p>
+<div id="ejemplo-información-de-fisher" class="section level3 unnumbered hasAnchor">
+<h3>Ejemplo: Información de Fisher<a href="propiedades-teóricas-de-mle.html#ejemplo-información-de-fisher" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>En el caso Bernoulli obtenemos <span class="math inline">\(I_n(\theta) = \frac{n}{\theta(1-\theta)}\)</span>, si
+<span class="math inline">\(n = 20\)</span> podemos comparar con <span class="math inline">\(\theta=0.5, 0.7, 0.8\)</span>,</p>
+<div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb367-1"><a href="propiedades-teóricas-de-mle.html#cb367-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb367-2"><a href="propiedades-teóricas-de-mle.html#cb367-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Verosimilitud X_1,...,X_n ~ Bernoulli(theta)</span></span>
+<span id="cb367-3"><a href="propiedades-teóricas-de-mle.html#cb367-3" aria-hidden="true" tabindex="-1"></a>L_bernoulli <span class="ot">&lt;-</span> <span class="cf">function</span>(n, S){</span>
+<span id="cb367-4"><a href="propiedades-teóricas-de-mle.html#cb367-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">function</span>(theta){</span>
+<span id="cb367-5"><a href="propiedades-teóricas-de-mle.html#cb367-5" aria-hidden="true" tabindex="-1"></a>        theta <span class="sc">^</span> S <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> theta) <span class="sc">^</span> (n <span class="sc">-</span> S)</span>
+<span id="cb367-6"><a href="propiedades-teóricas-de-mle.html#cb367-6" aria-hidden="true" tabindex="-1"></a>    }  </span>
+<span id="cb367-7"><a href="propiedades-teóricas-de-mle.html#cb367-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb367-8"><a href="propiedades-teóricas-de-mle.html#cb367-8" aria-hidden="true" tabindex="-1"></a>xy <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>)</span>
+<span id="cb367-9"><a href="propiedades-teóricas-de-mle.html#cb367-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb367-10"><a href="propiedades-teóricas-de-mle.html#cb367-10" aria-hidden="true" tabindex="-1"></a>l_b1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(xy, <span class="fu">aes</span>(<span class="at">x =</span> x)) <span class="sc">+</span></span>
+<span id="cb367-11"><a href="propiedades-teóricas-de-mle.html#cb367-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> <span class="fu">L_bernoulli</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">S =</span> <span class="dv">10</span>)) <span class="sc">+</span></span>
+<span id="cb367-12"><a href="propiedades-teóricas-de-mle.html#cb367-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="fu">expression</span>(theta)) <span class="sc">+</span></span>
+<span id="cb367-13"><a href="propiedades-teóricas-de-mle.html#cb367-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="fu">expression</span>(<span class="fu">L</span>(theta))) <span class="sc">+</span></span>
+<span id="cb367-14"><a href="propiedades-teóricas-de-mle.html#cb367-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Verosimilitud&quot;</span>, <span class="at">subtitle =</span> <span class="st">&quot;n=20, S = 10&quot;</span>) <span class="sc">+</span></span>
+<span id="cb367-15"><a href="propiedades-teóricas-de-mle.html#cb367-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="fl">5e-05</span>)</span>
+<span id="cb367-16"><a href="propiedades-teóricas-de-mle.html#cb367-16" aria-hidden="true" tabindex="-1"></a>l_b2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(xy, <span class="fu">aes</span>(<span class="at">x =</span> x)) <span class="sc">+</span></span>
+<span id="cb367-17"><a href="propiedades-teóricas-de-mle.html#cb367-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> <span class="fu">L_bernoulli</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">S =</span> <span class="dv">14</span>)) <span class="sc">+</span></span>
+<span id="cb367-18"><a href="propiedades-teóricas-de-mle.html#cb367-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="fu">expression</span>(theta)) <span class="sc">+</span></span>
+<span id="cb367-19"><a href="propiedades-teóricas-de-mle.html#cb367-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="fu">expression</span>(<span class="fu">L</span>(theta))) <span class="sc">+</span></span>
+<span id="cb367-20"><a href="propiedades-teóricas-de-mle.html#cb367-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Verosimilitud&quot;</span>, <span class="at">subtitle =</span> <span class="st">&quot;n=20, S = 14&quot;</span>) <span class="sc">+</span></span>
+<span id="cb367-21"><a href="propiedades-teóricas-de-mle.html#cb367-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="fl">5e-05</span>)</span>
+<span id="cb367-22"><a href="propiedades-teóricas-de-mle.html#cb367-22" aria-hidden="true" tabindex="-1"></a>l_b3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(xy, <span class="fu">aes</span>(<span class="at">x =</span> x)) <span class="sc">+</span></span>
+<span id="cb367-23"><a href="propiedades-teóricas-de-mle.html#cb367-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> <span class="fu">L_bernoulli</span>(<span class="at">n =</span> <span class="dv">20</span>, <span class="at">S =</span> <span class="dv">16</span>)) <span class="sc">+</span></span>
+<span id="cb367-24"><a href="propiedades-teóricas-de-mle.html#cb367-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="fu">expression</span>(theta)) <span class="sc">+</span></span>
+<span id="cb367-25"><a href="propiedades-teóricas-de-mle.html#cb367-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="fu">expression</span>(<span class="fu">L</span>(theta))) <span class="sc">+</span></span>
+<span id="cb367-26"><a href="propiedades-teóricas-de-mle.html#cb367-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Verosimilitud&quot;</span>, <span class="at">subtitle =</span> <span class="st">&quot;n=20, S = 19&quot;</span>) <span class="sc">+</span></span>
+<span id="cb367-27"><a href="propiedades-teóricas-de-mle.html#cb367-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="fl">5e-05</span>)</span>
+<span id="cb367-28"><a href="propiedades-teóricas-de-mle.html#cb367-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb367-29"><a href="propiedades-teóricas-de-mle.html#cb367-29" aria-hidden="true" tabindex="-1"></a>l_b1 <span class="sc">+</span> l_b2 <span class="sc">+</span> l_b3</span></code></pre></div>
+<p><img src="11-propiedades-mle_files/figure-html/unnamed-chunk-14-1.png" width="720" style="display: block; margin: auto;" /></p>
+</div>
+<div id="ejemplo-normalidad" class="section level3 unnumbered hasAnchor">
+<h3>Ejemplo: Normalidad<a href="propiedades-teóricas-de-mle.html#ejemplo-normalidad" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Regresando a nuestro ejemplo. Veremos empiricamente que el
+estimador <span class="math inline">\(\hat \theta_n\)</span> es <strong>asintóticamente normal.</strong> Esta propiedad la
+hemos visto anteriormente para un caso muy particular. Lo vimos en el TLC para
+el caso de promedios, <span class="math inline">\(\bar X_n,\)</span> que en nuestro ejemplo corresponde a <span class="math inline">\(\hat p_n\)</span>.
+Como hemos visto, esta propiedad la satisface cualquier otro estimador que sea máximo
+verosímil. Por ejemplo, podemos utilizar el <span class="math inline">\(\mathsf{MLE}\)</span> de los momios. La
+figura que sigue muestra la distribución de <span class="math inline">\(\hat \theta_n\)</span> para distintas
+remuestras <span class="math inline">\((B = 500)\)</span> con distintos valores de <span class="math inline">\(n.\)</span></p>
+<p><img src="11-propiedades-mle_files/figure-html/unnamed-chunk-15-1.png" width="95%" style="display: block; margin: auto;" /></p>
+<p>El gráfico anterior valida empíricamente la distribución asintótica para
+casos de muchas observaciones. A continuación ilustraremos cómo explotar
+este resultado para obtener intervalos de confianza.</p>
+<p>Para el caso de <span class="math inline">\(\hat p_n\)</span> hemos visto que el error estándar se calcula
+analíticamente como
+<span class="math display">\[\textsf{ee}_p^2 = \mathbb{V}(\hat p_n) = \mathbb{V}\left(\frac1n \sum_{i = 1}^n x_i\right)  = \frac{p^* (1 - p^*)}{n}.\]</span></p>
+<p>Éste empata con el valor del error estándar asintótico
+<span class="math display">\[\textsf{ee}_p^2 \approx \sqrt{\frac{1}{I_n(p^*)}},\]</span>
+pues la información de Fisher es igual a
+<span class="math display">\[I_n(p) = n \, I(p)  = \frac{n}{p (  1- p)}.\]</span>
+En este caso podemos utilizar el estimador <em>plug-in,</em>
+<span class="math inline">\(\hat{\textsf{ee}}_p = \textsf{ee}_p(\hat p_n).\)</span>
+Para estimar el momio, <span class="math inline">\(\theta,\)</span> el cálculo no es tan fácil pues tendríamos que calcular
+de manera analítica la varianza de un cociente
+<span class="math display">\[\textsf{ee}_\theta^2 = \mathbb{V}\left( \frac{\hat p_n}{1-\hat p_n}\right).\]</span>
+Utilizando la distirbución asintótica, el error estándar se puede calcular mediante
+<span class="math display">\[\textsf{ee}_\theta^2 \approx \sqrt{\frac{1}{I_n(\theta^*)}} = \sqrt{\frac{\theta (1 + \theta)^2 }{n}}.\]</span>
+A continuación mostramos los errores estándar para nuestro ejemplo utilizando
+la distribución asintótica y por medio de la distribución de <em>bootstrap.</em>
+Como es de esperarse, ambos coinciden para muestras relativamente grandes.</p>
+<pre><code>## # A tibble: 4 × 5
+## # Groups:   tamanos [4]
+##   tamanos momio_hat momio_boot momio_ee momio_ee_boot
+##     &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;         &lt;dbl&gt;
+## 1      16     0.333      0.367   0.192         0.236 
+## 2      32     0.333      0.342   0.136         0.140 
+## 3      64     0.123      0.123   0.0492        0.0498
+## 4     128     0.407      0.417   0.0793        0.0800</code></pre>
+<div class="ejercicio">
+<p>
+Comprueba las fórmulas para los errores estándar tanto para la
+probabilidad de éxito como para los momios.
+</p>
+</div>
+</div>
+<div id="el-método-delta" class="section level3 unnumbered hasAnchor">
+<h3>El método delta<a href="propiedades-teóricas-de-mle.html#el-método-delta" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>El ejercicio anterior nos sugiere una pregunta natural: Cómo establecer la
+distribución asintótica de un estimador cuando ya se conoce la de una pre-imagen
+de él? Es decir, si ya conocemos la distribución de <span class="math inline">\(\theta,\)</span> podemos establecer
+la distribución de <span class="math inline">\(\tau = g(\theta)?\)</span></p>
+<p>La respuesta es afirmativa y la enunciamos por medio de un teorema. El resultado se conoce como
+el <strong>método delta</strong>.</p>
+<div class="mathblock">
+<p>
+<strong>Teorema.</strong> Si <span class="math inline"><span class="math inline">\(\tau = g(\theta)\)</span></span> es una función diferenciable y <span class="math inline"><span class="math inline">\(g&amp;#39;(\theta) \neq 0\)</span></span>, entonces
+</p>
+</div>
+<span class="math display">\[\hat \tau_n \overset{d}{\rightarrow} \mathsf{N}( \tau^*, \hat{\mathsf{ee}}^2_\tau),\]</span>
+<div class="mathblock">
+<p>
+donde <span class="math inline"><span class="math inline">\(\hat \tau_n = g(\hat \theta_n)\)</span></span> y
+</p>
+</div>
+<p><span class="math display">\[\hat{\mathsf{ee}}_\tau = \bigg| g&#39;(\hat \theta_n) \bigg| \times \hat{\mathsf{ee}}_\theta(\hat \theta_n).\]</span></p>
+<p>Por ejemplo, este resultado lo podemos utilizar para nuestro experimento de Bernoullis.
+Pues <span class="math inline">\(g(p) = \frac{p}{1-p}\)</span> es una función diferenciable y por lo tanto
+<span class="math display">\[\hat{\mathsf{ee}}_\theta = \sqrt{\frac1n} \times \left[ \hat p_n^{1/2} (1-\hat p_n)^{3/2}\right].\]</span></p>
+<div class="ejercicio">
+<p>
+Comprueba la fórmula del método delta para el momio en función de la
+fracción de éxitos, y también comprueba que de el mismo resultado
+analítico que habías calculado en el ejercicio anterior.
+</p>
+</div>
+</div>
+</div>
+<div id="optimalidad-del-textsfmle" class="section level2 unnumbered hasAnchor">
+<h2>Optimalidad del <span class="math inline">\(\textsf{MLE}\)</span><a href="propiedades-teóricas-de-mle.html#optimalidad-del-textsfmle" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Consideremos el caso de una muestra iid <span class="math inline">\(X_1, \ldots, X_n \sim \mathsf{N}(\theta, \sigma^2).\)</span> Y consideremos dos estimadores para <span class="math inline">\(\theta.\)</span> El
+primero será la media muestral <span class="math inline">\(\bar X_n\)</span> y el segundo la mediana muestral, la
+cual denotaremos por <span class="math inline">\(\tilde \theta_n.\)</span> Sabemos que ambos son insesgados. Por lo
+tanto, en promedio emiten estimaciones correctas. Pero ¿cómo escogemos cual
+utilizar?</p>
+<p>Un criterio para comparar estimadores es el <strong>error cuadrático medio</strong>
+(<span class="math inline">\(\textsf{ECM}\)</span>, por sus siglas en inglés).</p>
+<div class="mathblock">
+<p>
+<strong>Definición.</strong> El error cuadrático medio de un
+estimador <span class="math inline"><span class="math inline">\(\tilde \theta_n\)</span></span> se
+calcula como <span class="math display"><span class="math display">\[\textsf{ECM}[\tilde \theta_n]
+= \mathbb{E}[(\tilde \theta_n - \theta^*)^2].\]</span></span>
+</p>
+</div>
+<p>Por lo tanto, el <span class="math inline">\(\textsf{ECM}\)</span> mide la distancia promedio entre el estimador y
+el valor verdadero valor del parámetro. La siguiente igualdad es bastante útil
+para comparar dos estimadores.</p>
+<div class="mathblock">
+<p>
+<span class="math display"><span class="math display">\[\textsf{ECM}[\tilde \theta_n] =
+\mathbb{V}\left(\tilde \theta_n\right) + \textsf{Sesgo}\left[\tilde
+\theta_n\right]^2.\]</span></span>
+</p>
+</div>
+<p>Por lo tanto si dos estimadores son insesgados, uno es más eficiente que el otro si
+su varianza es menor.</p>
+<p>La media sabemos que es el <span class="math inline">\(\textsf{MLE}\)</span> y por el TCL tenemos que
+<span class="math display">\[\sqrt{n} \left( \bar X_n - \theta \right) \overset{d}{\rightarrow} \mathsf{N}( 0, \sigma^2).\]</span></p>
+<p>La mediana, en contraste, tiene una distribución asintótica
+<span class="math display">\[\sqrt{n} \left( \tilde X_n - \theta \right) \overset{d}{\rightarrow} \mathsf{N}\left( 0, \sigma^2 \frac{\pi}{2}\right),\]</span></p>
+<p>es decir tiene una varianza ligeramente mayor. Por lo tanto, decimos que la
+mediana tiene una <em>eficiencia relativa</em> con respecto a la media del <span class="math inline">\(.63 \% (\approx \pi/2)\)</span>. Es decir, la mediana sólo utliza una fracción de los datos
+comparado con la media.</p>
+<p>El siguiente teorema, <strong>la desigualdad de Cramer-Rao</strong>, nos permite establecer
+esta resultado de manera mas general para cualquier estimador insesgado.</p>
+<div class="mathblock">
+<p>
+<strong>Teorema.</strong> Sea <span class="math inline"><span class="math inline">\(\tilde \theta_n\)</span></span> <em>cualquier</em> estimador insesgado de <span class="math inline"><span class="math inline">\(\theta\)</span></span> cuyo valor verdadero es <span class="math inline"><span class="math inline">\(\theta^*,\)</span></span> entonces <span class="math display"><span class="math display">\[\begin{align}
+  \mathbb{V}(\tilde \theta_n) \geq \frac{1}{n I(\theta^*)}.
+\end{align}\]</span></span>
+</p>
+</div>
+<p>Un estimador insesgado que satisfaga esta desigualdad se dice que es
+<em>eficiente.</em> Nota que el lado derecho de la desigualdad es precisamente la
+varianza asintótica del <span class="math inline">\(\textsf{MLE}.\)</span> Por lo tanto, éste es <em>asintóticamente
+eficiente.</em></p>
+<div class="comentario">
+<p>
+Es importante hacer enfásis en que la optimalidad del <span class="math inline"><span class="math inline">\(\textsf{MLE}\)</span></span> es un resultado asintótico.
+Es decir, sólo se satisface cuando tenemos un número <em>suficiente</em>
+de observaciones. Qué tan grande debe ser el tamaño de muestra varia de
+problema a problema. Es por esto que para muestras de tamaño finito se
+prefieren estimadores que minimicen el <span class="math inline"><span class="math inline">\(\textsf{ECM},\)</span></span> como cuando hacemos
+regresión ridge o utilizamos el estimador James–Stein para un vector de
+medias.
+</p>
+</div>
+<p>El siguiente diagrama muestra de manera gráfica la relación entre las distintas
+propiedades que hemos visto en esta sección.</p>
+<p><img src="images/mle-mapa-mental.jpg" width="95%" style="display: block; margin: auto;" /></p>
 
 </div>
 </div>
 <h3>References</h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-ramsey" class="csl-entry">
-Ramsey, Fred, and Daniel Schafer. 2012. <em>The Statistical Sleuth: A Course in Methods of Data Analysis</em>. Cengage Learning.
+<div id="ref-Wasserman" class="csl-entry">
+Wasserman, Larry. 2013. <em>All of Statistics: A Concise Course in Statistical Inference</em>. Springer Science &amp; Business Media.
 </div>
 </div>
             </section>
@@ -851,8 +839,8 @@ Ramsey, Fred, and Daniel Schafer. 2012. <em>The Statistical Sleuth: A Course in 
           </div>
         </div>
       </div>
-<a href="apéndice-principios-de-visualizacion.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="referencias-1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="bootstrap-paramétrico.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="más-de-pruebas-de-hipótesis-e-intervalos.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -883,7 +871,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/98-tareas.Rmd",
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/11-propiedades-mle.Rmd",
 "text": "Edit"
 },
 "history": {

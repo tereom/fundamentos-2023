@@ -3,7 +3,7 @@ fig:unnamed-chunk-2
 fig:mundo-real
 fig:mundo-bootstrap
 fig:unnamed-chunk-85
-references
+referencias
 análisis-exploratorio
 tipos-de-estudio-y-experimentos
 pruebas-de-hipótesis
@@ -11,3 +11,6 @@ estimación-y-distribución-de-muestreo-1
 intervalos-de-confianza-y-remuestreo
 estimación-por-máxima-verosimilitud
 bootstrap-paramétrico
+propiedades-teóricas-de-mle
+más-de-pruebas-de-hipótesis-e-intervalos
+introducción-a-inferencia-bayesiana-1

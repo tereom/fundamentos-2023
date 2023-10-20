@@ -103,6 +103,6 @@ Se evaluará mediante tareas semanales y dos exámenes:
 * Examen final a casa (40%)
 
 
-# References
+## Referencias
 
 <div id="refs"></div>
