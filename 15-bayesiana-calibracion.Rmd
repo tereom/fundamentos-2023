@@ -390,12 +390,6 @@ prop_post <- (a + k) / (120 + b)
 prop_post
 ```
 
-El estimador de máxima verosimilitud es
-
-```{r}
-k / 120
-```
-
 ¿Cuál es la verdadera proporción?
 
 ```{r}
@@ -533,7 +527,7 @@ errores %>%
 ```
 
 Obtenemos una ganancia considerable en cuanto a la estimación de la desviación
-estandar de esta población. Los estimadores de la media superior
+estandar de esta población. Los estimadores de la media posterior
 son superiores a los de máxima verosimilitud en términos de error cuadrático medio.
 
 Podemos graficar las dos estimaciones, muestra a muestra, para entender
@@ -692,6 +686,7 @@ estimar_riesgo <- function(n = 20, theta, perdida, reps = 10000){
 }
 estimar_riesgo(n = 20, theta = 0.1, perdida = perdida_cuad)
 ```
+
 Como dijimos, esta cantidad depende de $\theta$ que no conocemos. Así que
 calculamos para cada valor de $\theta:$
 

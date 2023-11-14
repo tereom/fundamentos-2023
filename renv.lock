@@ -602,6 +602,17 @@
       ],
       "Hash": "d59f3b464e8da1aef82dc04b588b8dfb"
     },
+    "expm": {
+      "Package": "expm",
+      "Version": "0.999-7",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "Matrix",
+        "methods"
+      ],
+      "Hash": "af0c5d9f9ece61d4723904c7b2b49b4d"
+    },
     "fansi": {
       "Package": "fansi",
       "Version": "1.0.4",
