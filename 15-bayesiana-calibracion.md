@@ -512,17 +512,6 @@ prop_post
 ## [1] 0.02272727
 ```
 
-El estimador de máxima verosimilitud es
-
-
-```r
-k / 120
-```
-
-```
-## [1] 0.025
-```
-
 ¿Cuál es la verdadera proporción?
 
 
@@ -665,7 +654,7 @@ ggplot(errores, aes(x = error, fill = tipo)) +
   geom_histogram(bins = 20, position = "identity", alpha = 0.5) + facet_wrap(~parametro)
 ```
 
-<img src="15-bayesiana-calibracion_files/figure-html/unnamed-chunk-32-1.png" width="576" style="display: block; margin: auto;" />
+<img src="15-bayesiana-calibracion_files/figure-html/unnamed-chunk-31-1.png" width="576" style="display: block; margin: auto;" />
 Vemos claramente que la estimación de la desviación estándar de
 nuestro modelo es claramente superior a la de máxima verosimilitud. En resumen:
 
@@ -688,7 +677,7 @@ errores %>%
 ```
 
 Obtenemos una ganancia considerable en cuanto a la estimación de la desviación
-estandar de esta población. Los estimadores de la media superior
+estandar de esta población. Los estimadores de la media posterior
 son superiores a los de máxima verosimilitud en términos de error cuadrático medio.
 
 Podemos graficar las dos estimaciones, muestra a muestra, para entender
@@ -714,7 +703,7 @@ ggplot(aes(x = max_verosim, y = media_post)) +
                colour='red', size=1, arrow =arrow(length = unit(0.5, "cm")))
 ```
 
-<img src="15-bayesiana-calibracion_files/figure-html/unnamed-chunk-34-1.png" width="576" style="display: block; margin: auto;" />
+<img src="15-bayesiana-calibracion_files/figure-html/unnamed-chunk-33-1.png" width="576" style="display: block; margin: auto;" />
 
 Nótese como estimaciones demasiado bajas o demasiada altas son contraídas
 hacia valores más consistentes con la inicial, lo cual resulta en 
@@ -777,7 +766,7 @@ ggplot(estimadores_sim_ag, aes(x = est_mv, media_post, size = n)) + geom_point()
   geom_abline()
 ```
 
-<img src="15-bayesiana-calibracion_files/figure-html/unnamed-chunk-36-1.png" width="576" style="display: block; margin: auto;" />
+<img src="15-bayesiana-calibracion_files/figure-html/unnamed-chunk-35-1.png" width="576" style="display: block; margin: auto;" />
 
 ## Teoría de decisión {-}
 
@@ -876,6 +865,7 @@ estimar_riesgo(n = 20, theta = 0.1, perdida = perdida_cuad)
 ## 1    20   0.1 MLE       0.00449
 ## 2    20   0.1 Posterior 0.00755
 ```
+
 Como dijimos, esta cantidad depende de $\theta$ que no conocemos. Así que
 calculamos para cada valor de $\theta:$
 
@@ -891,7 +881,7 @@ ggplot(riesgo_tbl, aes(x = theta, y = riesgo, colour = estimador)) +
   geom_line() 
 ```
 
-<img src="15-bayesiana-calibracion_files/figure-html/unnamed-chunk-38-1.png" width="576" style="display: block; margin: auto;" />
+<img src="15-bayesiana-calibracion_files/figure-html/unnamed-chunk-37-1.png" width="576" style="display: block; margin: auto;" />
 
 Y vemos que el riesgo depende del verdadero valor del parametro:
 en los extremos, el estimador de máxima verosimilitud tiene menos riesgo,
@@ -951,7 +941,7 @@ ggplot(riesgo_post_tbl, aes(x = x, y = riesgo_post, colour = estimador)) +
   geom_line() + geom_point() 
 ```
 
-<img src="15-bayesiana-calibracion_files/figure-html/unnamed-chunk-40-1.png" width="576" style="display: block; margin: auto;" />
+<img src="15-bayesiana-calibracion_files/figure-html/unnamed-chunk-39-1.png" width="576" style="display: block; margin: auto;" />
 
 Donde vemos que la pérdida del estimador bayesiano es mejor para valores extremos
 de número de éxitos observado $x$, pero tiene más riesgo posterior

@@ -77,80 +77,80 @@ sample_n(propinas, 10) |> formatear_tabla()
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:right;"> 10.51 </td>
-   <td style="text-align:right;"> 1.25 </td>
+   <td style="text-align:right;"> 17.81 </td>
+   <td style="text-align:right;"> 2.34 </td>
    <td style="text-align:left;"> No </td>
    <td style="text-align:left;"> Sab </td>
    <td style="text-align:left;"> Cena </td>
-   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:right;"> 4 </td>
   </tr>
   <tr>
-   <td style="text-align:right;"> 10.65 </td>
-   <td style="text-align:right;"> 1.50 </td>
+   <td style="text-align:right;"> 20.27 </td>
+   <td style="text-align:right;"> 2.83 </td>
    <td style="text-align:left;"> No </td>
    <td style="text-align:left;"> Jue </td>
    <td style="text-align:left;"> Comida </td>
    <td style="text-align:right;"> 2 </td>
   </tr>
   <tr>
-   <td style="text-align:right;"> 12.03 </td>
-   <td style="text-align:right;"> 1.50 </td>
-   <td style="text-align:left;"> Si </td>
-   <td style="text-align:left;"> Vie </td>
-   <td style="text-align:left;"> Cena </td>
-   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:right;"> 22.82 </td>
+   <td style="text-align:right;"> 2.18 </td>
+   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;"> Jue </td>
+   <td style="text-align:left;"> Comida </td>
+   <td style="text-align:right;"> 3 </td>
   </tr>
   <tr>
-   <td style="text-align:right;"> 12.90 </td>
-   <td style="text-align:right;"> 1.10 </td>
-   <td style="text-align:left;"> Si </td>
-   <td style="text-align:left;"> Sab </td>
-   <td style="text-align:left;"> Cena </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-  <tr>
-   <td style="text-align:right;"> 15.69 </td>
-   <td style="text-align:right;"> 1.50 </td>
-   <td style="text-align:left;"> Si </td>
-   <td style="text-align:left;"> Dom </td>
-   <td style="text-align:left;"> Cena </td>
-   <td style="text-align:right;"> 2 </td>
-  </tr>
-  <tr>
-   <td style="text-align:right;"> 14.78 </td>
-   <td style="text-align:right;"> 3.23 </td>
+   <td style="text-align:right;"> 12.54 </td>
+   <td style="text-align:right;"> 2.50 </td>
    <td style="text-align:left;"> No </td>
    <td style="text-align:left;"> Dom </td>
    <td style="text-align:left;"> Cena </td>
    <td style="text-align:right;"> 2 </td>
   </tr>
   <tr>
-   <td style="text-align:right;"> 12.48 </td>
-   <td style="text-align:right;"> 2.52 </td>
+   <td style="text-align:right;"> 14.26 </td>
+   <td style="text-align:right;"> 2.50 </td>
    <td style="text-align:left;"> No </td>
    <td style="text-align:left;"> Jue </td>
    <td style="text-align:left;"> Comida </td>
    <td style="text-align:right;"> 2 </td>
   </tr>
   <tr>
-   <td style="text-align:right;"> 16.32 </td>
-   <td style="text-align:right;"> 4.30 </td>
-   <td style="text-align:left;"> Si </td>
-   <td style="text-align:left;"> Vie </td>
+   <td style="text-align:right;"> 13.28 </td>
+   <td style="text-align:right;"> 2.72 </td>
+   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;"> Sab </td>
    <td style="text-align:left;"> Cena </td>
    <td style="text-align:right;"> 2 </td>
   </tr>
   <tr>
-   <td style="text-align:right;"> 15.95 </td>
+   <td style="text-align:right;"> 10.09 </td>
    <td style="text-align:right;"> 2.00 </td>
-   <td style="text-align:left;"> No </td>
-   <td style="text-align:left;"> Jue </td>
+   <td style="text-align:left;"> Si </td>
+   <td style="text-align:left;"> Vie </td>
    <td style="text-align:left;"> Comida </td>
    <td style="text-align:right;"> 2 </td>
   </tr>
   <tr>
-   <td style="text-align:right;"> 22.67 </td>
-   <td style="text-align:right;"> 2.00 </td>
+   <td style="text-align:right;"> 15.06 </td>
+   <td style="text-align:right;"> 3.00 </td>
+   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;"> Sab </td>
+   <td style="text-align:left;"> Cena </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 20.29 </td>
+   <td style="text-align:right;"> 2.75 </td>
+   <td style="text-align:left;"> No </td>
+   <td style="text-align:left;"> Sab </td>
+   <td style="text-align:left;"> Cena </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 12.76 </td>
+   <td style="text-align:right;"> 2.23 </td>
    <td style="text-align:left;"> Si </td>
    <td style="text-align:left;"> Sab </td>
    <td style="text-align:left;"> Cena </td>
