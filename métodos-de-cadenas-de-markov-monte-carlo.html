@@ -413,12 +413,13 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#ejemplo-varias-pruebas-independientes"><i class="fa fa-check"></i>Ejemplo: varias pruebas independientes</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#simulando-de-la-posterior"><i class="fa fa-check"></i>Simulando de la posterior</a></li>
+<li class="chapter" data-level="12.1" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#ejemplo-de-islas"><i class="fa fa-check"></i><b>12.1</b> Ejemplo de islas</a></li>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#por-qué-funciona-metrópolis"><i class="fa fa-check"></i>¿Por qué funciona Metrópolis?</a></li>
 <li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#método-de-metrópolis"><i class="fa fa-check"></i>Método de Metrópolis</a></li>
 <li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#ajustando-el-tamaño-de-salto"><i class="fa fa-check"></i>Ajustando el tamaño de salto</a>
 <ul>
 <li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#ejemplo-16"><i class="fa fa-check"></i>Ejemplo</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#por-qué-funciona-metrópolis"><i class="fa fa-check"></i>¿Por qué funciona Metrópolis?</a></li>
 <li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#metrópolis-con-varios-parámetros"><i class="fa fa-check"></i>Metrópolis con varios parámetros</a>
 <ul>
 <li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#ejemplo-el-modelo-normal"><i class="fa fa-check"></i>Ejemplo: el modelo normal</a></li>
@@ -759,6 +760,187 @@ simulador estándar.</li>
 de una distribución cualquiera <span class="math inline">\(p(\theta) = K f(\theta)\)</span>, donde sólo conocemos
 la función <span class="math inline">\(f(\theta)\)</span>.</p>
 </div>
+<div id="ejemplo-de-islas" class="section level2 hasAnchor" number="12.1">
+<h2><span class="header-section-number">12.1</span> Ejemplo de islas<a href="métodos-de-cadenas-de-markov-monte-carlo.html#ejemplo-de-islas" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Comenzamos revisando el ejemplo de las islas en <span class="citation">Kruschke (<a href="#ref-Kruschke" role="doc-biblioref">2015</a>)</span> (7.2) para tener más intuición de cómo funciona este algoritmo.</p>
+</div>
+<div id="por-qué-funciona-metrópolis" class="section level2 unnumbered hasAnchor">
+<h2>¿Por qué funciona Metrópolis?<a href="métodos-de-cadenas-de-markov-monte-carlo.html#por-qué-funciona-metrópolis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Supongamos que un vendedor de <em>Yakult</em> trabaja a lo largo de una cadena de
+islas:</p>
+<ul>
+<li><p>Constantemente viaja entre las islas ofreciendo sus productos;</p></li>
+<li><p>Al final de un día de trabajo decide si permanece en la misma isla o se
+transporta a una de las <span class="math inline">\(2\)</span> islas vecinas;</p></li>
+<li><p>El vendedor ignora la distribución de la población en las islas y el número
+total de islas; sin embargo, una vez que se encuentra en una isla puede
+investigar la población de la misma y también de la isla a la que se propone
+viajar después.</p></li>
+<li><p>El objetivo del vendedor es visitar las islas de manera proporcional a la
+población de cada una. Con esto en mente el vendedor utiliza el siguiente
+proceso:</p>
+<ol style="list-style-type: decimal">
+<li>Lanza un volado, si el resultado es águila se propone ir a la isla
+del lado izquierdo de su ubicación actual y si es sol a la del lado derecho.</li>
+<li>Si la isla propuesta en el paso anterior tiene población mayor a la
+población de la isla actual, el vendedor decide viajar a ella. Si la isla vecina
+tiene población menor, entonces visita la isla propuesta con una probabilidad que
+depende de la población de las islas. Sea <span class="math inline">\(P^*\)</span> la población de la isla
+propuesta y <span class="math inline">\(P_{t}\)</span> la población de la isla actual. Entonces el vendedor
+cambia de isla con probabilidad
+<span class="math display">\[q_{mover}=P^*/P_{t}\]</span></li>
+</ol></li>
+</ul>
+<p>A la larga, si el vendedor sigue la heurística anterior la probabilidad de que
+el vendedor este en alguna de las islas coincide con la población relativa de
+la isla.</p>
+<div class="sourceCode" id="cb579"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb579-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-1" aria-hidden="true" tabindex="-1"></a>islas <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">islas =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">pob =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb579-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-2" aria-hidden="true" tabindex="-1"></a>camina_isla <span class="ot">&lt;-</span> <span class="cf">function</span>(i){ <span class="co"># i: isla actual</span></span>
+<span id="cb579-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-3" aria-hidden="true" tabindex="-1"></a>    u <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>) <span class="co"># volado</span></span>
+<span id="cb579-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-4" aria-hidden="true" tabindex="-1"></a>    v <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(u <span class="sc">&lt;</span> <span class="fl">0.5</span>, i <span class="sc">-</span> <span class="dv">1</span>, i <span class="sc">+</span> <span class="dv">1</span>)  <span class="co"># isla vecina (índice)</span></span>
+<span id="cb579-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (v <span class="sc">&lt;</span> <span class="dv">1</span> <span class="sc">|</span> v <span class="sc">&gt;</span> <span class="dv">10</span>) { <span class="co"># si estás en los extremos y el volado indica salir</span></span>
+<span id="cb579-6"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(i)</span>
+<span id="cb579-7"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-7" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb579-8"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-8" aria-hidden="true" tabindex="-1"></a>    p_move <span class="ot">=</span> <span class="fu">ifelse</span>(islas<span class="sc">$</span>pob[v] <span class="sc">&gt;</span> islas<span class="sc">$</span>pob[i], <span class="dv">1</span>, islas<span class="sc">$</span>pob[v] <span class="sc">/</span> islas<span class="sc">$</span>pob[i])</span>
+<span id="cb579-9"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-9" aria-hidden="true" tabindex="-1"></a>    u2 <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>)</span>
+<span id="cb579-10"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (p_move  <span class="sc">&gt;</span> u2) {</span>
+<span id="cb579-11"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-11" aria-hidden="true" tabindex="-1"></a>        <span class="fu">return</span>(v) <span class="co"># isla destino</span></span>
+<span id="cb579-12"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-12" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb579-13"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> {</span>
+<span id="cb579-14"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(i) <span class="co"># me quedo en la misma isla</span></span>
+<span id="cb579-15"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-15" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb579-16"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb579-17"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-17" aria-hidden="true" tabindex="-1"></a>pasos <span class="ot">&lt;-</span> <span class="dv">100000</span></span>
+<span id="cb579-18"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-18" aria-hidden="true" tabindex="-1"></a>iteraciones <span class="ot">&lt;-</span> <span class="fu">numeric</span>(pasos)</span>
+<span id="cb579-19"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-19" aria-hidden="true" tabindex="-1"></a>iteraciones[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">1</span>) <span class="co"># isla inicial</span></span>
+<span id="cb579-20"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>pasos) {</span>
+<span id="cb579-21"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-21" aria-hidden="true" tabindex="-1"></a>    iteraciones[j] <span class="ot">&lt;-</span> <span class="fu">camina_isla</span>(iteraciones[j <span class="sc">-</span> <span class="dv">1</span>])</span>
+<span id="cb579-22"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb579-23"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-23" aria-hidden="true" tabindex="-1"></a>caminata <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">pasos =</span> <span class="dv">1</span><span class="sc">:</span>pasos, <span class="at">isla =</span> iteraciones)</span>
+<span id="cb579-24"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-24" aria-hidden="true" tabindex="-1"></a>plot_caminata <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(caminata[<span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>, ], <span class="fu">aes</span>(<span class="at">x =</span> pasos, <span class="at">y =</span> isla)) <span class="sc">+</span></span>
+<span id="cb579-25"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb579-26"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_path</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb579-27"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
+<span id="cb579-28"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Caminata aleatoria&quot;</span>) <span class="sc">+</span></span>
+<span id="cb579-29"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="fu">expression</span>(theta), <span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">+</span></span>
+<span id="cb579-30"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="st">&quot;Tiempo&quot;</span>)</span>
+<span id="cb579-31"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-31" aria-hidden="true" tabindex="-1"></a>plot_dist <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(caminata, <span class="fu">aes</span>(<span class="at">x =</span> isla)) <span class="sc">+</span></span>
+<span id="cb579-32"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
+<span id="cb579-33"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="fu">expression</span>(theta), <span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">+</span></span>
+<span id="cb579-34"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Distribución objetivo&quot;</span>, </span>
+<span id="cb579-35"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-35" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="fu">P</span>(theta)))</span>
+<span id="cb579-36"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-36" aria-hidden="true" tabindex="-1"></a>plot_caminata <span class="sc">/</span> plot_dist</span></code></pre></div>
+<p><img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-13-1.png" width="336" style="display: block; margin: auto;" /></p>
+<p>Entonces:</p>
+<ul>
+<li><p>Para aproximar la distribución objetivo debemos permitir que el vendedor
+recorra las islas durante una sucesión larga de pasos y registramos sus visitas.</p></li>
+<li><p>Nuestra aproximación de la distribución es justamente el registro de sus
+visitas.</p></li>
+<li><p>Más aún, debemos tener cuidado y excluir la porción de las visitas que se
+encuentran bajo la influencia de la posición inicial. Esto es, debemos excluir
+el <strong>periodo de calentamiento</strong>.</p></li>
+<li><p>Una vez que tenemos un registro <em>largo</em> de los viajes del vendedor (excluyendo
+el calentamiento) podemos aproximar la distribución objetivo
+simplemente contando el número relativo de veces que el vendedor visitó
+dicha isla.</p></li>
+</ul>
+<div class="sourceCode" id="cb580"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb580-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb580-1" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">1000</span>, <span class="dv">5000</span>)</span>
+<span id="cb580-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb580-2" aria-hidden="true" tabindex="-1"></a>plots_list <span class="ot">&lt;-</span> <span class="fu">map</span>(t, <span class="cf">function</span>(i){</span>
+<span id="cb580-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb580-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(caminata[<span class="dv">1</span><span class="sc">:</span>i, ], <span class="fu">aes</span>(<span class="at">x =</span> isla)) <span class="sc">+</span></span>
+<span id="cb580-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb580-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
+<span id="cb580-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb580-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;&quot;</span>, <span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">title =</span> <span class="fu">paste</span>(<span class="st">&quot;t = &quot;</span>, i, <span class="at">sep =</span> <span class="st">&quot;&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb580-6"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb580-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">scale_x_continuous</span>(<span class="fu">expression</span>(theta), <span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">11</span>))</span>
+<span id="cb580-7"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb580-7" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb580-8"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb580-8" aria-hidden="true" tabindex="-1"></a><span class="fu">wrap_plots</span>(plots_list)</span></code></pre></div>
+<p><img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-14-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>Escribamos el algoritmo, para esto indexamos las islas por el valor
+<span class="math inline">\(\theta\)</span>, es así que la isla del extremo oeste corresponde a <span class="math inline">\(\theta=1\)</span> y la
+población relativa de cada isla es <span class="math inline">\(P(\theta)\)</span>:</p>
+<ol style="list-style-type: decimal">
+<li><p>El vendedor se ubica en <span class="math inline">\(\theta^{(i)}\)</span> y propone moverse a la izquierda
+o derecha con probabilidad <span class="math inline">\(0.5\)</span>.<br />
+El rango de los posibles valores para moverse, y la probabilidad de proponer
+cada uno se conoce como <strong>distribución propuesta</strong>, en nuestro ejemplo sólo
+toma dos valores cada uno con probabilidad <span class="math inline">\(0.5\)</span>.</p></li>
+<li><p>Una vez que se propone un movimiento, decidimos si aceptarlo. La decisión de
+aceptar se basa en el valor de la distribución <strong>objetivo</strong> en la posición
+propuesta, relativo al valor de la distribución objetivo en la posición actual:
+<span class="math display">\[\alpha=\min\bigg\{\frac{P(\theta^*)}{P(\theta^{(i)})},1\bigg\},\]</span>
+donde <span class="math inline">\(\alpha\)</span> denota la probabilidad de hacer el cambio de isla.</p></li>
+</ol>
+<p>Notemos que la distribución objetivo <span class="math inline">\(P(\theta)\)</span> no necesita estar normalizada,
+esto es porque lo que nos interesa es el cociente <span class="math inline">\(P(\theta^*)/P(\theta^{(i)})\)</span>.</p>
+<ol start="3" style="list-style-type: decimal">
+<li>Una vez que propusimos un movimiento y calculamos la probabilidad de aceptar
+el movimiento aceptamos o rechazamos el movimiento generando un valor de una
+distribución uniforme, si dicho valor es menor a la probabilidad de cambio,
+<span class="math inline">\(\alpha,\)</span> entonces hacemos el movimiento.</li>
+</ol>
+<p>Entonces, para utilizar el algoritmo necesitamos ser capaces de:</p>
+<ul>
+<li><p>Generar un valor de la distribución propuesta, que hemos denotado por <span class="math inline">\(q,\)</span>
+(para crear <span class="math inline">\(\theta^*\)</span>).</p></li>
+<li><p>Evaluar la distribución objetivo en cualquier valor propuesto (para calcular
+<span class="math inline">\(P(\theta^*)/P(\theta^{(i)})\)</span>).</p></li>
+<li><p>Generar un valor uniforme (para movernos con probabilidad <span class="math inline">\(\alpha\)</span>).</p></li>
+</ul>
+<p>Las <span class="math inline">\(3\)</span> puntos anteriores nos permiten generar muestras aleatorias de la
+distribución objetivo, sin importar si esta está normalizada. Esta técnica es
+particularmente útil cuando cuando la distribución objetivo es una posterior
+proporcional a <span class="math inline">\(p(x|\theta)p(\theta)\)</span>.</p>
+<p>Para entender porque funciona el algoritmo de Metrópolis hace falta entender <span class="math inline">\(2\)</span>
+puntos, primero que la distribución objetivo es <strong>estable</strong>: si la probabilidad
+<em>actual</em> de ubicarse en una posición coincide con la probabilidad en la
+distribución objetivo, entonces el algoritmo preserva las probabilidades.</p>
+<div class="sourceCode" id="cb581"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb581-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(expm)</span>
+<span id="cb581-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-2" aria-hidden="true" tabindex="-1"></a>transMat <span class="ot">&lt;-</span> <span class="cf">function</span>(P){ <span class="co"># recibe vector de probabilidades (o población)</span></span>
+<span id="cb581-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-3" aria-hidden="true" tabindex="-1"></a>    T <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">10</span>)</span>
+<span id="cb581-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-4" aria-hidden="true" tabindex="-1"></a>    n <span class="ot">&lt;-</span> <span class="fu">length</span>(P <span class="sc">-</span> <span class="dv">1</span>) <span class="co"># número de estados</span></span>
+<span id="cb581-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n <span class="sc">-</span> <span class="dv">1</span>) { <span class="co"># llenamos por fila</span></span>
+<span id="cb581-6"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-6" aria-hidden="true" tabindex="-1"></a>        T[j, j <span class="sc">-</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">min</span>(P[j <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">/</span> P[j], <span class="dv">1</span>)</span>
+<span id="cb581-7"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-7" aria-hidden="true" tabindex="-1"></a>        T[j, j] <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">min</span>(P[j <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">/</span> P[j], <span class="dv">1</span>)) <span class="sc">+</span> </span>
+<span id="cb581-8"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-8" aria-hidden="true" tabindex="-1"></a>                   <span class="fl">0.5</span> <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">min</span>(P[j <span class="sc">+</span> <span class="dv">1</span>] <span class="sc">/</span> P[j], <span class="dv">1</span>))</span>
+<span id="cb581-9"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-9" aria-hidden="true" tabindex="-1"></a>        T[j, j <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">min</span>(P[j <span class="sc">+</span> <span class="dv">1</span>] <span class="sc">/</span> P[j], <span class="dv">1</span>)</span>
+<span id="cb581-10"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-10" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb581-11"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># faltan los casos j = 1 y j = n</span></span>
+<span id="cb581-12"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-12" aria-hidden="true" tabindex="-1"></a>    T[<span class="dv">1</span>, <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">+</span> <span class="fl">0.5</span> <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">min</span>(P[<span class="dv">2</span>] <span class="sc">/</span> P[<span class="dv">1</span>], <span class="dv">1</span>))</span>
+<span id="cb581-13"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-13" aria-hidden="true" tabindex="-1"></a>    T[<span class="dv">1</span>, <span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">min</span>(P[<span class="dv">2</span>] <span class="sc">/</span> P[<span class="dv">1</span>], <span class="dv">1</span>)</span>
+<span id="cb581-14"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-14" aria-hidden="true" tabindex="-1"></a>    T[n, n] <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">+</span> <span class="fl">0.5</span> <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">min</span>(P[n <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">/</span> P[n], <span class="dv">1</span>))</span>
+<span id="cb581-15"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-15" aria-hidden="true" tabindex="-1"></a>    T[n, n <span class="sc">-</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">min</span>(P[n <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">/</span> P[n], <span class="dv">1</span>)</span>
+<span id="cb581-16"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-16" aria-hidden="true" tabindex="-1"></a>    T</span>
+<span id="cb581-17"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb581-18"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-18" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> <span class="fu">transMat</span>(islas<span class="sc">$</span>pob)</span>
+<span id="cb581-19"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-19" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">8</span>))</span>
+<span id="cb581-20"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-20" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">1000</span>, <span class="dv">5000</span>)</span>
+<span id="cb581-21"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-21" aria-hidden="true" tabindex="-1"></a>expT <span class="ot">&lt;-</span> <span class="fu">map_df</span>(t, <span class="sc">~</span><span class="fu">data.frame</span>(<span class="at">t =</span> ., w <span class="sc">%*%</span> (T <span class="sc">%^%</span> .)))</span>
+<span id="cb581-22"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-22" aria-hidden="true" tabindex="-1"></a>expT_long <span class="ot">&lt;-</span> expT <span class="sc">%&gt;%</span></span>
+<span id="cb581-23"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gather</span>(theta, P, <span class="sc">-</span>t) <span class="sc">%&gt;%</span> </span>
+<span id="cb581-24"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">theta =</span> <span class="fu">parse_number</span>(theta))</span>
+<span id="cb581-25"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-25" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(expT_long, <span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">y =</span> P)) <span class="sc">+</span></span>
+<span id="cb581-26"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;darkgray&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb581-27"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span> t) <span class="sc">+</span></span>
+<span id="cb581-28"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="fu">expression</span>(theta), <span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">11</span>))</span></code></pre></div>
+<p><img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-15-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>El segundo punto es que el proceso converge a la distribución objetivo.
+Podemos ver, (en nuestro ejemplo sencillo) que sin importar el punto de inicio
+se alcanza la distribución objetivo.</p>
+<div class="sourceCode" id="cb582"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb582-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb582-1" aria-hidden="true" tabindex="-1"></a>inicio_p <span class="ot">&lt;-</span> <span class="cf">function</span>(i){</span>
+<span id="cb582-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb582-2" aria-hidden="true" tabindex="-1"></a>    w <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">10</span>)</span>
+<span id="cb582-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb582-3" aria-hidden="true" tabindex="-1"></a>    w[i] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb582-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb582-4" aria-hidden="true" tabindex="-1"></a>    t <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">50</span>, <span class="dv">100</span>)</span>
+<span id="cb582-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb582-5" aria-hidden="true" tabindex="-1"></a>    exp_t <span class="ot">&lt;-</span> <span class="fu">map_df</span>(t, <span class="sc">~</span> <span class="fu">data.frame</span>(<span class="at">t =</span> .x, <span class="at">inicio =</span> i, w <span class="sc">%*%</span> (T <span class="sc">%^%</span> .))) <span class="sc">%&gt;%</span></span>
+<span id="cb582-6"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb582-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">gather</span>(theta, P, <span class="sc">-</span>t, <span class="sc">-</span>inicio) <span class="sc">%&gt;%</span> </span>
+<span id="cb582-7"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb582-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mutate</span>(<span class="at">theta =</span> <span class="fu">parse_number</span>(theta))</span>
+<span id="cb582-8"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb582-8" aria-hidden="true" tabindex="-1"></a>    exp_t</span>
+<span id="cb582-9"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb582-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb582-10"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb582-10" aria-hidden="true" tabindex="-1"></a>exp_t <span class="ot">&lt;-</span> <span class="fu">map_df</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">9</span>), inicio_p)</span>
+<span id="cb582-11"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb582-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(exp_t, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.numeric</span>(theta), <span class="at">y =</span> P)) <span class="sc">+</span></span>
+<span id="cb582-12"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb582-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;darkgray&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb582-13"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb582-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_grid</span>(inicio <span class="sc">~</span> t) <span class="sc">+</span></span>
+<span id="cb582-14"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb582-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="fu">expression</span>(theta), <span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">11</span>))</span></code></pre></div>
+<p><img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-16-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
 <div id="método-de-metrópolis" class="section level2 unnumbered hasAnchor">
 <h2>Método de Metrópolis<a href="métodos-de-cadenas-de-markov-monte-carlo.html#método-de-metrópolis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>En el método de Metrópolis, uno de los más antiguos, comenzamos
@@ -804,93 +986,92 @@ no es trivial de hacer garantizando resultados correctos.
 <p>En resumen, todo el código de esta sección es de carácter ilustrativo.
 Utiliza implementaciones establecidas en las aplicaciones.</p>
 <p>Abajo implementamos el algoritmo con un salto de tipo normal:</p>
-<div class="sourceCode" id="cb579"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb579-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-1" aria-hidden="true" tabindex="-1"></a>crear_metropolis <span class="ot">&lt;-</span> <span class="cf">function</span>(fun_log, <span class="at">sigma_salto =</span> <span class="fl">0.1</span>){</span>
-<span id="cb579-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># la entrada es la log posterior</span></span>
-<span id="cb579-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-3" aria-hidden="true" tabindex="-1"></a>  iterar_metropolis <span class="ot">&lt;-</span> <span class="cf">function</span>(theta_inicial, n){</span>
-<span id="cb579-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-4" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">length</span>(theta_inicial)</span>
-<span id="cb579-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-5" aria-hidden="true" tabindex="-1"></a>    nombres <span class="ot">&lt;-</span> <span class="fu">names</span>(theta_inicial)</span>
-<span id="cb579-6"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-6" aria-hidden="true" tabindex="-1"></a>    iteraciones <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> n, <span class="at">ncol =</span> p)</span>
-<span id="cb579-7"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">colnames</span>(iteraciones) <span class="ot">&lt;-</span> nombres</span>
-<span id="cb579-8"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-8" aria-hidden="true" tabindex="-1"></a>    iteraciones[<span class="dv">1</span>,] <span class="ot">&lt;-</span> theta_inicial</span>
-<span id="cb579-9"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n){</span>
-<span id="cb579-10"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-10" aria-hidden="true" tabindex="-1"></a>      theta <span class="ot">&lt;-</span> iteraciones[i <span class="sc">-</span> <span class="dv">1</span>, ]</span>
-<span id="cb579-11"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-11" aria-hidden="true" tabindex="-1"></a>      theta_prop <span class="ot">&lt;-</span> theta <span class="sc">+</span> <span class="fu">rnorm</span>(p, <span class="dv">0</span>, sigma_salto)</span>
-<span id="cb579-12"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-12" aria-hidden="true" tabindex="-1"></a>      <span class="co"># exp(log(p) - log(q)) = p/q</span></span>
-<span id="cb579-13"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-13" aria-hidden="true" tabindex="-1"></a>      cociente <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">fun_log</span>(theta_prop) <span class="sc">-</span> <span class="fu">fun_log</span>(theta))</span>
-<span id="cb579-14"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-14" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span>(cociente <span class="sc">&gt;=</span> <span class="dv">1</span> <span class="sc">||</span> <span class="fu">runif</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>) <span class="sc">&lt;</span> cociente){</span>
-<span id="cb579-15"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-15" aria-hidden="true" tabindex="-1"></a>        iteraciones[i, ] <span class="ot">&lt;-</span> theta_prop</span>
-<span id="cb579-16"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-16" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
-<span id="cb579-17"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-17" aria-hidden="true" tabindex="-1"></a>        iteraciones[i, ] <span class="ot">&lt;-</span> theta  </span>
-<span id="cb579-18"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-18" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb579-19"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-19" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb579-20"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-20" aria-hidden="true" tabindex="-1"></a>    iteraciones_tbl <span class="ot">&lt;-</span> iteraciones <span class="sc">%&gt;%</span> </span>
-<span id="cb579-21"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span>  </span>
-<span id="cb579-22"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-22" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">iter_num =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb579-23"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">select</span>(iter_num, <span class="fu">everything</span>())</span>
-<span id="cb579-24"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-24" aria-hidden="true" tabindex="-1"></a>    iteraciones_tbl</span>
-<span id="cb579-25"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-25" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb579-26"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-26" aria-hidden="true" tabindex="-1"></a>  iterar_metropolis</span>
-<span id="cb579-27"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb579-27" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb583"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb583-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-1" aria-hidden="true" tabindex="-1"></a>crear_metropolis <span class="ot">&lt;-</span> <span class="cf">function</span>(fun_log, <span class="at">sigma_salto =</span> <span class="fl">0.1</span>){</span>
+<span id="cb583-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># la entrada es la log posterior</span></span>
+<span id="cb583-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-3" aria-hidden="true" tabindex="-1"></a>  iterar_metropolis <span class="ot">&lt;-</span> <span class="cf">function</span>(theta_inicial, n){</span>
+<span id="cb583-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-4" aria-hidden="true" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">length</span>(theta_inicial)</span>
+<span id="cb583-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-5" aria-hidden="true" tabindex="-1"></a>    nombres <span class="ot">&lt;-</span> <span class="fu">names</span>(theta_inicial)</span>
+<span id="cb583-6"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-6" aria-hidden="true" tabindex="-1"></a>    iteraciones <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> n, <span class="at">ncol =</span> p)</span>
+<span id="cb583-7"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">colnames</span>(iteraciones) <span class="ot">&lt;-</span> nombres</span>
+<span id="cb583-8"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-8" aria-hidden="true" tabindex="-1"></a>    iteraciones[<span class="dv">1</span>,] <span class="ot">&lt;-</span> theta_inicial</span>
+<span id="cb583-9"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n){</span>
+<span id="cb583-10"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-10" aria-hidden="true" tabindex="-1"></a>      theta <span class="ot">&lt;-</span> iteraciones[i <span class="sc">-</span> <span class="dv">1</span>, ]</span>
+<span id="cb583-11"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-11" aria-hidden="true" tabindex="-1"></a>      theta_prop <span class="ot">&lt;-</span> theta <span class="sc">+</span> <span class="fu">rnorm</span>(p, <span class="dv">0</span>, sigma_salto)</span>
+<span id="cb583-12"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-12" aria-hidden="true" tabindex="-1"></a>      <span class="co"># exp(log(p) - log(q)) = p/q</span></span>
+<span id="cb583-13"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-13" aria-hidden="true" tabindex="-1"></a>      cociente <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">fun_log</span>(theta_prop) <span class="sc">-</span> <span class="fu">fun_log</span>(theta))</span>
+<span id="cb583-14"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-14" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span>(cociente <span class="sc">&gt;=</span> <span class="dv">1</span> <span class="sc">||</span> <span class="fu">runif</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>) <span class="sc">&lt;</span> cociente){</span>
+<span id="cb583-15"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-15" aria-hidden="true" tabindex="-1"></a>        iteraciones[i, ] <span class="ot">&lt;-</span> theta_prop</span>
+<span id="cb583-16"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-16" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
+<span id="cb583-17"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-17" aria-hidden="true" tabindex="-1"></a>        iteraciones[i, ] <span class="ot">&lt;-</span> theta  </span>
+<span id="cb583-18"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-18" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb583-19"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-19" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb583-20"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-20" aria-hidden="true" tabindex="-1"></a>    iteraciones_tbl <span class="ot">&lt;-</span> iteraciones <span class="sc">%&gt;%</span> </span>
+<span id="cb583-21"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span>  </span>
+<span id="cb583-22"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-22" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">iter_num =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb583-23"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">select</span>(iter_num, <span class="fu">everything</span>())</span>
+<span id="cb583-24"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-24" aria-hidden="true" tabindex="-1"></a>    iteraciones_tbl</span>
+<span id="cb583-25"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-25" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb583-26"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-26" aria-hidden="true" tabindex="-1"></a>  iterar_metropolis</span>
+<span id="cb583-27"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-27" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 <p>E intentamos simular de una exponencial no normalizada:</p>
-<div class="sourceCode" id="cb580"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb580-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb580-1" aria-hidden="true" tabindex="-1"></a>exp_no_norm <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb580-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb580-2" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(x <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.5</span> <span class="sc">*</span> x), <span class="dv">0</span>)</span>
-<span id="cb580-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb580-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">log</span>(z)</span>
-<span id="cb580-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb580-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb580-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb580-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb580-6"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb580-6" aria-hidden="true" tabindex="-1"></a>iterador_metro <span class="ot">&lt;-</span> <span class="fu">crear_metropolis</span>(exp_no_norm, <span class="at">sigma_salto =</span> <span class="fl">0.25</span>)</span>
-<span id="cb580-7"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb580-7" aria-hidden="true" tabindex="-1"></a>sims_tbl <span class="ot">&lt;-</span> <span class="fu">iterador_metro</span>(<span class="fu">c</span>(<span class="at">theta =</span> <span class="fl">0.5</span>), <span class="dv">50000</span>)</span>
-<span id="cb580-8"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb580-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sims_tbl, <span class="fu">aes</span>(<span class="at">x =</span> theta)) <span class="sc">+</span> <span class="fu">geom_histogram</span>()</span></code></pre></div>
-<p><img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-15-1.png" width="480" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb584"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb584-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb584-1" aria-hidden="true" tabindex="-1"></a>exp_no_norm <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb584-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb584-2" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(x <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.5</span> <span class="sc">*</span> x), <span class="dv">0</span>)</span>
+<span id="cb584-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb584-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">log</span>(z)</span>
+<span id="cb584-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb584-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb584-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb584-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb584-6"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb584-6" aria-hidden="true" tabindex="-1"></a>iterador_metro <span class="ot">&lt;-</span> <span class="fu">crear_metropolis</span>(exp_no_norm, <span class="at">sigma_salto =</span> <span class="fl">0.25</span>)</span>
+<span id="cb584-7"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb584-7" aria-hidden="true" tabindex="-1"></a>sims_tbl <span class="ot">&lt;-</span> <span class="fu">iterador_metro</span>(<span class="fu">c</span>(<span class="at">theta =</span> <span class="fl">0.5</span>), <span class="dv">50000</span>)</span>
+<span id="cb584-8"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb584-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sims_tbl, <span class="fu">aes</span>(<span class="at">x =</span> theta)) <span class="sc">+</span> <span class="fu">geom_histogram</span>()</span></code></pre></div>
+<p><img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-19-1.png" width="480" style="display: block; margin: auto;" /></p>
 <p>Ahora probemos con una <span class="math inline">\(\mathsf{Beta}(3, 2):\)</span></p>
-<div class="sourceCode" id="cb581"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb581-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-1" aria-hidden="true" tabindex="-1"></a>beta_no_norm <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb581-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-2" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(x <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;&amp;</span> x <span class="sc">&lt;</span> <span class="dv">1</span>, (x<span class="sc">^</span><span class="dv">2</span>)<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>x), <span class="dv">0</span>)</span>
-<span id="cb581-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">log</span>(z)</span>
-<span id="cb581-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb581-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb581-6"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-6" aria-hidden="true" tabindex="-1"></a>iterador_metro <span class="ot">&lt;-</span> <span class="fu">crear_metropolis</span>(beta_no_norm, <span class="at">sigma_salto =</span> <span class="fl">0.04</span>)</span>
-<span id="cb581-7"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-7" aria-hidden="true" tabindex="-1"></a>sims_metro_tbl <span class="ot">&lt;-</span> <span class="fu">iterador_metro</span>(<span class="fu">c</span>(<span class="at">theta =</span> <span class="fl">0.5</span>), <span class="dv">50000</span>)</span>
-<span id="cb581-8"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-8" aria-hidden="true" tabindex="-1"></a>sims_indep_tbl <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">iter_num =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30000</span>, <span class="at">theta =</span> <span class="fu">rbeta</span>(<span class="dv">30000</span>, <span class="dv">3</span>, <span class="dv">2</span>))</span>
-<span id="cb581-9"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-9" aria-hidden="true" tabindex="-1"></a>g_1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(sims_metro_tbl, <span class="fu">aes</span>(<span class="at">x =</span> theta)) <span class="sc">+</span> <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
-<span id="cb581-10"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">&quot;Metrópolis&quot;</span>)</span>
-<span id="cb581-11"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-11" aria-hidden="true" tabindex="-1"></a>g_2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(sims_indep_tbl, <span class="fu">aes</span>(<span class="at">x =</span> theta)) <span class="sc">+</span> </span>
-<span id="cb581-12"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
-<span id="cb581-13"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">&quot;rbeta&quot;</span>)</span>
-<span id="cb581-14"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb581-14" aria-hidden="true" tabindex="-1"></a>g_1 <span class="sc">+</span> g_2</span></code></pre></div>
-<p><img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-16-1.png" width="480" style="display: block; margin: auto;" />
-Y vemos que esto funciona. Revisa el ejemplo de las islas en <span class="citation">Kruschke (<a href="#ref-Kruschke" role="doc-biblioref">2015</a>)</span> (7.2) para
-tener más intuición de cómo funciona este algoritmo.</p>
+<div class="sourceCode" id="cb585"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb585-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb585-1" aria-hidden="true" tabindex="-1"></a>beta_no_norm <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb585-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb585-2" aria-hidden="true" tabindex="-1"></a>  z <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(x <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;&amp;</span> x <span class="sc">&lt;</span> <span class="dv">1</span>, (x<span class="sc">^</span><span class="dv">2</span>)<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>x), <span class="dv">0</span>)</span>
+<span id="cb585-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb585-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">log</span>(z)</span>
+<span id="cb585-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb585-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb585-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb585-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb585-6"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb585-6" aria-hidden="true" tabindex="-1"></a>iterador_metro <span class="ot">&lt;-</span> <span class="fu">crear_metropolis</span>(beta_no_norm, <span class="at">sigma_salto =</span> <span class="fl">0.04</span>)</span>
+<span id="cb585-7"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb585-7" aria-hidden="true" tabindex="-1"></a>sims_metro_tbl <span class="ot">&lt;-</span> <span class="fu">iterador_metro</span>(<span class="fu">c</span>(<span class="at">theta =</span> <span class="fl">0.5</span>), <span class="dv">50000</span>)</span>
+<span id="cb585-8"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb585-8" aria-hidden="true" tabindex="-1"></a>sims_indep_tbl <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">iter_num =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30000</span>, <span class="at">theta =</span> <span class="fu">rbeta</span>(<span class="dv">30000</span>, <span class="dv">3</span>, <span class="dv">2</span>))</span>
+<span id="cb585-9"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb585-9" aria-hidden="true" tabindex="-1"></a>g_1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(sims_metro_tbl, <span class="fu">aes</span>(<span class="at">x =</span> theta)) <span class="sc">+</span> <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
+<span id="cb585-10"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb585-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">&quot;Metrópolis&quot;</span>)</span>
+<span id="cb585-11"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb585-11" aria-hidden="true" tabindex="-1"></a>g_2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(sims_indep_tbl, <span class="fu">aes</span>(<span class="at">x =</span> theta)) <span class="sc">+</span> </span>
+<span id="cb585-12"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb585-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
+<span id="cb585-13"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb585-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">&quot;rbeta&quot;</span>)</span>
+<span id="cb585-14"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb585-14" aria-hidden="true" tabindex="-1"></a>g_1 <span class="sc">+</span> g_2</span></code></pre></div>
+<p><img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-20-1.png" width="480" style="display: block; margin: auto;" />
+Y vemos que esto funciona.</p>
 <p>Nótese sin embargo un aspecto de estas simulaciones que no habíamos encontrado
 en el curso. Aunque la distribución final de las simulaciones es muy cercana
 a la de la distribución que queremos simular, lo cual era nuestro propósito,
 las <strong>simulaciones no son extracciones independientes</strong> de esa distribución.</p>
 <p>La construcción del algoritmo muestra eso, pero podemos también graficar las
 simulaciones:</p>
-<div class="sourceCode" id="cb582"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb582-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb582-1" aria-hidden="true" tabindex="-1"></a>g_metropolis <span class="ot">&lt;-</span> sims_metro_tbl <span class="sc">%&gt;%</span> </span>
-<span id="cb582-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb582-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(iter_num <span class="sc">&lt;</span> <span class="dv">500</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb582-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb582-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> iter_num, <span class="at">y =</span> theta)) <span class="sc">+</span></span>
-<span id="cb582-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb582-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">&quot;Metrópolis&quot;</span>)</span>
-<span id="cb582-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb582-5" aria-hidden="true" tabindex="-1"></a>g_indep <span class="ot">&lt;-</span> sims_indep_tbl <span class="sc">%&gt;%</span> </span>
-<span id="cb582-6"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb582-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(iter_num <span class="sc">&lt;</span> <span class="dv">500</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb582-7"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb582-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> iter_num, <span class="at">y =</span> theta)) <span class="sc">+</span></span>
-<span id="cb582-8"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb582-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">&quot;Independientes&quot;</span>)</span>
-<span id="cb582-9"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb582-9" aria-hidden="true" tabindex="-1"></a>g_metropolis <span class="sc">+</span> g_indep</span></code></pre></div>
-<p><img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-17-1.png" width="768" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb586"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb586-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb586-1" aria-hidden="true" tabindex="-1"></a>g_metropolis <span class="ot">&lt;-</span> sims_metro_tbl <span class="sc">%&gt;%</span> </span>
+<span id="cb586-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb586-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(iter_num <span class="sc">&lt;</span> <span class="dv">500</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb586-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb586-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> iter_num, <span class="at">y =</span> theta)) <span class="sc">+</span></span>
+<span id="cb586-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb586-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">&quot;Metrópolis&quot;</span>)</span>
+<span id="cb586-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb586-5" aria-hidden="true" tabindex="-1"></a>g_indep <span class="ot">&lt;-</span> sims_indep_tbl <span class="sc">%&gt;%</span> </span>
+<span id="cb586-6"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb586-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(iter_num <span class="sc">&lt;</span> <span class="dv">500</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb586-7"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb586-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> iter_num, <span class="at">y =</span> theta)) <span class="sc">+</span></span>
+<span id="cb586-8"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb586-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">&quot;Independientes&quot;</span>)</span>
+<span id="cb586-9"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb586-9" aria-hidden="true" tabindex="-1"></a>g_metropolis <span class="sc">+</span> g_indep</span></code></pre></div>
+<p><img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-21-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>Donde vemos claramente que las simulaciones de metropolis están autocorrelacionadas:
 la siguiente simulación depende de la anterior. Esto define una cadena de Markov.</p>
 <p>En cualquiera de los dos casos, como vimos en los histogramas de arriba,
 las simulaciones “visitan” cada parte [0,1] de manera proporcional a la densidad,
 de manera que podemos usar ambos tipos de simulaciones para aproximar la integral
 o cantidad que nos interesa. Por ejemplo, la media posterior es:</p>
-<div class="sourceCode" id="cb583"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb583-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-1" aria-hidden="true" tabindex="-1"></a>media_1 <span class="ot">&lt;-</span> sims_metro_tbl <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">media_post =</span> <span class="fu">mean</span>(theta)) <span class="sc">%&gt;%</span> <span class="fu">pull</span>(media_post)</span>
-<span id="cb583-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-2" aria-hidden="true" tabindex="-1"></a>media_2 <span class="ot">&lt;-</span> sims_indep_tbl <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">media_post =</span> <span class="fu">mean</span>(theta)) <span class="sc">%&gt;%</span> <span class="fu">pull</span>(media_post)</span>
-<span id="cb583-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-3" aria-hidden="true" tabindex="-1"></a>media_exacta <span class="ot">&lt;-</span> <span class="dv">3</span><span class="sc">/</span>(<span class="dv">3</span> <span class="sc">+</span> <span class="dv">2</span>)</span>
-<span id="cb583-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">metodo =</span> <span class="fu">c</span>(<span class="st">&quot;sim Metrópolis&quot;</span>, <span class="st">&quot;sim Independiente&quot;</span>, <span class="st">&quot;exacto&quot;</span>),</span>
-<span id="cb583-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">media_post =</span> <span class="fu">c</span>(media_1, media_2, media_exacta))</span></code></pre></div>
+<div class="sourceCode" id="cb587"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb587-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb587-1" aria-hidden="true" tabindex="-1"></a>media_1 <span class="ot">&lt;-</span> sims_metro_tbl <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">media_post =</span> <span class="fu">mean</span>(theta)) <span class="sc">%&gt;%</span> <span class="fu">pull</span>(media_post)</span>
+<span id="cb587-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb587-2" aria-hidden="true" tabindex="-1"></a>media_2 <span class="ot">&lt;-</span> sims_indep_tbl <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">media_post =</span> <span class="fu">mean</span>(theta)) <span class="sc">%&gt;%</span> <span class="fu">pull</span>(media_post)</span>
+<span id="cb587-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb587-3" aria-hidden="true" tabindex="-1"></a>media_exacta <span class="ot">&lt;-</span> <span class="dv">3</span><span class="sc">/</span>(<span class="dv">3</span> <span class="sc">+</span> <span class="dv">2</span>)</span>
+<span id="cb587-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb587-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">metodo =</span> <span class="fu">c</span>(<span class="st">&quot;sim Metrópolis&quot;</span>, <span class="st">&quot;sim Independiente&quot;</span>, <span class="st">&quot;exacto&quot;</span>),</span>
+<span id="cb587-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb587-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">media_post =</span> <span class="fu">c</span>(media_1, media_2, media_exacta))</span></code></pre></div>
 <pre><code>## # A tibble: 3 × 2
 ##   metodo            media_post
 ##   &lt;chr&gt;                  &lt;dbl&gt;
-## 1 sim Metrópolis         0.603
-## 2 sim Independiente      0.599
+## 1 sim Metrópolis         0.599
+## 2 sim Independiente      0.603
 ## 3 exacto                 0.6</code></pre>
 <div class="mathblock">
 <p>
@@ -942,18 +1123,18 @@ en explorar las distintas partes de la distribución objetivo.</li>
 <h3>Ejemplo<a href="métodos-de-cadenas-de-markov-monte-carlo.html#ejemplo-16" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Supongamos que queremos simular usando metróplis de una distribución
 <span class="math inline">\(\textsf{Gamma}(20, 100)\)</span>. Abajo vemos la forma de esta distribución:</p>
-<div class="sourceCode" id="cb585"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb585-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb585-1" aria-hidden="true" tabindex="-1"></a>sim_indep <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">theta =</span> <span class="fu">rgamma</span>(<span class="dv">10000</span>, <span class="dv">20</span>, <span class="dv">100</span>))</span>
-<span id="cb585-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb585-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sim_indep, <span class="fu">aes</span>(<span class="at">x =</span> theta)) <span class="sc">+</span> <span class="fu">geom_histogram</span>()</span></code></pre></div>
-<p><img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-20-1.png" width="480" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb586"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb586-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb586-1" aria-hidden="true" tabindex="-1"></a><span class="co"># logaritmo de densidad no normalizada</span></span>
-<span id="cb586-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb586-2" aria-hidden="true" tabindex="-1"></a>log_f_dist <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="dv">210</span> <span class="sc">+</span> <span class="fu">dgamma</span>(x, <span class="dv">20</span>, <span class="dv">100</span>, <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb586-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb586-3" aria-hidden="true" tabindex="-1"></a><span class="co"># iterar</span></span>
-<span id="cb586-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb586-4" aria-hidden="true" tabindex="-1"></a>iterador_metro_chico <span class="ot">&lt;-</span> <span class="fu">crear_metropolis</span>(log_f_dist, <span class="at">sigma_salto =</span> <span class="fl">0.001</span>)</span>
-<span id="cb586-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb586-5" aria-hidden="true" tabindex="-1"></a>sims_chico_tbl <span class="ot">&lt;-</span> <span class="fu">iterador_metro_chico</span>(<span class="fu">c</span>(<span class="at">theta =</span> <span class="fl">0.02</span>), <span class="dv">50000</span>)</span>
-<span id="cb586-6"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb586-6" aria-hidden="true" tabindex="-1"></a>g_sim <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(sims_chico_tbl <span class="sc">%&gt;%</span> <span class="fu">filter</span>(iter_num <span class="sc">&lt;</span> <span class="dv">3000</span>), <span class="fu">aes</span>(<span class="at">x =</span> iter_num, <span class="at">y =</span> theta)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.5</span>))</span>
-<span id="cb586-7"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb586-7" aria-hidden="true" tabindex="-1"></a>dist_bplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="fu">tibble</span>(<span class="at">x =</span> <span class="fu">rgamma</span>(<span class="dv">10000</span>, <span class="dv">20</span>, <span class="dv">100</span>)), <span class="fu">aes</span>(<span class="at">y =</span> x, <span class="at">x =</span> <span class="st">&quot;a&quot;</span>)) <span class="sc">+</span> <span class="fu">geom_violin</span>() <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="fl">0.5</span>)</span>
-<span id="cb586-8"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb586-8" aria-hidden="true" tabindex="-1"></a>g_sim <span class="sc">+</span> dist_bplot <span class="sc">+</span> <span class="fu">plot_layout</span>(<span class="at">widths =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">1</span>))</span></code></pre></div>
-<p><img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-21-1.png" width="480" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb589"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb589-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb589-1" aria-hidden="true" tabindex="-1"></a>sim_indep <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">theta =</span> <span class="fu">rgamma</span>(<span class="dv">10000</span>, <span class="dv">20</span>, <span class="dv">100</span>))</span>
+<span id="cb589-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb589-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sim_indep, <span class="fu">aes</span>(<span class="at">x =</span> theta)) <span class="sc">+</span> <span class="fu">geom_histogram</span>()</span></code></pre></div>
+<p><img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-24-1.png" width="480" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb590"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb590-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb590-1" aria-hidden="true" tabindex="-1"></a><span class="co"># logaritmo de densidad no normalizada</span></span>
+<span id="cb590-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb590-2" aria-hidden="true" tabindex="-1"></a>log_f_dist <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="dv">210</span> <span class="sc">+</span> <span class="fu">dgamma</span>(x, <span class="dv">20</span>, <span class="dv">100</span>, <span class="at">log =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb590-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb590-3" aria-hidden="true" tabindex="-1"></a><span class="co"># iterar</span></span>
+<span id="cb590-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb590-4" aria-hidden="true" tabindex="-1"></a>iterador_metro_chico <span class="ot">&lt;-</span> <span class="fu">crear_metropolis</span>(log_f_dist, <span class="at">sigma_salto =</span> <span class="fl">0.001</span>)</span>
+<span id="cb590-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb590-5" aria-hidden="true" tabindex="-1"></a>sims_chico_tbl <span class="ot">&lt;-</span> <span class="fu">iterador_metro_chico</span>(<span class="fu">c</span>(<span class="at">theta =</span> <span class="fl">0.02</span>), <span class="dv">50000</span>)</span>
+<span id="cb590-6"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb590-6" aria-hidden="true" tabindex="-1"></a>g_sim <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(sims_chico_tbl <span class="sc">%&gt;%</span> <span class="fu">filter</span>(iter_num <span class="sc">&lt;</span> <span class="dv">3000</span>), <span class="fu">aes</span>(<span class="at">x =</span> iter_num, <span class="at">y =</span> theta)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.5</span>))</span>
+<span id="cb590-7"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb590-7" aria-hidden="true" tabindex="-1"></a>dist_bplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="fu">tibble</span>(<span class="at">x =</span> <span class="fu">rgamma</span>(<span class="dv">10000</span>, <span class="dv">20</span>, <span class="dv">100</span>)), <span class="fu">aes</span>(<span class="at">y =</span> x, <span class="at">x =</span> <span class="st">&quot;a&quot;</span>)) <span class="sc">+</span> <span class="fu">geom_violin</span>() <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="fl">0.5</span>)</span>
+<span id="cb590-8"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb590-8" aria-hidden="true" tabindex="-1"></a>g_sim <span class="sc">+</span> dist_bplot <span class="sc">+</span> <span class="fu">plot_layout</span>(<span class="at">widths =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">1</span>))</span></code></pre></div>
+<p><img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-25-1.png" width="480" style="display: block; margin: auto;" /></p>
 <p>Nótese que después de 5 mil iteraciones estamos muy lejos de tener una muestra
 que se aproxime a la distribución objetivo. Empezamos en un lugar bajo, y la
 cadena sólo ha ido lentamente hacia las zonas de alta densidad. <em>Cualquier
@@ -961,12 +1142,12 @@ resumen con esta cadena estaría fuertemente sesgado</em> al valor donde iniciam
 iteración. Decimos que la cadena todavía no <em>mezcla</em> en las primeras 5 mil
 iteraciones.</p>
 <p>Ahora vemos qué pasa si ponemos el tamaño de salto demasiado grande:</p>
-<div class="sourceCode" id="cb587"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb587-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb587-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">831</span>)</span>
-<span id="cb587-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb587-2" aria-hidden="true" tabindex="-1"></a>iterador_metro_grande <span class="ot">&lt;-</span> <span class="fu">crear_metropolis</span>(log_f_dist, <span class="at">sigma_salto =</span> <span class="dv">20</span>)</span>
-<span id="cb587-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb587-3" aria-hidden="true" tabindex="-1"></a>sims_grande_tbl <span class="ot">&lt;-</span> <span class="fu">iterador_metro_grande</span>(<span class="fu">c</span>(<span class="at">theta =</span> <span class="fl">0.02</span>), <span class="dv">50000</span>)</span>
-<span id="cb587-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb587-4" aria-hidden="true" tabindex="-1"></a>g_sim <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(sims_grande_tbl <span class="sc">%&gt;%</span> <span class="fu">filter</span>(iter_num <span class="sc">&lt;</span> <span class="dv">3000</span>), <span class="fu">aes</span>(<span class="at">x =</span> iter_num, <span class="at">y =</span> theta)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.5</span>))</span>
-<span id="cb587-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb587-5" aria-hidden="true" tabindex="-1"></a>g_sim <span class="sc">+</span> dist_bplot <span class="sc">+</span> <span class="fu">plot_layout</span>(<span class="at">widths =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">1</span>))</span></code></pre></div>
-<p><img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-22-1.png" width="480" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb591"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb591-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb591-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">831</span>)</span>
+<span id="cb591-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb591-2" aria-hidden="true" tabindex="-1"></a>iterador_metro_grande <span class="ot">&lt;-</span> <span class="fu">crear_metropolis</span>(log_f_dist, <span class="at">sigma_salto =</span> <span class="dv">20</span>)</span>
+<span id="cb591-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb591-3" aria-hidden="true" tabindex="-1"></a>sims_grande_tbl <span class="ot">&lt;-</span> <span class="fu">iterador_metro_grande</span>(<span class="fu">c</span>(<span class="at">theta =</span> <span class="fl">0.02</span>), <span class="dv">50000</span>)</span>
+<span id="cb591-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb591-4" aria-hidden="true" tabindex="-1"></a>g_sim <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(sims_grande_tbl <span class="sc">%&gt;%</span> <span class="fu">filter</span>(iter_num <span class="sc">&lt;</span> <span class="dv">3000</span>), <span class="fu">aes</span>(<span class="at">x =</span> iter_num, <span class="at">y =</span> theta)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.5</span>))</span>
+<span id="cb591-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb591-5" aria-hidden="true" tabindex="-1"></a>g_sim <span class="sc">+</span> dist_bplot <span class="sc">+</span> <span class="fu">plot_layout</span>(<span class="at">widths =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">1</span>))</span></code></pre></div>
+<p><img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-26-1.png" width="480" style="display: block; margin: auto;" /></p>
 <p>En este caso, la cadena se <em>atora</em> muchas veces, pues las propuestas tienen
 probabilidad muy baja, y tendemos a tener una tasa de rechazos muy alta. Esto
 quiere decir que la información que tenemos acerca de la posterior es
@@ -978,42 +1159,42 @@ distintos.</p>
 nos daría resultados buenos. Sin embargo, el número de simulaciones puede ser
 infactible.</p>
 <p>Un valor intermedio nos dará mucho mejores resultados:</p>
-<div class="sourceCode" id="cb588"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb588-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb588-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">831</span>)</span>
-<span id="cb588-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb588-2" aria-hidden="true" tabindex="-1"></a>iterador_metro_apropiada <span class="ot">&lt;-</span> <span class="fu">crear_metropolis</span>(log_f_dist, <span class="at">sigma_salto =</span> <span class="fl">0.1</span>)</span>
-<span id="cb588-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb588-3" aria-hidden="true" tabindex="-1"></a>sims_tbl <span class="ot">&lt;-</span><span class="fu">iterador_metro_apropiada</span>(<span class="fu">c</span>(<span class="at">theta =</span> <span class="fl">0.02</span>), <span class="dv">50000</span>)</span>
-<span id="cb588-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb588-4" aria-hidden="true" tabindex="-1"></a>g_sim <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(sims_tbl <span class="sc">%&gt;%</span> <span class="fu">filter</span>(iter_num <span class="sc">&lt;</span> <span class="dv">3000</span>), </span>
-<span id="cb588-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb588-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> iter_num, <span class="at">y =</span> theta)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.5</span>))</span>
-<span id="cb588-6"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb588-6" aria-hidden="true" tabindex="-1"></a>g_sim <span class="sc">+</span> dist_bplot <span class="sc">+</span> <span class="fu">plot_layout</span>(<span class="at">widths =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">1</span>))</span></code></pre></div>
-<p><img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-23-1.png" width="480" style="display: block; margin: auto;" />
+<div class="sourceCode" id="cb592"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb592-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb592-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">831</span>)</span>
+<span id="cb592-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb592-2" aria-hidden="true" tabindex="-1"></a>iterador_metro_apropiada <span class="ot">&lt;-</span> <span class="fu">crear_metropolis</span>(log_f_dist, <span class="at">sigma_salto =</span> <span class="fl">0.1</span>)</span>
+<span id="cb592-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb592-3" aria-hidden="true" tabindex="-1"></a>sims_tbl <span class="ot">&lt;-</span><span class="fu">iterador_metro_apropiada</span>(<span class="fu">c</span>(<span class="at">theta =</span> <span class="fl">0.02</span>), <span class="dv">50000</span>)</span>
+<span id="cb592-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb592-4" aria-hidden="true" tabindex="-1"></a>g_sim <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(sims_tbl <span class="sc">%&gt;%</span> <span class="fu">filter</span>(iter_num <span class="sc">&lt;</span> <span class="dv">3000</span>), </span>
+<span id="cb592-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb592-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> iter_num, <span class="at">y =</span> theta)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.5</span>))</span>
+<span id="cb592-6"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb592-6" aria-hidden="true" tabindex="-1"></a>g_sim <span class="sc">+</span> dist_bplot <span class="sc">+</span> <span class="fu">plot_layout</span>(<span class="at">widths =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">1</span>))</span></code></pre></div>
+<p><img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-27-1.png" width="480" style="display: block; margin: auto;" />
 Donde vemos que esta cadena parece mezclar bien (está explorando la totalidad
 de la distribución objetivo), y también parece estar en un estado estable.</p>
 <p>Comparemos cómo saldría por ejemplo la media posterior aproximada según
 los tres métodos:</p>
-<div class="sourceCode" id="cb589"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb589-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb589-1" aria-hidden="true" tabindex="-1"></a>estimaciones_media <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(</span>
-<span id="cb589-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb589-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(sims_chico_tbl, sims_grande_tbl, sims_tbl), </span>
-<span id="cb589-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb589-3" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span> <span class="fu">filter</span>(.x, iter_num <span class="sc">&lt;</span> <span class="dv">3000</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb589-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb589-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">media =</span> <span class="fu">mean</span>(theta))) <span class="sc">%&gt;%</span> </span>
-<span id="cb589-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb589-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">tipo =</span> <span class="fu">c</span>(<span class="st">&quot;salto chico&quot;</span>, <span class="st">&quot;salto grande&quot;</span>, <span class="st">&quot;salto apropiado&quot;</span>))</span>
-<span id="cb589-6"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb589-6" aria-hidden="true" tabindex="-1"></a>estimaciones_media <span class="sc">%&gt;%</span> <span class="fu">bind_rows</span>(<span class="fu">tibble</span>(<span class="at">tipo =</span> <span class="st">&quot;exacta&quot;</span>, <span class="at">media =</span> <span class="dv">20</span><span class="sc">/</span><span class="dv">100</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb589-7"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb589-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(tipo, media)</span></code></pre></div>
+<div class="sourceCode" id="cb593"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb593-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-1" aria-hidden="true" tabindex="-1"></a>estimaciones_media <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(</span>
+<span id="cb593-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(sims_chico_tbl, sims_grande_tbl, sims_tbl), </span>
+<span id="cb593-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-3" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span> <span class="fu">filter</span>(.x, iter_num <span class="sc">&lt;</span> <span class="dv">3000</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb593-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">media =</span> <span class="fu">mean</span>(theta))) <span class="sc">%&gt;%</span> </span>
+<span id="cb593-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">tipo =</span> <span class="fu">c</span>(<span class="st">&quot;salto chico&quot;</span>, <span class="st">&quot;salto grande&quot;</span>, <span class="st">&quot;salto apropiado&quot;</span>))</span>
+<span id="cb593-6"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-6" aria-hidden="true" tabindex="-1"></a>estimaciones_media <span class="sc">%&gt;%</span> <span class="fu">bind_rows</span>(<span class="fu">tibble</span>(<span class="at">tipo =</span> <span class="st">&quot;exacta&quot;</span>, <span class="at">media =</span> <span class="dv">20</span><span class="sc">/</span><span class="dv">100</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb593-7"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(tipo, media)</span></code></pre></div>
 <pre><code>## # A tibble: 4 × 2
 ##   tipo            media
 ##   &lt;chr&gt;           &lt;dbl&gt;
-## 1 salto chico     0.101
+## 1 salto chico     0.120
 ## 2 salto grande    0.190
 ## 3 salto apropiado 0.203
 ## 4 exacta          0.2</code></pre>
 <p>Veamos otra corrida:</p>
-<div class="sourceCode" id="cb591"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb591-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb591-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6222131</span>)</span>
-<span id="cb591-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb591-2" aria-hidden="true" tabindex="-1"></a>sims_chica_tbl <span class="ot">&lt;-</span> <span class="fu">iterador_metro_chico</span>(<span class="fu">c</span>(<span class="at">theta =</span> <span class="fl">0.02</span>), <span class="dv">5000</span>)</span>
-<span id="cb591-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb591-3" aria-hidden="true" tabindex="-1"></a>sims_grande_tbl <span class="ot">&lt;-</span> <span class="fu">iterador_metro_grande</span>(<span class="fu">c</span>(<span class="at">theta =</span> <span class="fl">0.02</span>), <span class="dv">5000</span>)</span>
-<span id="cb591-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb591-4" aria-hidden="true" tabindex="-1"></a>estimaciones_media <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(</span>
-<span id="cb591-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb591-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(sims_chica_tbl, sims_grande_tbl, sims_tbl), </span>
-<span id="cb591-6"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb591-6" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span> <span class="fu">filter</span>(.x, iter_num <span class="sc">&lt;</span> <span class="dv">3000</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb591-7"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb591-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">media =</span> <span class="fu">mean</span>(theta))) <span class="sc">%&gt;%</span> </span>
-<span id="cb591-8"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb591-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tipo =</span> <span class="fu">c</span>(<span class="st">&quot;salto chico&quot;</span>, <span class="st">&quot;salto grande&quot;</span>, <span class="st">&quot;salto apropiado&quot;</span>))</span>
-<span id="cb591-9"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb591-9" aria-hidden="true" tabindex="-1"></a>estimaciones_media <span class="sc">%&gt;%</span> <span class="fu">bind_rows</span>(<span class="fu">tibble</span>(<span class="at">tipo =</span> <span class="st">&quot;exacta&quot;</span>, <span class="at">media =</span> <span class="dv">20</span><span class="sc">/</span><span class="dv">100</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb591-10"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb591-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(tipo, media)</span></code></pre></div>
+<div class="sourceCode" id="cb595"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb595-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">6222131</span>)</span>
+<span id="cb595-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-2" aria-hidden="true" tabindex="-1"></a>sims_chica_tbl <span class="ot">&lt;-</span> <span class="fu">iterador_metro_chico</span>(<span class="fu">c</span>(<span class="at">theta =</span> <span class="fl">0.02</span>), <span class="dv">5000</span>)</span>
+<span id="cb595-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-3" aria-hidden="true" tabindex="-1"></a>sims_grande_tbl <span class="ot">&lt;-</span> <span class="fu">iterador_metro_grande</span>(<span class="fu">c</span>(<span class="at">theta =</span> <span class="fl">0.02</span>), <span class="dv">5000</span>)</span>
+<span id="cb595-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-4" aria-hidden="true" tabindex="-1"></a>estimaciones_media <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(</span>
+<span id="cb595-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(sims_chica_tbl, sims_grande_tbl, sims_tbl), </span>
+<span id="cb595-6"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-6" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span> <span class="fu">filter</span>(.x, iter_num <span class="sc">&lt;</span> <span class="dv">3000</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb595-7"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">media =</span> <span class="fu">mean</span>(theta))) <span class="sc">%&gt;%</span> </span>
+<span id="cb595-8"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tipo =</span> <span class="fu">c</span>(<span class="st">&quot;salto chico&quot;</span>, <span class="st">&quot;salto grande&quot;</span>, <span class="st">&quot;salto apropiado&quot;</span>))</span>
+<span id="cb595-9"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-9" aria-hidden="true" tabindex="-1"></a>estimaciones_media <span class="sc">%&gt;%</span> <span class="fu">bind_rows</span>(<span class="fu">tibble</span>(<span class="at">tipo =</span> <span class="st">&quot;exacta&quot;</span>, <span class="at">media =</span> <span class="dv">20</span><span class="sc">/</span><span class="dv">100</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb595-10"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(tipo, media)</span></code></pre></div>
 <pre><code>## # A tibble: 4 × 2
 ##   tipo            media
 ##   &lt;chr&gt;           &lt;dbl&gt;
@@ -1050,185 +1231,6 @@ rangon intercuartil.
 </ul>
 </div>
 </div>
-</div>
-<div id="por-qué-funciona-metrópolis" class="section level2 unnumbered hasAnchor">
-<h2>¿Por qué funciona Metrópolis?<a href="métodos-de-cadenas-de-markov-monte-carlo.html#por-qué-funciona-metrópolis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Veremos un ejemplo relativemente simple que nos puede ayudar
-a mejorar nuestra intuición acerca de este algoritmo.</p>
-<p>Supongamos que un vendedor de <em>Yakult</em> trabaja a lo largo de una cadena de
-islas:</p>
-<ul>
-<li><p>Constantemente viaja entre las islas ofreciendo sus productos;</p></li>
-<li><p>Al final de un día de trabajo decide si permanece en la misma isla o se
-transporta a una de las <span class="math inline">\(2\)</span> islas vecinas;</p></li>
-<li><p>El vendedor ignora la distribución de la población en las islas y el número
-total de islas; sin embargo, una vez que se encuentra en una isla puede
-investigar la población de la misma y también de la isla a la que se propone
-viajar después.</p></li>
-<li><p>El objetivo del vendedor es visitar las islas de manera proporcional a la
-población de cada una. Con esto en mente el vendedor utiliza el siguiente
-proceso:</p>
-<ol style="list-style-type: decimal">
-<li>Lanza un volado, si el resultado es águila se propone ir a la isla
-del lado izquierdo de su ubicación actual y si es sol a la del lado derecho.</li>
-<li>Si la isla propuesta en el paso anterior tiene población mayor a la
-población de la isla actual, el vendedor decide viajar a ella. Si la isla vecina
-tiene población menor, entonces visita la isla propuesta con una probabilidad que
-depende de la población de las islas. Sea <span class="math inline">\(P^*\)</span> la población de la isla
-propuesta y <span class="math inline">\(P_{t}\)</span> la población de la isla actual. Entonces el vendedor
-cambia de isla con probabilidad
-<span class="math display">\[q_{mover}=P^*/P_{t}\]</span></li>
-</ol></li>
-</ul>
-<p>A la larga, si el vendedor sigue la heurística anterior la probabilidad de que
-el vendedor este en alguna de las islas coincide con la población relativa de
-la isla.</p>
-<div class="sourceCode" id="cb593"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb593-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-1" aria-hidden="true" tabindex="-1"></a>islas <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">islas =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">pob =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
-<span id="cb593-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-2" aria-hidden="true" tabindex="-1"></a>camina_isla <span class="ot">&lt;-</span> <span class="cf">function</span>(i){ <span class="co"># i: isla actual</span></span>
-<span id="cb593-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-3" aria-hidden="true" tabindex="-1"></a>    u <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>) <span class="co"># volado</span></span>
-<span id="cb593-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-4" aria-hidden="true" tabindex="-1"></a>    v <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(u <span class="sc">&lt;</span> <span class="fl">0.5</span>, i <span class="sc">-</span> <span class="dv">1</span>, i <span class="sc">+</span> <span class="dv">1</span>)  <span class="co"># isla vecina (índice)</span></span>
-<span id="cb593-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (v <span class="sc">&lt;</span> <span class="dv">1</span> <span class="sc">|</span> v <span class="sc">&gt;</span> <span class="dv">10</span>) { <span class="co"># si estas en los extremos y el volado indica salir</span></span>
-<span id="cb593-6"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(i)</span>
-<span id="cb593-7"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-7" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb593-8"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-8" aria-hidden="true" tabindex="-1"></a>    u2 <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">1</span>)</span>
-<span id="cb593-9"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-9" aria-hidden="true" tabindex="-1"></a>    p_move <span class="ot">=</span> <span class="fu">min</span>(islas<span class="sc">$</span>pob[v] <span class="sc">/</span> islas<span class="sc">$</span>pob[i], <span class="dv">1</span>)</span>
-<span id="cb593-10"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (p_move  <span class="sc">&gt;</span> u2) {</span>
-<span id="cb593-11"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-11" aria-hidden="true" tabindex="-1"></a>        <span class="fu">return</span>(v) <span class="co"># isla destino</span></span>
-<span id="cb593-12"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-12" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb593-13"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> {</span>
-<span id="cb593-14"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(i) <span class="co"># me quedo en la misma isla</span></span>
-<span id="cb593-15"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-15" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb593-16"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-16" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb593-17"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-17" aria-hidden="true" tabindex="-1"></a>pasos <span class="ot">&lt;-</span> <span class="dv">100000</span></span>
-<span id="cb593-18"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-18" aria-hidden="true" tabindex="-1"></a>iteraciones <span class="ot">&lt;-</span> <span class="fu">numeric</span>(pasos)</span>
-<span id="cb593-19"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-19" aria-hidden="true" tabindex="-1"></a>iteraciones[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">1</span>) <span class="co"># isla inicial</span></span>
-<span id="cb593-20"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>pasos) {</span>
-<span id="cb593-21"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-21" aria-hidden="true" tabindex="-1"></a>    iteraciones[j] <span class="ot">&lt;-</span> <span class="fu">camina_isla</span>(iteraciones[j <span class="sc">-</span> <span class="dv">1</span>])</span>
-<span id="cb593-22"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-22" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb593-23"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-23" aria-hidden="true" tabindex="-1"></a>caminata <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">pasos =</span> <span class="dv">1</span><span class="sc">:</span>pasos, <span class="at">isla =</span> iteraciones)</span>
-<span id="cb593-24"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-24" aria-hidden="true" tabindex="-1"></a>plot_caminata <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(caminata[<span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>, ], <span class="fu">aes</span>(<span class="at">x =</span> pasos, <span class="at">y =</span> isla)) <span class="sc">+</span></span>
-<span id="cb593-25"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb593-26"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_path</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb593-27"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
-<span id="cb593-28"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Caminata aleatoria&quot;</span>) <span class="sc">+</span></span>
-<span id="cb593-29"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="fu">expression</span>(theta), <span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">+</span></span>
-<span id="cb593-30"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="st">&quot;Tiempo&quot;</span>)</span>
-<span id="cb593-31"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-31" aria-hidden="true" tabindex="-1"></a>plot_dist <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(caminata, <span class="fu">aes</span>(<span class="at">x =</span> isla)) <span class="sc">+</span></span>
-<span id="cb593-32"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
-<span id="cb593-33"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="fu">expression</span>(theta), <span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">+</span></span>
-<span id="cb593-34"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Distribución objetivo&quot;</span>, </span>
-<span id="cb593-35"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-35" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="fu">P</span>(theta)))</span>
-<span id="cb593-36"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb593-36" aria-hidden="true" tabindex="-1"></a>plot_caminata <span class="sc">/</span> plot_dist</span></code></pre></div>
-<p><img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-27-1.png" width="336" style="display: block; margin: auto;" /></p>
-<p>Entonces:</p>
-<ul>
-<li><p>Para aproximar la distribución objetivo debemos permitir que el vendedor
-recorra las islas durante una sucesión larga de pasos y registramos sus visitas.</p></li>
-<li><p>Nuestra aproximación de la distribución es justamente el registro de sus
-visitas.</p></li>
-<li><p>Más aún, debemos tener cuidado y excluir la porción de las visitas que se
-encuentran bajo la influencia de la posición inicial. Esto es, debemos excluir
-el <strong>periodo de calentamiento</strong>.</p></li>
-<li><p>Una vez que tenemos un registro <em>largo</em> de los viajes del vendedor (excluyendo
-el calentamiento) podemos aproximar la distribución objetivo
-simplemente contando el número relativo de veces que el vendedor visitó
-dicha isla.</p></li>
-</ul>
-<div class="sourceCode" id="cb594"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb594-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb594-1" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">1000</span>, <span class="dv">5000</span>)</span>
-<span id="cb594-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb594-2" aria-hidden="true" tabindex="-1"></a>plots_list <span class="ot">&lt;-</span> <span class="fu">map</span>(t, <span class="cf">function</span>(i){</span>
-<span id="cb594-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb594-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(caminata[<span class="dv">1</span><span class="sc">:</span>i, ], <span class="fu">aes</span>(<span class="at">x =</span> isla)) <span class="sc">+</span></span>
-<span id="cb594-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb594-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
-<span id="cb594-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb594-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;&quot;</span>, <span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">title =</span> <span class="fu">paste</span>(<span class="st">&quot;t = &quot;</span>, i, <span class="at">sep =</span> <span class="st">&quot;&quot;</span>)) <span class="sc">+</span></span>
-<span id="cb594-6"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb594-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">scale_x_continuous</span>(<span class="fu">expression</span>(theta), <span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">11</span>))</span>
-<span id="cb594-7"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb594-7" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb594-8"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb594-8" aria-hidden="true" tabindex="-1"></a><span class="fu">wrap_plots</span>(plots_list)</span></code></pre></div>
-<p><img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-28-1.png" width="768" style="display: block; margin: auto;" /></p>
-<p>Escribamos el algoritmo, para esto indexamos las islas por el valor
-<span class="math inline">\(\theta\)</span>, es así que la isla del extremo oeste corresponde a <span class="math inline">\(\theta=1\)</span> y la
-población relativa de cada isla es <span class="math inline">\(P(\theta)\)</span>:</p>
-<ol style="list-style-type: decimal">
-<li><p>El vendedor se ubica en <span class="math inline">\(\theta^{(i)}\)</span> y propone moverse a la izquierda
-o derecha con probabilidad <span class="math inline">\(0.5\)</span>.<br />
-El rango de los posibles valores para moverse, y la probabilidad de proponer
-cada uno se conoce como <strong>distribución propuesta</strong>, en nuestro ejemplo sólo
-toma dos valores cada uno con probabilidad <span class="math inline">\(0.5\)</span>.</p></li>
-<li><p>Una vez que se propone un movimiento, decidimos si aceptarlo. La decisión de
-aceptar se basa en el valor de la distribución <strong>objetivo</strong> en la posición
-propuesta, relativo al valor de la distribución objetivo en la posición actual:
-<span class="math display">\[\alpha=\min\bigg\{\frac{P(\theta^*)}{P(\theta^{(i)})},1\bigg\},\]</span>
-donde <span class="math inline">\(\alpha\)</span> denota la probabilidad de hacer el cambio de isla.</p></li>
-</ol>
-<p>Notemos que la distribución objetivo <span class="math inline">\(P(\theta)\)</span> no necesita estar normalizada,
-esto es porque lo que nos interesa es el cociente <span class="math inline">\(P(\theta^*)/P(\theta^{(i)})\)</span>.</p>
-<ol start="3" style="list-style-type: decimal">
-<li>Una vez que propusimos un movimiento y calculamos la probabilidad de aceptar
-el movimiento aceptamos o rechazamos el movimiento generando un valor de una
-distribución uniforme, si dicho valor es menor a la probabilidad de cambio,
-<span class="math inline">\(\alpha,\)</span> entonces hacemos el movimiento.</li>
-</ol>
-<p>Entonces, para utilizar el algoritmo necesitamos ser capaces de:</p>
-<ul>
-<li><p>Generar un valor de la distribución propuesta, que hemos denotado por <span class="math inline">\(q,\)</span>
-(para crear <span class="math inline">\(\theta^*\)</span>).</p></li>
-<li><p>Evaluar la distribución objetivo en cualquier valor propuesto (para calcular
-<span class="math inline">\(P(\theta^*)/P(\theta^{(i)})\)</span>).</p></li>
-<li><p>Generar un valor uniforme (para movernos con probabilidad <span class="math inline">\(\alpha\)</span>).</p></li>
-</ul>
-<p>Las <span class="math inline">\(3\)</span> puntos anteriores nos permiten generar muestras aleatorias de la
-distribución objetivo, sin importar si esta está normalizada. Esta técnica es
-particularmente útil cuando cuando la distribución objetivo es una posterior
-proporcional a <span class="math inline">\(p(x|\theta)p(\theta)\)</span>.</p>
-<p>Para entender porque funciona el algoritmo de Metrópolis hace falta entender <span class="math inline">\(2\)</span>
-puntos, primero que la distribución objetivo es <strong>estable</strong>: si la probabilidad
-<em>actual</em> de ubicarse en una posición coincide con la probabilidad en la
-distribución objetivo, entonces el algoritmo preserva las probabilidades.</p>
-<div class="sourceCode" id="cb595"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb595-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(expm)</span>
-<span id="cb595-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-2" aria-hidden="true" tabindex="-1"></a>transMat <span class="ot">&lt;-</span> <span class="cf">function</span>(P){ <span class="co"># recibe vector de probabilidades (o población)</span></span>
-<span id="cb595-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-3" aria-hidden="true" tabindex="-1"></a>    T <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">10</span>)</span>
-<span id="cb595-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-4" aria-hidden="true" tabindex="-1"></a>    n <span class="ot">&lt;-</span> <span class="fu">length</span>(P <span class="sc">-</span> <span class="dv">1</span>) <span class="co"># número de estados</span></span>
-<span id="cb595-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>n <span class="sc">-</span> <span class="dv">1</span>) { <span class="co"># llenamos por fila</span></span>
-<span id="cb595-6"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-6" aria-hidden="true" tabindex="-1"></a>        T[j, j <span class="sc">-</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">min</span>(P[j <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">/</span> P[j], <span class="dv">1</span>)</span>
-<span id="cb595-7"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-7" aria-hidden="true" tabindex="-1"></a>        T[j, j] <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">min</span>(P[j <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">/</span> P[j], <span class="dv">1</span>)) <span class="sc">+</span> </span>
-<span id="cb595-8"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-8" aria-hidden="true" tabindex="-1"></a>                   <span class="fl">0.5</span> <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">min</span>(P[j <span class="sc">+</span> <span class="dv">1</span>] <span class="sc">/</span> P[j], <span class="dv">1</span>))</span>
-<span id="cb595-9"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-9" aria-hidden="true" tabindex="-1"></a>        T[j, j <span class="sc">+</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">min</span>(P[j <span class="sc">+</span> <span class="dv">1</span>] <span class="sc">/</span> P[j], <span class="dv">1</span>)</span>
-<span id="cb595-10"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-10" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb595-11"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># faltan los casos j = 1 y j = n</span></span>
-<span id="cb595-12"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-12" aria-hidden="true" tabindex="-1"></a>    T[<span class="dv">1</span>, <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">+</span> <span class="fl">0.5</span> <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">min</span>(P[<span class="dv">2</span>] <span class="sc">/</span> P[<span class="dv">1</span>], <span class="dv">1</span>))</span>
-<span id="cb595-13"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-13" aria-hidden="true" tabindex="-1"></a>    T[<span class="dv">1</span>, <span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">min</span>(P[<span class="dv">2</span>] <span class="sc">/</span> P[<span class="dv">1</span>], <span class="dv">1</span>)</span>
-<span id="cb595-14"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-14" aria-hidden="true" tabindex="-1"></a>    T[n, n] <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">+</span> <span class="fl">0.5</span> <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">min</span>(P[n <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">/</span> P[n], <span class="dv">1</span>))</span>
-<span id="cb595-15"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-15" aria-hidden="true" tabindex="-1"></a>    T[n, n <span class="sc">-</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">min</span>(P[n <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">/</span> P[n], <span class="dv">1</span>)</span>
-<span id="cb595-16"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-16" aria-hidden="true" tabindex="-1"></a>    T</span>
-<span id="cb595-17"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-17" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb595-18"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-18" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> <span class="fu">transMat</span>(islas<span class="sc">$</span>pob)</span>
-<span id="cb595-19"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-19" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">8</span>))</span>
-<span id="cb595-20"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-20" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">1000</span>, <span class="dv">5000</span>)</span>
-<span id="cb595-21"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-21" aria-hidden="true" tabindex="-1"></a>expT <span class="ot">&lt;-</span> <span class="fu">map_df</span>(t, <span class="sc">~</span><span class="fu">data.frame</span>(<span class="at">t =</span> ., w <span class="sc">%*%</span> (T <span class="sc">%^%</span> .)))</span>
-<span id="cb595-22"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-22" aria-hidden="true" tabindex="-1"></a>expT_long <span class="ot">&lt;-</span> expT <span class="sc">%&gt;%</span></span>
-<span id="cb595-23"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gather</span>(theta, P, <span class="sc">-</span>t) <span class="sc">%&gt;%</span> </span>
-<span id="cb595-24"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">theta =</span> <span class="fu">parse_number</span>(theta))</span>
-<span id="cb595-25"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-25" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(expT_long, <span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">y =</span> P)) <span class="sc">+</span></span>
-<span id="cb595-26"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;darkgray&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb595-27"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span> t) <span class="sc">+</span></span>
-<span id="cb595-28"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb595-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="fu">expression</span>(theta), <span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">11</span>))</span></code></pre></div>
-<p><img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-29-1.png" width="768" style="display: block; margin: auto;" /></p>
-<p>El segundo punto es que el proceso converge a la distribución objetivo.
-Podemos ver, (en nuestro ejemplo sencillo) que sin importar el punto de inicio
-se alcanza la distribución objetivo.</p>
-<div class="sourceCode" id="cb596"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb596-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb596-1" aria-hidden="true" tabindex="-1"></a>inicio_p <span class="ot">&lt;-</span> <span class="cf">function</span>(i){</span>
-<span id="cb596-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb596-2" aria-hidden="true" tabindex="-1"></a>    w <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">10</span>)</span>
-<span id="cb596-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb596-3" aria-hidden="true" tabindex="-1"></a>    w[i] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb596-4"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb596-4" aria-hidden="true" tabindex="-1"></a>    t <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">50</span>, <span class="dv">100</span>)</span>
-<span id="cb596-5"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb596-5" aria-hidden="true" tabindex="-1"></a>    exp_t <span class="ot">&lt;-</span> <span class="fu">map_df</span>(t, <span class="sc">~</span> <span class="fu">data.frame</span>(<span class="at">t =</span> .x, <span class="at">inicio =</span> i, w <span class="sc">%*%</span> (T <span class="sc">%^%</span> .))) <span class="sc">%&gt;%</span></span>
-<span id="cb596-6"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb596-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">gather</span>(theta, P, <span class="sc">-</span>t, <span class="sc">-</span>inicio) <span class="sc">%&gt;%</span> </span>
-<span id="cb596-7"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb596-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mutate</span>(<span class="at">theta =</span> <span class="fu">parse_number</span>(theta))</span>
-<span id="cb596-8"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb596-8" aria-hidden="true" tabindex="-1"></a>    exp_t</span>
-<span id="cb596-9"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb596-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb596-10"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb596-10" aria-hidden="true" tabindex="-1"></a>exp_t <span class="ot">&lt;-</span> <span class="fu">map_df</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">9</span>), inicio_p)</span>
-<span id="cb596-11"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb596-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(exp_t, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">as.numeric</span>(theta), <span class="at">y =</span> P)) <span class="sc">+</span></span>
-<span id="cb596-12"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb596-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;darkgray&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb596-13"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb596-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_grid</span>(inicio <span class="sc">~</span> t) <span class="sc">+</span></span>
-<span id="cb596-14"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb596-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="fu">expression</span>(theta), <span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">11</span>))</span></code></pre></div>
-<p><img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-30-1.png" width="768" style="display: block; margin: auto;" /></p>
 </div>
 <div id="metrópolis-con-varios-parámetros" class="section level2 unnumbered hasAnchor">
 <h2>Metrópolis con varios parámetros<a href="métodos-de-cadenas-de-markov-monte-carlo.html#metrópolis-con-varios-parámetros" class="anchor-section" aria-label="Anchor link to header"></a></h2>

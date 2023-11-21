@@ -372,6 +372,221 @@ de una distribución cualquiera $p(\theta) = K f(\theta)$, donde sólo conocemos
 la función $f(\theta)$.
 
 
+## Ejemplo de islas
+
+Comenzamos revisando el ejemplo de las islas en @Kruschke (7.2) para tener más intuición de cómo funciona este algoritmo.
+
+## ¿Por qué funciona Metrópolis? {-}
+
+Supongamos que un vendedor de *Yakult* trabaja a lo largo de una cadena de
+islas:
+
+* Constantemente viaja entre las islas ofreciendo sus productos;
+
+* Al final de un día de trabajo decide si permanece en la misma isla o se 
+transporta a una de las $2$ islas vecinas;
+
+* El vendedor ignora la distribución de la población en las islas y el número
+total de islas; sin embargo, una vez que se encuentra en una isla puede
+investigar la población de la misma y también  de la isla a la que se propone
+viajar después.
+
+* El objetivo del vendedor es visitar las islas de manera proporcional a la 
+población de cada una. Con esto en mente el vendedor utiliza el siguiente 
+proceso: 
+    1) Lanza un volado, si el resultado es águila se propone ir a la isla 
+del lado izquierdo de su ubicación actual y si es sol a la del lado derecho.
+    2) Si la isla propuesta en el paso anterior tiene población mayor a la 
+población de la isla actual, el vendedor decide viajar a ella. Si la isla vecina 
+tiene población menor, entonces visita la isla propuesta con una probabilidad que 
+depende de la población de las islas. Sea $P^*$ la población de la isla 
+propuesta y $P_{t}$ la población de la isla actual. Entonces el vendedor
+cambia de isla con probabilidad 
+$$q_{mover}=P^*/P_{t}$$
+
+A la larga, si el vendedor sigue la heurística anterior la probabilidad de que
+el vendedor este en alguna de las islas coincide con la población relativa de
+la isla. 
+
+
+```r
+islas <- tibble(islas = 1:10, pob = 1:10)
+camina_isla <- function(i){ # i: isla actual
+    u <- runif(1) # volado
+    v <- ifelse(u < 0.5, i - 1, i + 1)  # isla vecina (índice)
+    if (v < 1 | v > 10) { # si estás en los extremos y el volado indica salir
+      return(i)
+    }
+    p_move = ifelse(islas$pob[v] > islas$pob[i], 1, islas$pob[v] / islas$pob[i])
+    u2 <- runif(1)
+    if (p_move  > u2) {
+        return(v) # isla destino
+    }
+    else {
+      return(i) # me quedo en la misma isla
+    }
+}
+pasos <- 100000
+iteraciones <- numeric(pasos)
+iteraciones[1] <- sample(1:10, 1) # isla inicial
+for (j in 2:pasos) {
+    iteraciones[j] <- camina_isla(iteraciones[j - 1])
+}
+caminata <- tibble(pasos = 1:pasos, isla = iteraciones)
+plot_caminata <- ggplot(caminata[1:1000, ], aes(x = pasos, y = isla)) +
+    geom_point(size = 0.8) +
+    geom_path(alpha = 0.5) +
+    coord_flip() + 
+    labs(title = "Caminata aleatoria") +
+    scale_y_continuous(expression(theta), breaks = 1:10) +
+    scale_x_continuous("Tiempo")
+plot_dist <- ggplot(caminata, aes(x = isla)) +
+    geom_histogram() +
+    scale_x_continuous(expression(theta), breaks = 1:10) +
+    labs(title = "Distribución objetivo", 
+       y = expression(P(theta)))
+plot_caminata / plot_dist
+```
+
+<img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-13-1.png" width="336" style="display: block; margin: auto;" />
+
+Entonces:
+
+* Para aproximar la distribución objetivo debemos permitir que el vendedor 
+recorra las islas durante una sucesión larga de pasos y registramos sus visitas. 
+
+* Nuestra aproximación de la distribución es justamente el registro de sus 
+visitas. 
+
+* Más aún, debemos tener cuidado y excluir la porción de las visitas que se 
+encuentran bajo la influencia de la posición inicial. Esto es, debemos excluir 
+el **periodo de calentamiento**. 
+
+* Una vez que tenemos un registro _largo_ de los viajes del vendedor (excluyendo 
+el calentamiento) podemos aproximar la distribución objetivo 
+simplemente contando el número relativo de veces que el vendedor visitó
+dicha isla.
+
+
+```r
+t <- c(1:10, 20, 50, 100, 200, 1000, 5000)
+plots_list <- map(t, function(i){
+    ggplot(caminata[1:i, ], aes(x = isla)) +
+        geom_histogram() +
+        labs(y = "", x = "", title = paste("t = ", i, sep = "")) +
+        scale_x_continuous(expression(theta), breaks = 1:10, limits = c(0, 11))
+})
+wrap_plots(plots_list)
+```
+
+<img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-14-1.png" width="768" style="display: block; margin: auto;" />
+
+
+Escribamos el algoritmo, para esto indexamos las islas por el valor
+$\theta$, es así que la isla del extremo oeste corresponde a $\theta=1$ y la 
+población relativa de cada isla es $P(\theta)$:
+
+1. El vendedor se ubica en $\theta^{(i)}$ y propone moverse a la izquierda
+o derecha con probabilidad $0.5$.  
+El rango de los posibles valores para moverse, y la probabilidad de proponer 
+cada uno se conoce como **distribución propuesta**, en nuestro ejemplo sólo 
+toma dos valores cada uno con probabilidad $0.5$. 
+
+2. Una vez que se propone un movimiento, decidimos si aceptarlo. La decisión de
+aceptar se basa en el valor de la distribución **objetivo** en la posición
+propuesta, relativo al valor de la distribución objetivo en la posición actual:
+$$\alpha=\min\bigg\{\frac{P(\theta^*)}{P(\theta^{(i)})},1\bigg\},$$
+donde $\alpha$ denota la probabilidad de hacer el cambio de isla. 
+
+Notemos que la distribución objetivo $P(\theta)$ no necesita estar normalizada, 
+esto es porque lo que nos interesa es el cociente $P(\theta^*)/P(\theta^{(i)})$.
+
+3. Una vez que propusimos un movimiento y calculamos la probabilidad de aceptar
+el movimiento aceptamos o rechazamos el movimiento generando un valor de una
+distribución uniforme, si dicho valor es menor a la probabilidad de cambio,
+$\alpha,$ entonces hacemos el movimiento.
+
+Entonces, para utilizar el algoritmo necesitamos ser capaces de:
+
+* Generar un valor de la distribución propuesta, que hemos denotado por $q,$
+(para crear $\theta^*$).
+
+* Evaluar la distribución objetivo en cualquier valor propuesto (para calcular
+$P(\theta^*)/P(\theta^{(i)})$).
+
+* Generar un valor uniforme (para movernos con probabilidad $\alpha$).
+
+Las $3$ puntos anteriores nos permiten generar muestras aleatorias de la
+distribución objetivo, sin importar si esta está normalizada. Esta técnica es
+particularmente útil cuando cuando la distribución objetivo es una posterior
+proporcional a $p(x|\theta)p(\theta)$.
+
+
+Para entender porque funciona el algoritmo de Metrópolis hace falta entender $2$
+puntos, primero que la distribución objetivo es **estable**: si la probabilidad
+_actual_ de ubicarse en una posición coincide con la probabilidad en la 
+distribución objetivo, entonces el algoritmo preserva las probabilidades.
+
+
+```r
+library(expm)
+transMat <- function(P){ # recibe vector de probabilidades (o población)
+    T <- matrix(0, 10, 10)
+    n <- length(P - 1) # número de estados
+    for (j in 2:n - 1) { # llenamos por fila
+        T[j, j - 1] <- 0.5 * min(P[j - 1] / P[j], 1)
+        T[j, j] <- 0.5 * (1 - min(P[j - 1] / P[j], 1)) + 
+                   0.5 * (1 - min(P[j + 1] / P[j], 1))
+        T[j, j + 1] <- 0.5 * min(P[j + 1] / P[j], 1)
+    }
+    # faltan los casos j = 1 y j = n
+    T[1, 1] <- 0.5 + 0.5 * (1 - min(P[2] / P[1], 1))
+    T[1, 2] <- 0.5 * min(P[2] / P[1], 1)
+    T[n, n] <- 0.5 + 0.5 * (1 - min(P[n - 1] / P[n], 1))
+    T[n, n - 1] <- 0.5 * min(P[n - 1] / P[n], 1)
+    T
+}
+T <- transMat(islas$pob)
+w <- c(0, 1, rep(0, 8))
+t <- c(1:10, 20, 50, 100, 200, 1000, 5000)
+expT <- map_df(t, ~data.frame(t = ., w %*% (T %^% .)))
+expT_long <- expT %>%
+    gather(theta, P, -t) %>% 
+    mutate(theta = parse_number(theta))
+ggplot(expT_long, aes(x = theta, y = P)) +
+    geom_bar(stat = "identity", fill = "darkgray") + 
+    facet_wrap(~ t) +
+    scale_x_continuous(expression(theta), breaks = 1:10, limits = c(0, 11))
+```
+
+<img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-15-1.png" width="768" style="display: block; margin: auto;" />
+
+El segundo punto es que el proceso converge a la distribución objetivo. 
+Podemos ver, (en nuestro ejemplo sencillo) que sin importar el punto de inicio
+se alcanza la distribución objetivo.
+
+
+```r
+inicio_p <- function(i){
+    w <- rep(0, 10)
+    w[i] <- 1
+    t <- c(1, 10, 50, 100)
+    exp_t <- map_df(t, ~ data.frame(t = .x, inicio = i, w %*% (T %^% .))) %>%
+        gather(theta, P, -t, -inicio) %>% 
+        mutate(theta = parse_number(theta))
+    exp_t
+}
+exp_t <- map_df(c(1, 3, 5, 9), inicio_p)
+ggplot(exp_t, aes(x = as.numeric(theta), y = P)) +
+    geom_bar(stat = "identity", fill = "darkgray") + 
+    facet_grid(inicio ~ t) +
+    scale_x_continuous(expression(theta), breaks = 1:10, limits = c(0, 11))
+```
+
+<img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-16-1.png" width="768" style="display: block; margin: auto;" />
+
+
+
 ## Método de Metrópolis {-}
 
 En el método de Metrópolis, uno de los más antiguos, comenzamos
@@ -462,7 +677,7 @@ sims_tbl <- iterador_metro(c(theta = 0.5), 50000)
 ggplot(sims_tbl, aes(x = theta)) + geom_histogram()
 ```
 
-<img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-15-1.png" width="480" style="display: block; margin: auto;" />
+<img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-19-1.png" width="480" style="display: block; margin: auto;" />
 
 Ahora probemos con una $\mathsf{Beta}(3, 2):$
 
@@ -484,9 +699,8 @@ g_2 <- ggplot(sims_indep_tbl, aes(x = theta)) +
 g_1 + g_2
 ```
 
-<img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-16-1.png" width="480" style="display: block; margin: auto;" />
-Y vemos que esto funciona. Revisa el ejemplo de las islas en @Kruschke (7.2) para 
-tener más intuición de cómo funciona este algoritmo.
+<img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-20-1.png" width="480" style="display: block; margin: auto;" />
+Y vemos que esto funciona. 
 
 Nótese sin embargo un aspecto de estas simulaciones que no habíamos encontrado
 en el curso. Aunque la distribución final de las simulaciones es muy cercana
@@ -509,7 +723,7 @@ g_indep <- sims_indep_tbl %>%
 g_metropolis + g_indep
 ```
 
-<img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-17-1.png" width="768" style="display: block; margin: auto;" />
+<img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-21-1.png" width="768" style="display: block; margin: auto;" />
 
 Donde vemos claramente que las simulaciones de metropolis están autocorrelacionadas:
 la siguiente simulación depende de la anterior. Esto define una cadena de Markov.
@@ -532,8 +746,8 @@ tibble(metodo = c("sim Metrópolis", "sim Independiente", "exacto"),
 ## # A tibble: 3 × 2
 ##   metodo            media_post
 ##   <chr>                  <dbl>
-## 1 sim Metrópolis         0.603
-## 2 sim Independiente      0.599
+## 1 sim Metrópolis         0.599
+## 2 sim Independiente      0.603
 ## 3 exacto                 0.6
 ```
 
@@ -598,7 +812,7 @@ sim_indep <- tibble(theta = rgamma(10000, 20, 100))
 ggplot(sim_indep, aes(x = theta)) + geom_histogram()
 ```
 
-<img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-20-1.png" width="480" style="display: block; margin: auto;" />
+<img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-24-1.png" width="480" style="display: block; margin: auto;" />
 
 
 ```r
@@ -612,7 +826,7 @@ dist_bplot <- ggplot(tibble(x = rgamma(10000, 20, 100)), aes(y = x, x = "a")) + 
 g_sim + dist_bplot + plot_layout(widths = c(5, 1))
 ```
 
-<img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-21-1.png" width="480" style="display: block; margin: auto;" />
+<img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-25-1.png" width="480" style="display: block; margin: auto;" />
 
 Nótese que después de 5 mil iteraciones estamos muy lejos de tener una muestra
 que se aproxime a la distribución objetivo. Empezamos en un lugar bajo, y la
@@ -632,7 +846,7 @@ g_sim <- ggplot(sims_grande_tbl %>% filter(iter_num < 3000), aes(x = iter_num, y
 g_sim + dist_bplot + plot_layout(widths = c(5, 1))
 ```
 
-<img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-22-1.png" width="480" style="display: block; margin: auto;" />
+<img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-26-1.png" width="480" style="display: block; margin: auto;" />
 
 En este caso, la cadena se *atora* muchas veces, pues las propuestas tienen
 probabilidad muy baja, y tendemos a tener una tasa de rechazos muy alta. Esto
@@ -658,7 +872,7 @@ g_sim <- ggplot(sims_tbl %>% filter(iter_num < 3000),
 g_sim + dist_bplot + plot_layout(widths = c(5, 1))
 ```
 
-<img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-23-1.png" width="480" style="display: block; margin: auto;" />
+<img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-27-1.png" width="480" style="display: block; margin: auto;" />
 Donde vemos que esta cadena parece mezclar bien (está explorando la totalidad
 de la distribución objetivo), y también parece estar en un estado estable.
 
@@ -680,7 +894,7 @@ estimaciones_media %>% bind_rows(tibble(tipo = "exacta", media = 20/100)) %>%
 ## # A tibble: 4 × 2
 ##   tipo            media
 ##   <chr>           <dbl>
-## 1 salto chico     0.101
+## 1 salto chico     0.120
 ## 2 salto grande    0.190
 ## 3 salto apropiado 0.203
 ## 4 exacta          0.2
@@ -730,217 +944,6 @@ rangon intercuartil.</li>
 </div>
 
 
-## ¿Por qué funciona Metrópolis? {-}
-
-Veremos un ejemplo relativemente simple que nos puede ayudar
-a mejorar nuestra intuición acerca de este algoritmo.
-
-Supongamos que un vendedor de *Yakult* trabaja a lo largo de una cadena de
-islas:
-
-* Constantemente viaja entre las islas ofreciendo sus productos;
-
-* Al final de un día de trabajo decide si permanece en la misma isla o se 
-transporta a una de las $2$ islas vecinas;
-
-* El vendedor ignora la distribución de la población en las islas y el número
-total de islas; sin embargo, una vez que se encuentra en una isla puede
-investigar la población de la misma y también  de la isla a la que se propone
-viajar después.
-
-* El objetivo del vendedor es visitar las islas de manera proporcional a la 
-población de cada una. Con esto en mente el vendedor utiliza el siguiente 
-proceso: 
-    1) Lanza un volado, si el resultado es águila se propone ir a la isla 
-del lado izquierdo de su ubicación actual y si es sol a la del lado derecho.
-    2) Si la isla propuesta en el paso anterior tiene población mayor a la 
-población de la isla actual, el vendedor decide viajar a ella. Si la isla vecina 
-tiene población menor, entonces visita la isla propuesta con una probabilidad que 
-depende de la población de las islas. Sea $P^*$ la población de la isla 
-propuesta y $P_{t}$ la población de la isla actual. Entonces el vendedor
-cambia de isla con probabilidad 
-$$q_{mover}=P^*/P_{t}$$
-
-A la larga, si el vendedor sigue la heurística anterior la probabilidad de que
-el vendedor este en alguna de las islas coincide con la población relativa de
-la isla. 
-
-
-```r
-islas <- tibble(islas = 1:10, pob = 1:10)
-camina_isla <- function(i){ # i: isla actual
-    u <- runif(1) # volado
-    v <- ifelse(u < 0.5, i - 1, i + 1)  # isla vecina (índice)
-    if (v < 1 | v > 10) { # si estas en los extremos y el volado indica salir
-      return(i)
-    }
-    u2 <- runif(1)
-    p_move = min(islas$pob[v] / islas$pob[i], 1)
-    if (p_move  > u2) {
-        return(v) # isla destino
-    }
-    else {
-      return(i) # me quedo en la misma isla
-    }
-}
-pasos <- 100000
-iteraciones <- numeric(pasos)
-iteraciones[1] <- sample(1:10, 1) # isla inicial
-for (j in 2:pasos) {
-    iteraciones[j] <- camina_isla(iteraciones[j - 1])
-}
-caminata <- tibble(pasos = 1:pasos, isla = iteraciones)
-plot_caminata <- ggplot(caminata[1:1000, ], aes(x = pasos, y = isla)) +
-    geom_point(size = 0.8) +
-    geom_path(alpha = 0.5) +
-    coord_flip() + 
-    labs(title = "Caminata aleatoria") +
-    scale_y_continuous(expression(theta), breaks = 1:10) +
-    scale_x_continuous("Tiempo")
-plot_dist <- ggplot(caminata, aes(x = isla)) +
-    geom_histogram() +
-    scale_x_continuous(expression(theta), breaks = 1:10) +
-    labs(title = "Distribución objetivo", 
-       y = expression(P(theta)))
-plot_caminata / plot_dist
-```
-
-<img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-27-1.png" width="336" style="display: block; margin: auto;" />
-
-Entonces:
-
-* Para aproximar la distribución objetivo debemos permitir que el vendedor 
-recorra las islas durante una sucesión larga de pasos y registramos sus visitas. 
-
-* Nuestra aproximación de la distribución es justamente el registro de sus 
-visitas. 
-
-* Más aún, debemos tener cuidado y excluir la porción de las visitas que se 
-encuentran bajo la influencia de la posición inicial. Esto es, debemos excluir 
-el **periodo de calentamiento**. 
-
-* Una vez que tenemos un registro _largo_ de los viajes del vendedor (excluyendo 
-el calentamiento) podemos aproximar la distribución objetivo 
-simplemente contando el número relativo de veces que el vendedor visitó
-dicha isla.
-
-
-```r
-t <- c(1:10, 20, 50, 100, 200, 1000, 5000)
-plots_list <- map(t, function(i){
-    ggplot(caminata[1:i, ], aes(x = isla)) +
-        geom_histogram() +
-        labs(y = "", x = "", title = paste("t = ", i, sep = "")) +
-        scale_x_continuous(expression(theta), breaks = 1:10, limits = c(0, 11))
-})
-wrap_plots(plots_list)
-```
-
-<img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-28-1.png" width="768" style="display: block; margin: auto;" />
-
-
-Escribamos el algoritmo, para esto indexamos las islas por el valor
-$\theta$, es así que la isla del extremo oeste corresponde a $\theta=1$ y la 
-población relativa de cada isla es $P(\theta)$:
-
-1. El vendedor se ubica en $\theta^{(i)}$ y propone moverse a la izquierda
-o derecha con probabilidad $0.5$.  
-El rango de los posibles valores para moverse, y la probabilidad de proponer 
-cada uno se conoce como **distribución propuesta**, en nuestro ejemplo sólo 
-toma dos valores cada uno con probabilidad $0.5$. 
-
-2. Una vez que se propone un movimiento, decidimos si aceptarlo. La decisión de
-aceptar se basa en el valor de la distribución **objetivo** en la posición
-propuesta, relativo al valor de la distribución objetivo en la posición actual:
-$$\alpha=\min\bigg\{\frac{P(\theta^*)}{P(\theta^{(i)})},1\bigg\},$$
-donde $\alpha$ denota la probabilidad de hacer el cambio de isla. 
-
-Notemos que la distribución objetivo $P(\theta)$ no necesita estar normalizada, 
-esto es porque lo que nos interesa es el cociente $P(\theta^*)/P(\theta^{(i)})$.
-
-3. Una vez que propusimos un movimiento y calculamos la probabilidad de aceptar
-el movimiento aceptamos o rechazamos el movimiento generando un valor de una
-distribución uniforme, si dicho valor es menor a la probabilidad de cambio,
-$\alpha,$ entonces hacemos el movimiento.
-
-Entonces, para utilizar el algoritmo necesitamos ser capaces de:
-
-* Generar un valor de la distribución propuesta, que hemos denotado por $q,$
-(para crear $\theta^*$).
-
-* Evaluar la distribución objetivo en cualquier valor propuesto (para calcular
-$P(\theta^*)/P(\theta^{(i)})$).
-
-* Generar un valor uniforme (para movernos con probabilidad $\alpha$).
-
-Las $3$ puntos anteriores nos permiten generar muestras aleatorias de la
-distribución objetivo, sin importar si esta está normalizada. Esta técnica es
-particularmente útil cuando cuando la distribución objetivo es una posterior
-proporcional a $p(x|\theta)p(\theta)$.
-
-
-Para entender porque funciona el algoritmo de Metrópolis hace falta entender $2$
-puntos, primero que la distribución objetivo es **estable**: si la probabilidad
-_actual_ de ubicarse en una posición coincide con la probabilidad en la 
-distribución objetivo, entonces el algoritmo preserva las probabilidades.
-
-
-```r
-library(expm)
-transMat <- function(P){ # recibe vector de probabilidades (o población)
-    T <- matrix(0, 10, 10)
-    n <- length(P - 1) # número de estados
-    for (j in 2:n - 1) { # llenamos por fila
-        T[j, j - 1] <- 0.5 * min(P[j - 1] / P[j], 1)
-        T[j, j] <- 0.5 * (1 - min(P[j - 1] / P[j], 1)) + 
-                   0.5 * (1 - min(P[j + 1] / P[j], 1))
-        T[j, j + 1] <- 0.5 * min(P[j + 1] / P[j], 1)
-    }
-    # faltan los casos j = 1 y j = n
-    T[1, 1] <- 0.5 + 0.5 * (1 - min(P[2] / P[1], 1))
-    T[1, 2] <- 0.5 * min(P[2] / P[1], 1)
-    T[n, n] <- 0.5 + 0.5 * (1 - min(P[n - 1] / P[n], 1))
-    T[n, n - 1] <- 0.5 * min(P[n - 1] / P[n], 1)
-    T
-}
-T <- transMat(islas$pob)
-w <- c(0, 1, rep(0, 8))
-t <- c(1:10, 20, 50, 100, 200, 1000, 5000)
-expT <- map_df(t, ~data.frame(t = ., w %*% (T %^% .)))
-expT_long <- expT %>%
-    gather(theta, P, -t) %>% 
-    mutate(theta = parse_number(theta))
-ggplot(expT_long, aes(x = theta, y = P)) +
-    geom_bar(stat = "identity", fill = "darkgray") + 
-    facet_wrap(~ t) +
-    scale_x_continuous(expression(theta), breaks = 1:10, limits = c(0, 11))
-```
-
-<img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-29-1.png" width="768" style="display: block; margin: auto;" />
-
-El segundo punto es que el proceso converge a la distribución objetivo. 
-Podemos ver, (en nuestro ejemplo sencillo) que sin importar el punto de inicio
-se alcanza la distribución objetivo.
-
-
-```r
-inicio_p <- function(i){
-    w <- rep(0, 10)
-    w[i] <- 1
-    t <- c(1, 10, 50, 100)
-    exp_t <- map_df(t, ~ data.frame(t = .x, inicio = i, w %*% (T %^% .))) %>%
-        gather(theta, P, -t, -inicio) %>% 
-        mutate(theta = parse_number(theta))
-    exp_t
-}
-exp_t <- map_df(c(1, 3, 5, 9), inicio_p)
-ggplot(exp_t, aes(x = as.numeric(theta), y = P)) +
-    geom_bar(stat = "identity", fill = "darkgray") + 
-    facet_grid(inicio ~ t) +
-    scale_x_continuous(expression(theta), breaks = 1:10, limits = c(0, 11))
-```
-
-<img src="16-bayes-mcmc_files/figure-html/unnamed-chunk-30-1.png" width="768" style="display: block; margin: auto;" />
 
 ## Metrópolis con varios parámetros {-}
 

@@ -16,3 +16,4 @@ más-de-pruebas-de-hipótesis-e-intervalos
 introducción-a-inferencia-bayesiana-1
 calibración-bayesiana-y-regularización
 métodos-de-cadenas-de-markov-monte-carlo
+ejemplo-de-islas
