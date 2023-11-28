@@ -1,7 +1,7 @@
 // Ejemplo de modelo normal para estaturas de cantantes
 data {
   int n; // número de observaciones
-  real y[n]; //estaturas observadas
+  array[n] real y; //datos observados
 }
 
 parameters {
@@ -17,7 +17,7 @@ model {
 }
 
 generated quantities {
-  real y_sim[n];
+  array[n] real y_sim;  
   for(i in 1:n){
     y_sim[i] = normal_rng(mu, sigma);
   }

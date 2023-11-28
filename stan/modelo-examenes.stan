@@ -1,7 +1,7 @@
 // Ejemplo de estimación del máximo de uniforme
 data {
   int n; // número de observaciones
-  int y[n]; //número de preguntas correctas
+  array[n] real y; //datos observados
 }
 
 

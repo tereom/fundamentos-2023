@@ -262,9 +262,7 @@ ggplot(y_sim_tbl, aes(sample = value)) +
 ```
 
 
-
-## Ejemplo: exámenes
-
+### Ejemplo: exámenes
 
 ```{r}
 sim_formas <- function(p_azar, p_corr){
