@@ -1,7 +1,7 @@
 // Ejemplo de estimación del máximo de uniforme
 data {
   int n; // número de observaciones
-  array[n] real y; //datos observados
+  array[n] int y; //datos observados
 }
 
 
@@ -21,4 +21,3 @@ model {
       log(1 - theta_azar) + binomial_lpmf(y[i] | 10, theta_corr));
   }
 }
-

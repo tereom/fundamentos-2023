@@ -20,7 +20,7 @@ library(tidyverse)
 Escribimos el código para el modelo en un archivo *modelo-1.stan*, 
 y compilamos:
 
-```{r, message=FALSE, include=FALSE}
+```{r, message=FALSE}
 archivo_stan <- file.path("stan/modelo-1.stan")
 # compilar
 mod <- cmdstan_model(archivo_stan)
@@ -98,7 +98,7 @@ mod <- cmdstan_model(archivo_stan)
 mod
 ```
 
-Pasamos datos y muestreamos
+Pasamos datos y muestreamos:
 
 ```{r}
 datos_lista <- list(n = nrow(muestra_loteria), y = muestra_loteria$numero)
