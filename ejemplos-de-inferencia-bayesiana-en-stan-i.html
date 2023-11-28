@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Sección 13 Ejemplos de inferencia bayesiana en Stan I | Fundamentos de Estadística con Remuestreo</title>
+  <meta name="description" content="Curso de Fundamentos de Estadística con Remuestreo, maestría en Ciencia de Datos, ITAM, Otoño 2023." />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Sección 13 Ejemplos de inferencia bayesiana en Stan I | Fundamentos de Estadística con Remuestreo" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Curso de Fundamentos de Estadística con Remuestreo, maestría en Ciencia de Datos, ITAM, Otoño 2023." />
+  <meta name="github-repo" content="tereom/fundamentos-2023" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Sección 13 Ejemplos de inferencia bayesiana en Stan I | Fundamentos de Estadística con Remuestreo" />
+  
+  <meta name="twitter:description" content="Curso de Fundamentos de Estadística con Remuestreo, maestría en Ciencia de Datos, ITAM, Otoño 2023." />
+  
+
+<meta name="author" content="Teresa Ortiz, Alfredo Garbuno, Felipe González" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="métodos-de-cadenas-de-markov-monte-carlo.html"/>
+<link rel="next" href="apéndice-principios-de-visualizacion.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Fundamentos de Estadística con Remuestreo</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Información del curso</a></li>
+<li class="chapter" data-level="" data-path="temario.html"><a href="temario.html"><i class="fa fa-check"></i>Temario</a>
+<ul>
+<li class="chapter" data-level="" data-path="temario.html"><a href="temario.html#plan-semanal"><i class="fa fa-check"></i>Plan semanal</a></li>
+<li class="chapter" data-level="" data-path="temario.html"><a href="temario.html#evaluación"><i class="fa fa-check"></i>Evaluación</a></li>
+<li class="chapter" data-level="0.1" data-path="temario.html"><a href="temario.html#referencias"><i class="fa fa-check"></i><b>0.1</b> Referencias</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html"><i class="fa fa-check"></i><b>1</b> Análisis exploratorio</a>
+<ul>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#el-papel-de-la-exploración-en-el-análisis-de-datos"><i class="fa fa-check"></i>El papel de la exploración en el análisis de datos</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#preguntas-y-datos"><i class="fa fa-check"></i>Preguntas y datos</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#algunos-conceptos-básicos"><i class="fa fa-check"></i>Algunos conceptos básicos</a>
+<ul>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#histogramas"><i class="fa fa-check"></i>Histogramas</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#media-y-desviación-estándar"><i class="fa fa-check"></i>Media y desviación estándar</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#ejemplos"><i class="fa fa-check"></i>Ejemplos</a>
+<ul>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#precios-de-casas"><i class="fa fa-check"></i>Precios de casas</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#prueba-enlace"><i class="fa fa-check"></i>Prueba Enlace</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#estados-y-calificaciones-en-sat"><i class="fa fa-check"></i>Estados y calificaciones en SAT</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#tablas-de-conteos"><i class="fa fa-check"></i>Tablas de conteos</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#suavizamiento-loess"><i class="fa fa-check"></i>Suavizamiento loess</a>
+<ul>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#opcional-cálculo-del-suavizador"><i class="fa fa-check"></i>Opcional: cálculo del suavizador</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#caso-de-estudio-nacimientos-en-méxico"><i class="fa fa-check"></i>Caso de estudio: nacimientos en México</a>
+<ul>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#datos-de-natalidad-para-méxico"><i class="fa fa-check"></i>Datos de natalidad para México</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#tendencia"><i class="fa fa-check"></i>Tendencia</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#componente-anual"><i class="fa fa-check"></i>Componente anual</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#día-de-la-semana"><i class="fa fa-check"></i>Día de la semana</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#residuales"><i class="fa fa-check"></i>Residuales</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#reestimación"><i class="fa fa-check"></i>Reestimación</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#análisis-de-componentes"><i class="fa fa-check"></i>Análisis de componentes</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#residuales-antes-y-después-de-2006"><i class="fa fa-check"></i>Residuales: antes y después de 2006</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#otros-días-especiales-más-de-residuales"><i class="fa fa-check"></i>Otros días especiales: más de residuales</a></li>
+<li class="chapter" data-level="" data-path="análisis-exploratorio.html"><a href="análisis-exploratorio.html#semana-santa"><i class="fa fa-check"></i>Semana santa</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html"><i class="fa fa-check"></i><b>2</b> Tipos de estudio y experimentos</a>
+<ul>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#motivación"><i class="fa fa-check"></i>Motivación</a></li>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#proceso-generador-de-datos"><i class="fa fa-check"></i>Proceso Generador de Datos</a></li>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#ejemplo-prevalencia-de-anemia"><i class="fa fa-check"></i>Ejemplo: Prevalencia de anemia</a></li>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#muestreo-aleatorio"><i class="fa fa-check"></i>Muestreo aleatorio</a></li>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#pero-si-no-podemos-hacer-muestreo-aleatorio"><i class="fa fa-check"></i>Pero si no podemos hacer muestreo aleatorio?</a>
+<ul>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#ejemplo-policías-y-tráfico"><i class="fa fa-check"></i>Ejemplo: Policías y tráfico</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#el-estimador-estándar"><i class="fa fa-check"></i>El estimador estándar</a></li>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#experimentos-tradicionales"><i class="fa fa-check"></i>Experimentos tradicionales</a></li>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#bloqueo"><i class="fa fa-check"></i>Bloqueo</a></li>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#variables-desconocidas"><i class="fa fa-check"></i>Variables desconocidas</a></li>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#aleatorizando-el-tratamiento"><i class="fa fa-check"></i>Aleatorizando el tratamiento</a></li>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#selección-de-unidades-y-tratamiento"><i class="fa fa-check"></i>Selección de unidades y tratamiento</a></li>
+<li class="chapter" data-level="" data-path="tipos-de-estudio-y-experimentos.html"><a href="tipos-de-estudio-y-experimentos.html#asignación-natural-del-tratamiento"><i class="fa fa-check"></i>Asignación natural del tratamiento</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html"><i class="fa fa-check"></i><b>3</b> Pruebas de hipótesis</a>
+<ul>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#comparación-con-poblaciones-de-referencia"><i class="fa fa-check"></i>Comparación con poblaciones de referencia</a>
+<ul>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#ejemplo"><i class="fa fa-check"></i>Ejemplo</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#comparando-distribuciones"><i class="fa fa-check"></i>Comparando distribuciones</a></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#prueba-de-permutaciones-y-el-lineup"><i class="fa fa-check"></i>Prueba de permutaciones y el <em>lineup</em></a></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#comparaciones-usando-lineup-continuación"><i class="fa fa-check"></i>Comparaciones usando <em>lineup</em> (continuación)</a></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#prueba-de-permutaciones-para-proporciones"><i class="fa fa-check"></i>Prueba de permutaciones para proporciones</a></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#pruebas-de-hipótesis-tradicionales"><i class="fa fa-check"></i>Pruebas de hipótesis tradicionales</a></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#tomadores-de-té-continuación"><i class="fa fa-check"></i>Tomadores de té (continuación)</a></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#pruebas-de-permutación-implementación."><i class="fa fa-check"></i>Pruebas de permutación: implementación.</a></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#ejemplo-tiempos-de-fusión"><i class="fa fa-check"></i>Ejemplo: tiempos de fusión</a></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#ejemplo-tiempos-de-fusión-continuación"><i class="fa fa-check"></i>Ejemplo: tiempos de fusión (continuación)</a></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#separación-de-grupos"><i class="fa fa-check"></i>Separación de grupos</a>
+<ul>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#avispas-opcional"><i class="fa fa-check"></i>Avispas (opcional)</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#la-crisis-de-replicabilidad"><i class="fa fa-check"></i>La “crisis de replicabilidad”</a></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#el-jardín-de-los-senderos-que-se-bifurcan"><i class="fa fa-check"></i>El jardín de los senderos que se bifurcan</a></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#ejemplo-decisiones-de-análisis-y-valores-p"><i class="fa fa-check"></i>Ejemplo: decisiones de análisis y valores <em>p</em></a></li>
+<li class="chapter" data-level="" data-path="pruebas-de-hipótesis.html"><a href="pruebas-de-hipótesis.html#alternativas-o-soluciones"><i class="fa fa-check"></i>Alternativas o soluciones</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="estimación-y-distribución-de-muestreo-1.html"><a href="estimación-y-distribución-de-muestreo-1.html"><i class="fa fa-check"></i><b>4</b> Estimación y distribución de muestreo</a>
+<ul>
+<li class="chapter" data-level="" data-path="estimación-y-distribución-de-muestreo-1.html"><a href="estimación-y-distribución-de-muestreo-1.html#ejemplo-precios-de-casas"><i class="fa fa-check"></i>Ejemplo: precios de casas</a></li>
+<li class="chapter" data-level="" data-path="estimación-y-distribución-de-muestreo-1.html"><a href="estimación-y-distribución-de-muestreo-1.html#distribución-de-muestreo"><i class="fa fa-check"></i>Distribución de muestreo</a></li>
+<li class="chapter" data-level="" data-path="estimación-y-distribución-de-muestreo-1.html"><a href="estimación-y-distribución-de-muestreo-1.html#más-ejemplos"><i class="fa fa-check"></i>Más ejemplos</a></li>
+<li class="chapter" data-level="" data-path="estimación-y-distribución-de-muestreo-1.html"><a href="estimación-y-distribución-de-muestreo-1.html#el-error-estándar"><i class="fa fa-check"></i>El error estándar</a>
+<ul>
+<li class="chapter" data-level="" data-path="estimación-y-distribución-de-muestreo-1.html"><a href="estimación-y-distribución-de-muestreo-1.html#ejemplo-valor-de-casas"><i class="fa fa-check"></i>Ejemplo: valor de casas</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="estimación-y-distribución-de-muestreo-1.html"><a href="estimación-y-distribución-de-muestreo-1.html#calculando-la-distribución-de-muestreo"><i class="fa fa-check"></i>Calculando la distribución de muestreo</a>
+<ul>
+<li class="chapter" data-level="" data-path="estimación-y-distribución-de-muestreo-1.html"><a href="estimación-y-distribución-de-muestreo-1.html#ejemplo-1"><i class="fa fa-check"></i>Ejemplo</a></li>
+<li class="chapter" data-level="" data-path="estimación-y-distribución-de-muestreo-1.html"><a href="estimación-y-distribución-de-muestreo-1.html#ejemplo-2"><i class="fa fa-check"></i>Ejemplo</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="estimación-y-distribución-de-muestreo-1.html"><a href="estimación-y-distribución-de-muestreo-1.html#teorema-central-del-límite"><i class="fa fa-check"></i>Teorema central del límite</a></li>
+<li class="chapter" data-level="" data-path="estimación-y-distribución-de-muestreo-1.html"><a href="estimación-y-distribución-de-muestreo-1.html#normalidad-y-gráficas-de-cuantiles-normales"><i class="fa fa-check"></i>Normalidad y gráficas de cuantiles normales</a></li>
+<li class="chapter" data-level="" data-path="estimación-y-distribución-de-muestreo-1.html"><a href="estimación-y-distribución-de-muestreo-1.html#prueba-de-hipótesis-de-normalidad"><i class="fa fa-check"></i>Prueba de hipótesis de normalidad</a>
+<ul>
+<li class="chapter" data-level="" data-path="estimación-y-distribución-de-muestreo-1.html"><a href="estimación-y-distribución-de-muestreo-1.html#ejemplo-3"><i class="fa fa-check"></i>Ejemplo</a></li>
+<li class="chapter" data-level="" data-path="estimación-y-distribución-de-muestreo-1.html"><a href="estimación-y-distribución-de-muestreo-1.html#ejemplo-4"><i class="fa fa-check"></i>Ejemplo</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="estimación-y-distribución-de-muestreo-1.html"><a href="estimación-y-distribución-de-muestreo-1.html#ejemplo-5"><i class="fa fa-check"></i>Ejemplo</a></li>
+<li class="chapter" data-level="" data-path="estimación-y-distribución-de-muestreo-1.html"><a href="estimación-y-distribución-de-muestreo-1.html#más-del-teorema-central-del-límite"><i class="fa fa-check"></i>Más del Teorema central del límite</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html"><i class="fa fa-check"></i><b>5</b> Intervalos de confianza y remuestreo</a>
+<ul>
+<li class="chapter" data-level="" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html#ejemplo-introductorio"><i class="fa fa-check"></i>Ejemplo introductorio</a></li>
+<li class="chapter" data-level="" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html#la-idea-del-bootstrap"><i class="fa fa-check"></i>La idea del bootstrap</a></li>
+<li class="chapter" data-level="" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html#el-principio-de-plug-in"><i class="fa fa-check"></i>El principio de plug-in</a>
+<ul>
+<li class="chapter" data-level="" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html#ejemplo-6"><i class="fa fa-check"></i>Ejemplo</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html#discusión-propiedades-de-la-distribución-bootstrap"><i class="fa fa-check"></i>Discusión: propiedades de la distribución bootstrap</a>
+<ul>
+<li class="chapter" data-level="" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html#ejemplo-7"><i class="fa fa-check"></i>Ejemplo</a></li>
+<li class="chapter" data-level="" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html#variación-en-distribuciones-bootstrap"><i class="fa fa-check"></i>Variación en distribuciones bootstrap</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html#error-estándar-bootstrap-e-intervalos-normales"><i class="fa fa-check"></i>Error estándar bootstrap e intervalos normales</a>
+<ul>
+<li class="chapter" data-level="" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html#ejemplo-tomadores-de-té-negro"><i class="fa fa-check"></i>Ejemplo: tomadores de té negro</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html#ejemplo-inventario-de-casas-vendidas"><i class="fa fa-check"></i>Ejemplo: inventario de casas vendidas</a></li>
+<li class="chapter" data-level="" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html#calibración-de-intervalos-de-confianza"><i class="fa fa-check"></i>Calibración de intervalos de confianza</a></li>
+<li class="chapter" data-level="" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html#interpretación-de-intervalos-de-confianza"><i class="fa fa-check"></i>Interpretación de intervalos de confianza</a></li>
+<li class="chapter" data-level="" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html#sesgo"><i class="fa fa-check"></i>Sesgo</a></li>
+<li class="chapter" data-level="" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html#intervalos-bootstrap-de-percentiles"><i class="fa fa-check"></i>Intervalos bootstrap de percentiles</a>
+<ul>
+<li class="chapter" data-level="" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html#ejemplo-8"><i class="fa fa-check"></i>Ejemplo</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html#bootstrap-para-dos-muestras"><i class="fa fa-check"></i>Bootstrap para dos muestras</a>
+<ul>
+<li class="chapter" data-level="" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html#ejemplo-9"><i class="fa fa-check"></i>Ejemplo</a></li>
+<li class="chapter" data-level="" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html#datos-pareados"><i class="fa fa-check"></i>Datos pareados</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html#bootstrap-y-otras-estadísticas"><i class="fa fa-check"></i>Bootstrap y otras estadísticas</a>
+<ul>
+<li class="chapter" data-level="" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html#ejemplo-estimadores-de-razón"><i class="fa fa-check"></i>Ejemplo: estimadores de razón</a></li>
+<li class="chapter" data-level="" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html#ejemplo-suavizadores"><i class="fa fa-check"></i>Ejemplo: suavizadores</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html#bootstrap-y-estimadores-complejos-tablas-de-perfiles"><i class="fa fa-check"></i>Bootstrap y estimadores complejos: tablas de perfiles</a></li>
+<li class="chapter" data-level="" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html#bootstrap-y-muestras-complejas"><i class="fa fa-check"></i>Bootstrap y muestras complejas</a></li>
+<li class="chapter" data-level="" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html#bootstrap-en-r"><i class="fa fa-check"></i>Bootstrap en R</a></li>
+<li class="chapter" data-level="" data-path="intervalos-de-confianza-y-remuestreo.html"><a href="intervalos-de-confianza-y-remuestreo.html#conclusiones-y-observaciones"><i class="fa fa-check"></i>Conclusiones y observaciones</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="estimación-por-máxima-verosimilitud.html"><a href="estimación-por-máxima-verosimilitud.html"><i class="fa fa-check"></i><b>6</b> Estimación por máxima verosimilitud</a>
+<ul>
+<li class="chapter" data-level="" data-path="estimación-por-máxima-verosimilitud.html"><a href="estimación-por-máxima-verosimilitud.html#introducción-a-estimación-por-máxima-verosimilitud"><i class="fa fa-check"></i>Introducción a estimación por máxima verosimilitud</a></li>
+<li class="chapter" data-level="" data-path="estimación-por-máxima-verosimilitud.html"><a href="estimación-por-máxima-verosimilitud.html#máxima-verosimilitud-para-observaciones-continuas"><i class="fa fa-check"></i>Máxima verosimilitud para observaciones continuas</a></li>
+<li class="chapter" data-level="" data-path="estimación-por-máxima-verosimilitud.html"><a href="estimación-por-máxima-verosimilitud.html#aspectos-numéricos"><i class="fa fa-check"></i>Aspectos numéricos</a></li>
+<li class="chapter" data-level="" data-path="estimación-por-máxima-verosimilitud.html"><a href="estimación-por-máxima-verosimilitud.html#máxima-verosimilitud-para-más-de-un-parámetro"><i class="fa fa-check"></i>Máxima verosimilitud para más de un parámetro</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="bootstrap-paramétrico.html"><a href="bootstrap-paramétrico.html"><i class="fa fa-check"></i><b>7</b> <em>Bootstrap</em> paramétrico</a>
+<ul>
+<li class="chapter" data-level="" data-path="bootstrap-paramétrico.html"><a href="bootstrap-paramétrico.html#ventajas-y-desventajas-de-bootstrap-paramétrico"><i class="fa fa-check"></i>Ventajas y desventajas de <em>bootstrap</em> paramétrico</a></li>
+<li class="chapter" data-level="" data-path="bootstrap-paramétrico.html"><a href="bootstrap-paramétrico.html#verificando-los-supuestos-distribucionales"><i class="fa fa-check"></i>Verificando los supuestos distribucionales</a></li>
+<li class="chapter" data-level="" data-path="bootstrap-paramétrico.html"><a href="bootstrap-paramétrico.html#modelos-mal-identificados"><i class="fa fa-check"></i>Modelos mal identificados</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="propiedades-teóricas-de-mle.html"><a href="propiedades-teóricas-de-mle.html"><i class="fa fa-check"></i><b>8</b> Propiedades teóricas de MLE</a>
+<ul>
+<li class="chapter" data-level="" data-path="propiedades-teóricas-de-mle.html"><a href="propiedades-teóricas-de-mle.html#ejemplo-10"><i class="fa fa-check"></i>Ejemplo</a></li>
+<li class="chapter" data-level="" data-path="propiedades-teóricas-de-mle.html"><a href="propiedades-teóricas-de-mle.html#consistencia"><i class="fa fa-check"></i>Consistencia</a>
+<ul>
+<li class="chapter" data-level="" data-path="propiedades-teóricas-de-mle.html"><a href="propiedades-teóricas-de-mle.html#ejemplo-11"><i class="fa fa-check"></i>Ejemplo</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="propiedades-teóricas-de-mle.html"><a href="propiedades-teóricas-de-mle.html#equivarianza-del-textsfmle"><i class="fa fa-check"></i>Equivarianza del <span class="math inline">\(\textsf{MLE}\)</span></a>
+<ul>
+<li class="chapter" data-level="" data-path="propiedades-teóricas-de-mle.html"><a href="propiedades-teóricas-de-mle.html#ejemplo-12"><i class="fa fa-check"></i>Ejemplo</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="propiedades-teóricas-de-mle.html"><a href="propiedades-teóricas-de-mle.html#normalidad-asintótica"><i class="fa fa-check"></i>Normalidad asintótica</a>
+<ul>
+<li class="chapter" data-level="" data-path="propiedades-teóricas-de-mle.html"><a href="propiedades-teóricas-de-mle.html#ejemplo-información-de-fisher"><i class="fa fa-check"></i>Ejemplo: Información de Fisher</a></li>
+<li class="chapter" data-level="" data-path="propiedades-teóricas-de-mle.html"><a href="propiedades-teóricas-de-mle.html#ejemplo-normalidad"><i class="fa fa-check"></i>Ejemplo: Normalidad</a></li>
+<li class="chapter" data-level="" data-path="propiedades-teóricas-de-mle.html"><a href="propiedades-teóricas-de-mle.html#el-método-delta"><i class="fa fa-check"></i>El método delta</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="propiedades-teóricas-de-mle.html"><a href="propiedades-teóricas-de-mle.html#optimalidad-del-textsfmle"><i class="fa fa-check"></i>Optimalidad del <span class="math inline">\(\textsf{MLE}\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="más-de-pruebas-de-hipótesis-e-intervalos.html"><a href="más-de-pruebas-de-hipótesis-e-intervalos.html"><i class="fa fa-check"></i><b>9</b> Más de pruebas de hipótesis e intervalos</a>
+<ul>
+<li class="chapter" data-level="" data-path="más-de-pruebas-de-hipótesis-e-intervalos.html"><a href="más-de-pruebas-de-hipótesis-e-intervalos.html#prueba-de-wald"><i class="fa fa-check"></i>Prueba de Wald</a></li>
+<li class="chapter" data-level="" data-path="más-de-pruebas-de-hipótesis-e-intervalos.html"><a href="más-de-pruebas-de-hipótesis-e-intervalos.html#observación-pruebas-t-y-práctica-estadística"><i class="fa fa-check"></i>Observación: pruebas <span class="math inline">\(t\)</span> y práctica estadística</a></li>
+<li class="chapter" data-level="" data-path="más-de-pruebas-de-hipótesis-e-intervalos.html"><a href="más-de-pruebas-de-hipótesis-e-intervalos.html#prueba-de-wald-para-dos-medias-o-proporciones"><i class="fa fa-check"></i>Prueba de Wald para dos medias o proporciones</a></li>
+<li class="chapter" data-level="" data-path="más-de-pruebas-de-hipótesis-e-intervalos.html"><a href="más-de-pruebas-de-hipótesis-e-intervalos.html#datos-pareados-1"><i class="fa fa-check"></i>Datos pareados</a></li>
+<li class="chapter" data-level="" data-path="más-de-pruebas-de-hipótesis-e-intervalos.html"><a href="más-de-pruebas-de-hipótesis-e-intervalos.html#pruebas-de-cociente-de-verosimilitud"><i class="fa fa-check"></i>Pruebas de cociente de verosimilitud</a>
+<ul>
+<li class="chapter" data-level="" data-path="más-de-pruebas-de-hipótesis-e-intervalos.html"><a href="más-de-pruebas-de-hipótesis-e-intervalos.html#distribución-de-referencia-para-pruebas-de-cocientes"><i class="fa fa-check"></i>Distribución de referencia para pruebas de cocientes</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="más-de-pruebas-de-hipótesis-e-intervalos.html"><a href="más-de-pruebas-de-hipótesis-e-intervalos.html#otro-tipo-de-pruebas"><i class="fa fa-check"></i>Otro tipo de pruebas</a></li>
+<li class="chapter" data-level="" data-path="más-de-pruebas-de-hipótesis-e-intervalos.html"><a href="más-de-pruebas-de-hipótesis-e-intervalos.html#errores-tipo-i-y-tipo-ii"><i class="fa fa-check"></i>Errores tipo I y tipo II</a></li>
+<li class="chapter" data-level="" data-path="más-de-pruebas-de-hipótesis-e-intervalos.html"><a href="más-de-pruebas-de-hipótesis-e-intervalos.html#consideraciones-prácticas"><i class="fa fa-check"></i>Consideraciones prácticas</a></li>
+<li class="chapter" data-level="" data-path="más-de-pruebas-de-hipótesis-e-intervalos.html"><a href="más-de-pruebas-de-hipótesis-e-intervalos.html#pruebas-múltiples"><i class="fa fa-check"></i>Pruebas múltiples</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="introducción-a-inferencia-bayesiana-1.html"><a href="introducción-a-inferencia-bayesiana-1.html"><i class="fa fa-check"></i><b>10</b> Introducción a inferencia bayesiana</a>
+<ul>
+<li class="chapter" data-level="" data-path="introducción-a-inferencia-bayesiana-1.html"><a href="introducción-a-inferencia-bayesiana-1.html#un-primer-ejemplo-completo-de-inferencia-bayesiana"><i class="fa fa-check"></i>Un primer ejemplo completo de inferencia bayesiana</a></li>
+<li class="chapter" data-level="" data-path="introducción-a-inferencia-bayesiana-1.html"><a href="introducción-a-inferencia-bayesiana-1.html#ejemplo-estimando-una-proporción"><i class="fa fa-check"></i>Ejemplo: estimando una proporción</a></li>
+<li class="chapter" data-level="" data-path="introducción-a-inferencia-bayesiana-1.html"><a href="introducción-a-inferencia-bayesiana-1.html#ejemplo-observaciones-uniformes"><i class="fa fa-check"></i>Ejemplo: observaciones uniformes</a></li>
+<li class="chapter" data-level="" data-path="introducción-a-inferencia-bayesiana-1.html"><a href="introducción-a-inferencia-bayesiana-1.html#probabilidad-a-priori"><i class="fa fa-check"></i>Probabilidad a priori</a></li>
+<li class="chapter" data-level="" data-path="introducción-a-inferencia-bayesiana-1.html"><a href="introducción-a-inferencia-bayesiana-1.html#análisis-conjugado"><i class="fa fa-check"></i>Análisis conjugado</a>
+<ul>
+<li class="chapter" data-level="" data-path="introducción-a-inferencia-bayesiana-1.html"><a href="introducción-a-inferencia-bayesiana-1.html#ejemplo-13"><i class="fa fa-check"></i>Ejemplo</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="introducción-a-inferencia-bayesiana-1.html"><a href="introducción-a-inferencia-bayesiana-1.html#pasos-de-un-análisis-de-datos-bayesiano"><i class="fa fa-check"></i>Pasos de un análisis de datos bayesiano</a></li>
+<li class="chapter" data-level="" data-path="introducción-a-inferencia-bayesiana-1.html"><a href="introducción-a-inferencia-bayesiana-1.html#verificación-predictiva-posterior"><i class="fa fa-check"></i>Verificación predictiva posterior</a>
+<ul>
+<li class="chapter" data-level="" data-path="introducción-a-inferencia-bayesiana-1.html"><a href="introducción-a-inferencia-bayesiana-1.html#ejemplo-estaturas-de-tenores"><i class="fa fa-check"></i>Ejemplo: estaturas de tenores</a></li>
+<li class="chapter" data-level="" data-path="introducción-a-inferencia-bayesiana-1.html"><a href="introducción-a-inferencia-bayesiana-1.html#ejemplo-modelo-poisson"><i class="fa fa-check"></i>Ejemplo: modelo Poisson</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="introducción-a-inferencia-bayesiana-1.html"><a href="introducción-a-inferencia-bayesiana-1.html#predicción"><i class="fa fa-check"></i>Predicción</a>
+<ul>
+<li class="chapter" data-level="" data-path="introducción-a-inferencia-bayesiana-1.html"><a href="introducción-a-inferencia-bayesiana-1.html#ejemplo-cantantes"><i class="fa fa-check"></i>Ejemplo: cantantes</a></li>
+<li class="chapter" data-level="" data-path="introducción-a-inferencia-bayesiana-1.html"><a href="introducción-a-inferencia-bayesiana-1.html#ejemplo-posterior-predictiva-de-pareto-uniforme."><i class="fa fa-check"></i>Ejemplo: posterior predictiva de Pareto-Uniforme.</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="calibración-bayesiana-y-regularización.html"><a href="calibración-bayesiana-y-regularización.html"><i class="fa fa-check"></i><b>11</b> Calibración bayesiana y Regularización</a>
+<ul>
+<li class="chapter" data-level="" data-path="calibración-bayesiana-y-regularización.html"><a href="calibración-bayesiana-y-regularización.html#enfoque-bayesiano-y-frecuentista"><i class="fa fa-check"></i>Enfoque bayesiano y frecuentista</a></li>
+<li class="chapter" data-level="" data-path="calibración-bayesiana-y-regularización.html"><a href="calibración-bayesiana-y-regularización.html#ejemplo-estimación-de-una-proporción"><i class="fa fa-check"></i>Ejemplo: estimación de una proporción</a></li>
+<li class="chapter" data-level="" data-path="calibración-bayesiana-y-regularización.html"><a href="calibración-bayesiana-y-regularización.html#intervalos-de-agresti-coull"><i class="fa fa-check"></i>Intervalos de Agresti-Coull</a></li>
+<li class="chapter" data-level="" data-path="calibración-bayesiana-y-regularización.html"><a href="calibración-bayesiana-y-regularización.html#incorporando-información-inicial"><i class="fa fa-check"></i>Incorporando información inicial</a>
+<ul>
+<li class="chapter" data-level="" data-path="calibración-bayesiana-y-regularización.html"><a href="calibración-bayesiana-y-regularización.html#ejemplo-porporción-de-hogares-de-ingresos-grandes"><i class="fa fa-check"></i>Ejemplo: porporción de hogares de ingresos grandes</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="calibración-bayesiana-y-regularización.html"><a href="calibración-bayesiana-y-regularización.html#inferencia-bayesiana-y-regularización"><i class="fa fa-check"></i>Inferencia bayesiana y regularización</a></li>
+<li class="chapter" data-level="" data-path="calibración-bayesiana-y-regularización.html"><a href="calibración-bayesiana-y-regularización.html#ejemplo-modelo-normal-y-estaturas"><i class="fa fa-check"></i>Ejemplo: modelo normal y estaturas</a></li>
+<li class="chapter" data-level="" data-path="calibración-bayesiana-y-regularización.html"><a href="calibración-bayesiana-y-regularización.html#ejemplo-estimación-de-proporciones"><i class="fa fa-check"></i>Ejemplo: estimación de proporciones</a></li>
+<li class="chapter" data-level="" data-path="calibración-bayesiana-y-regularización.html"><a href="calibración-bayesiana-y-regularización.html#teoría-de-decisión"><i class="fa fa-check"></i>Teoría de decisión</a>
+<ul>
+<li class="chapter" data-level="" data-path="calibración-bayesiana-y-regularización.html"><a href="calibración-bayesiana-y-regularización.html#ejemplo-riesgo-frecuentista"><i class="fa fa-check"></i>Ejemplo: riesgo frecuentista</a></li>
+<li class="chapter" data-level="" data-path="calibración-bayesiana-y-regularización.html"><a href="calibración-bayesiana-y-regularización.html#ejemplo-riesgo-posterior"><i class="fa fa-check"></i>Ejemplo: riesgo posterior</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="calibración-bayesiana-y-regularización.html"><a href="calibración-bayesiana-y-regularización.html#riesgo-de-bayes"><i class="fa fa-check"></i>Riesgo de Bayes</a>
+<ul>
+<li class="chapter" data-level="" data-path="calibración-bayesiana-y-regularización.html"><a href="calibración-bayesiana-y-regularización.html#ejemplo-14"><i class="fa fa-check"></i>Ejemplo</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html"><i class="fa fa-check"></i><b>12</b> Métodos de Cadenas de Markov Monte Carlo</a>
+<ul>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#integrales-mediante-subdivisiones"><i class="fa fa-check"></i>Integrales mediante subdivisiones</a>
+<ul>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#ejemplo-estimación-de-una-proporción-1"><i class="fa fa-check"></i>Ejemplo: estimación de una proporción</a></li>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#más-de-un-parámetro"><i class="fa fa-check"></i>Más de un parámetro</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#métodos-monte-carlo"><i class="fa fa-check"></i>Métodos Monte Carlo</a>
+<ul>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#ejemplo-15"><i class="fa fa-check"></i>Ejemplo</a></li>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#ejemplo-varias-pruebas-independientes"><i class="fa fa-check"></i>Ejemplo: varias pruebas independientes</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#simulando-de-la-posterior"><i class="fa fa-check"></i>Simulando de la posterior</a></li>
+<li class="chapter" data-level="12.1" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#ejemplo-de-islas"><i class="fa fa-check"></i><b>12.1</b> Ejemplo de islas</a></li>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#por-qué-funciona-metrópolis"><i class="fa fa-check"></i>¿Por qué funciona Metrópolis?</a></li>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#método-de-metrópolis"><i class="fa fa-check"></i>Método de Metrópolis</a></li>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#ajustando-el-tamaño-de-salto"><i class="fa fa-check"></i>Ajustando el tamaño de salto</a>
+<ul>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#ejemplo-16"><i class="fa fa-check"></i>Ejemplo</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#metrópolis-con-varios-parámetros"><i class="fa fa-check"></i>Metrópolis con varios parámetros</a>
+<ul>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#ejemplo-el-modelo-normal"><i class="fa fa-check"></i>Ejemplo: el modelo normal</a></li>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#ejemplo-observaciones-normales-no-conjugado"><i class="fa fa-check"></i>Ejemplo: observaciones normales, no conjugado</a></li>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#ejemplo-exámenes"><i class="fa fa-check"></i>Ejemplo: exámenes</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#muestreador-de-gibbs"><i class="fa fa-check"></i>Muestreador de Gibbs</a>
+<ul>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#ejemplo-dos-proporciones"><i class="fa fa-check"></i>Ejemplo: dos proporciones</a></li>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#ejemplo-modelo-normal-no-conjugado"><i class="fa fa-check"></i>Ejemplo: Modelo normal no conjugado</a></li>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#ejemplo-17"><i class="fa fa-check"></i>Ejemplo</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#conclusiones-y-observaciones-metrópolis-y-gibbs"><i class="fa fa-check"></i>Conclusiones y observaciones Metrópolis y Gibbs</a></li>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#hmc-y-stan"><i class="fa fa-check"></i>HMC y Stan</a></li>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#diagnósticos-generales-para-mcmc"><i class="fa fa-check"></i>Diagnósticos generales para MCMC</a>
+<ul>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#representatividad"><i class="fa fa-check"></i>Representatividad</a></li>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#precisión"><i class="fa fa-check"></i>Precisión</a></li>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#eficiencia"><i class="fa fa-check"></i>Eficiencia</a></li>
+<li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#recomendaciones-generales"><i class="fa fa-check"></i>Recomendaciones generales</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><i class="fa fa-check"></i><b>13</b> Ejemplos de inferencia bayesiana en Stan I</a>
+<ul>
+<li class="chapter" data-level="" data-path="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#estimación-de-una-proporción"><i class="fa fa-check"></i>Estimación de una proporción</a></li>
+<li class="chapter" data-level="" data-path="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#estimación-del-máximo-de-una-uniforme"><i class="fa fa-check"></i>Estimación del máximo de una uniforme</a></li>
+<li class="chapter" data-level="" data-path="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#ejemplo-de-cantantes"><i class="fa fa-check"></i>Ejemplo de cantantes</a>
+<ul>
+<li class="chapter" data-level="13.0.1" data-path="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#ejemplo-exámenes-1"><i class="fa fa-check"></i><b>13.0.1</b> Ejemplo: exámenes</a></li>
+</ul></li>
+<li class="chapter" data-level="13.1" data-path="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#ejemplo-exámenes-mal-identificado"><i class="fa fa-check"></i><b>13.1</b> Ejemplo: exámenes, mal identificado</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html"><i class="fa fa-check"></i>Apéndice: Principios de visualizacion</a>
+<ul>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#el-cuarteto-de-anscombe"><i class="fa fa-check"></i>El cuarteto de Anscombe</a></li>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#introducción"><i class="fa fa-check"></i>Introducción</a></li>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#visualización-popular-de-datos"><i class="fa fa-check"></i>Visualización popular de datos</a></li>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#teoría-de-visualización-de-datos"><i class="fa fa-check"></i>Teoría de visualización de datos</a>
+<ul>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#principios-generales-del-diseño-analítico"><i class="fa fa-check"></i>Principios generales del diseño analítico</a></li>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#técnicas-de-visualización"><i class="fa fa-check"></i>Técnicas de visualización</a></li>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#indicadores-de-calidad-gráfica"><i class="fa fa-check"></i>Indicadores de calidad gráfica</a></li>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#factor-de-engaño-y-chartjunk"><i class="fa fa-check"></i>Factor de engaño y Chartjunk</a></li>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#pequeños-múltiplos-y-densidad-gráfica"><i class="fa fa-check"></i>Pequeños múltiplos y densidad gráfica</a></li>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#tinta-de-datos"><i class="fa fa-check"></i>Tinta de datos</a></li>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#decoración"><i class="fa fa-check"></i>Decoración</a></li>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#percepción-de-escala"><i class="fa fa-check"></i>Percepción de escala</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#ejemplo-gráfica-de-minard"><i class="fa fa-check"></i>Ejemplo: gráfica de Minard</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="tareas.html"><a href="tareas.html"><i class="fa fa-check"></i>Tareas</a>
+<ul>
+<li class="chapter" data-level="" data-path="tareas.html"><a href="tareas.html#análisis-exploratorio-1"><i class="fa fa-check"></i>1. Análisis Exploratorio</a></li>
+<li class="chapter" data-level="" data-path="tareas.html"><a href="tareas.html#análisis-exploratorio---loess"><i class="fa fa-check"></i>2. Análisis Exploratorio - loess</a></li>
+<li class="chapter" data-level="" data-path="tareas.html"><a href="tareas.html#tipos-de-estudio-y-pgd"><i class="fa fa-check"></i>3. Tipos de estudio y PGD</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="referencias-1.html"><a href="referencias-1.html"><i class="fa fa-check"></i>Referencias</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/tereom/fundamentos-2023" target="blank">Publicado con bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Fundamentos de Estadística con Remuestreo</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="ejemplos-de-inferencia-bayesiana-en-stan-i" class="section level1 hasAnchor" number="13">
+<h1><span class="header-section-number">Sección 13</span> Ejemplos de inferencia bayesiana en Stan I<a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#ejemplos-de-inferencia-bayesiana-en-stan-i" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>En esta parte veremos cómo correr y diagnosticar en Stan varios ejemplos vistos en clase. Para instalar <em>cmdstanr</em> y Stan, puedes ver <a href="https://mc-stan.org/cmdstanr/">aquí</a>. En python puedes usar <em>pystan</em>, por ejemplo.</p>
+<div class="sourceCode" id="cb661"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb661-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb661-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(&quot;cmdstanr&quot;, repos = c(&quot;https://mc-stan.org/r-packages/&quot;, getOption(&quot;repos&quot;)))</span></span>
+<span id="cb661-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb661-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmdstanr)</span>
+<span id="cb661-3"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb661-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(posterior)</span>
+<span id="cb661-4"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb661-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+<div id="estimación-de-una-proporción" class="section level2 unnumbered hasAnchor">
+<h2>Estimación de una proporción<a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#estimación-de-una-proporción" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Escribimos el código para el modelo en un archivo <em>modelo-1.stan</em>,
+y compilamos:</p>
+<div class="sourceCode" id="cb662"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb662-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb662-1" aria-hidden="true" tabindex="-1"></a>archivo_stan <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">&quot;stan/modelo-1.stan&quot;</span>)</span>
+<span id="cb662-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb662-2" aria-hidden="true" tabindex="-1"></a><span class="co"># compilar</span></span>
+<span id="cb662-3"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb662-3" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(archivo_stan)</span></code></pre></div>
+<div class="sourceCode" id="cb663"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb663-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb663-1" aria-hidden="true" tabindex="-1"></a>mod</span></code></pre></div>
+<pre><code>## // Ejemplo de estimación de una proporcion
+## data {
+##   int n; // número de pruebas
+##   int y; //numero de éxitos y fracasos
+## }
+## 
+## parameters {
+##   real&lt;lower=0,upper=1&gt; theta;
+## }
+## 
+## model {
+##   // inicial
+##   theta ~ beta(3, 3);
+##   y ~ binomial(n, theta);
+## }
+## 
+## generated quantities {
+##   real theta_inicial;
+##   theta_inicial = beta_rng(3, 3);
+## }</code></pre>
+<p>Pasamos datos y muestreamos</p>
+<div class="sourceCode" id="cb665"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb665-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb665-1" aria-hidden="true" tabindex="-1"></a>datos_lista <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">n =</span> <span class="dv">30</span>, <span class="at">y =</span> <span class="dv">19</span>)</span>
+<span id="cb665-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb665-2" aria-hidden="true" tabindex="-1"></a>ajuste <span class="ot">&lt;-</span> mod<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb665-3"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb665-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> datos_lista,</span>
+<span id="cb665-4"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb665-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb665-5"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb665-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb665-6"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb665-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">4</span>,</span>
+<span id="cb665-7"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb665-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">500</span>)</span></code></pre></div>
+<pre><code>## Running MCMC with 4 parallel chains...</code></pre>
+<pre><code>## Chain 1 ./modelo-1: 5: Syntax error: &quot;)&quot; unexpected</code></pre>
+<pre><code>## Chain 2 ./modelo-1: 5: Syntax error: &quot;)&quot; unexpected</code></pre>
+<pre><code>## Chain 3 ./modelo-1: 5: Syntax error: &quot;)&quot; unexpected</code></pre>
+<pre><code>## Chain 4 ./modelo-1: 5: Syntax error: &quot;)&quot; unexpected</code></pre>
+<pre><code>## Warning: Chain 1 finished unexpectedly!</code></pre>
+<pre><code>## Warning: Chain 2 finished unexpectedly!</code></pre>
+<pre><code>## Warning: Chain 3 finished unexpectedly!</code></pre>
+<pre><code>## Warning: Chain 4 finished unexpectedly!</code></pre>
+<pre><code>## Warning: All chains finished unexpectedly! Use the $output(chain_id) method for more information.</code></pre>
+<pre><code>## Warning: Use read_cmdstan_csv() to read the results of the failed chains.</code></pre>
+<pre><code>## Warning: No chains finished successfully. Unable to retrieve the fit.</code></pre>
+<p>Checamos diagnósticos:</p>
+<div class="sourceCode" id="cb678"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb678-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb678-1" aria-hidden="true" tabindex="-1"></a>ajuste<span class="sc">$</span><span class="fu">cmdstan_diagnose</span>()</span></code></pre></div>
+<pre><code>## Error: No CmdStan runs finished successfully. Unable to run bin/diagnose.</code></pre>
+<p>Si no hay problemas, podemos ver el resumen:</p>
+<div class="sourceCode" id="cb680"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb680-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb680-1" aria-hidden="true" tabindex="-1"></a>ajuste<span class="sc">$</span><span class="fu">summary</span>()</span></code></pre></div>
+<pre><code>## Error: No chains finished successfully. Unable to retrieve the draws.</code></pre>
+<p>Donde verificamos que el tamaño de muestra efectivo (ess) y el diagnóstico de
+<span class="math inline">\(\hat{R}\)</span> son apropiados.</p>
+<p>Podemos ver las cadenas de la siguiente forma:</p>
+<div class="sourceCode" id="cb682"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb682-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb682-1" aria-hidden="true" tabindex="-1"></a>theta_tbl <span class="ot">&lt;-</span> ajuste<span class="sc">$</span><span class="fu">draws</span>(<span class="fu">c</span>(<span class="st">&quot;theta&quot;</span>, <span class="st">&quot;theta_inicial&quot;</span>)) <span class="sc">%&gt;%</span> <span class="fu">as_draws_df</span>()</span></code></pre></div>
+<pre><code>## Error: No chains finished successfully. Unable to retrieve the draws.</code></pre>
+<div class="sourceCode" id="cb684"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb684-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb684-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(theta_tbl, <span class="fu">aes</span>(<span class="at">x =</span> .iteration, <span class="at">y =</span> theta)) <span class="sc">+</span></span>
+<span id="cb684-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb684-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb684-3"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb684-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>.chain, <span class="at">ncol =</span> <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;theta_tbl&#39; not found</code></pre>
+<p>Y replicamos la gráfica de las notas haciendo:</p>
+<div class="sourceCode" id="cb686"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb686-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb686-1" aria-hidden="true" tabindex="-1"></a>sims_tbl <span class="ot">&lt;-</span> theta_tbl <span class="sc">%&gt;%</span> <span class="fu">pivot_longer</span>(theta<span class="sc">:</span>theta_inicial, <span class="at">names_to =</span> <span class="st">&quot;dist&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;theta&quot;</span>)</span></code></pre></div>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;theta_tbl&#39; not found</code></pre>
+<div class="sourceCode" id="cb688"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb688-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb688-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sims_tbl, <span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">fill =</span> dist)) <span class="sc">+</span> </span>
+<span id="cb688-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb688-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> theta), <span class="at">bins =</span> <span class="dv">30</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">position =</span> <span class="st">&quot;identity&quot;</span>)</span></code></pre></div>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;sims_tbl&#39; not found</code></pre>
+</div>
+<div id="estimación-del-máximo-de-una-uniforme" class="section level2 unnumbered hasAnchor">
+<h2>Estimación del máximo de una uniforme<a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#estimación-del-máximo-de-una-uniforme" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Tomamos el ejemplo de los boletos de lotería,</p>
+<div class="sourceCode" id="cb690"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb690-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb690-1" aria-hidden="true" tabindex="-1"></a>loteria_tbl <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/nums_loteria_avion.csv&quot;</span>, <span class="at">col_names =</span> <span class="fu">c</span>(<span class="st">&quot;id&quot;</span>, <span class="st">&quot;numero&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb690-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb690-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">numero =</span> <span class="fu">as.integer</span>(numero))</span></code></pre></div>
+<pre><code>## Rows: 99 Columns: 2
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (1): numero
+## dbl (1): id
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div class="sourceCode" id="cb692"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb692-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb692-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">334</span>)</span>
+<span id="cb692-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb692-2" aria-hidden="true" tabindex="-1"></a>muestra_loteria <span class="ot">&lt;-</span> <span class="fu">sample_n</span>(loteria_tbl, <span class="dv">25</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb692-3"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb692-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">numero =</span> numero<span class="sc">/</span><span class="dv">1000</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb693"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb693-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb693-1" aria-hidden="true" tabindex="-1"></a>mod</span></code></pre></div>
+<pre><code>## // Ejemplo de estimación del máximo de uniforme
+## data {
+##   int n; // número de observaciones
+##   array[n] real y; //datos observados
+## }
+## 
+## transformed data{
+##   real y_max;
+##   y_max = max(y);
+## }
+## parameters {
+##   real&lt;lower=y_max&gt; theta;
+## }
+## 
+## model {
+##   // inicial
+##   theta ~ pareto(300, 1.1);
+##   y ~ uniform(0, theta);
+## }</code></pre>
+<p>Pasamos datos y muestreamos:</p>
+<div class="sourceCode" id="cb695"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb695-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb695-1" aria-hidden="true" tabindex="-1"></a>datos_lista <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">n =</span> <span class="fu">nrow</span>(muestra_loteria), <span class="at">y =</span> muestra_loteria<span class="sc">$</span>numero)</span>
+<span id="cb695-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb695-2" aria-hidden="true" tabindex="-1"></a>ajuste <span class="ot">&lt;-</span> mod<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb695-3"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb695-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> datos_lista,</span>
+<span id="cb695-4"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb695-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb695-5"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb695-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb695-6"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb695-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_warmup =</span> <span class="dv">5000</span>,</span>
+<span id="cb695-7"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb695-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_sampling =</span> <span class="dv">20000</span>,</span>
+<span id="cb695-8"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb695-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">4</span>,</span>
+<span id="cb695-9"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb695-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">5000</span>)</span></code></pre></div>
+<pre><code>## Running MCMC with 4 parallel chains...</code></pre>
+<pre><code>## Chain 1 ./modelo-2: 3: Syntax error: Unterminated quoted string</code></pre>
+<pre><code>## Chain 2 ./modelo-2: 3: Syntax error: Unterminated quoted string</code></pre>
+<pre><code>## Chain 3 ./modelo-2: 3: Syntax error: Unterminated quoted string</code></pre>
+<pre><code>## Chain 4 ./modelo-2: 3: Syntax error: Unterminated quoted string</code></pre>
+<pre><code>## Warning: Chain 1 finished unexpectedly!</code></pre>
+<pre><code>## Warning: Chain 2 finished unexpectedly!</code></pre>
+<pre><code>## Warning: Chain 3 finished unexpectedly!</code></pre>
+<pre><code>## Warning: Chain 4 finished unexpectedly!</code></pre>
+<pre><code>## Warning: All chains finished unexpectedly! Use the $output(chain_id) method for more information.</code></pre>
+<pre><code>## Warning: Use read_cmdstan_csv() to read the results of the failed chains.</code></pre>
+<pre><code>## Warning: No chains finished successfully. Unable to retrieve the fit.</code></pre>
+<p>Checamos diagnósticos:</p>
+<div class="sourceCode" id="cb708"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb708-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb708-1" aria-hidden="true" tabindex="-1"></a>ajuste<span class="sc">$</span><span class="fu">cmdstan_diagnose</span>()</span></code></pre></div>
+<pre><code>## Error: No CmdStan runs finished successfully. Unable to run bin/diagnose.</code></pre>
+<p>Si no hay problemas, podemos ver el resumen:</p>
+<div class="sourceCode" id="cb710"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb710-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb710-1" aria-hidden="true" tabindex="-1"></a>resumen <span class="ot">&lt;-</span> ajuste<span class="sc">$</span><span class="fu">summary</span>()</span></code></pre></div>
+<pre><code>## Error: No chains finished successfully. Unable to retrieve the draws.</code></pre>
+<div class="sourceCode" id="cb712"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb712-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb712-1" aria-hidden="true" tabindex="-1"></a>resumen</span></code></pre></div>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;resumen&#39; not found</code></pre>
+<p>El intervalo 95% que obtenemos es:</p>
+<div class="sourceCode" id="cb714"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb714-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb714-1" aria-hidden="true" tabindex="-1"></a>ajuste<span class="sc">$</span><span class="fu">draws</span>(<span class="st">&quot;theta&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">as_draws_df</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb714-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb714-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">theta_inf =</span> <span class="fu">quantile</span>(theta, <span class="fl">0.025</span>), </span>
+<span id="cb714-3"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb714-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">theta_mediana =</span> <span class="fu">quantile</span>(theta, <span class="fl">0.5</span>),</span>
+<span id="cb714-4"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb714-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">theta_sup =</span> <span class="fu">quantile</span>(theta, <span class="fl">0.975</span>))</span></code></pre></div>
+<pre><code>## Error: No chains finished successfully. Unable to retrieve the draws.</code></pre>
+<p>Podemos ahora intentar con la inicial gamma que nos pareció
+más intuitiva, aún cuando el modelo no es conjugado:</p>
+<div class="sourceCode" id="cb716"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb716-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb716-1" aria-hidden="true" tabindex="-1"></a>archivo_stan <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">&quot;stan/modelo-3.stan&quot;</span>)</span>
+<span id="cb716-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb716-2" aria-hidden="true" tabindex="-1"></a><span class="co"># compilar</span></span>
+<span id="cb716-3"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb716-3" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(archivo_stan)</span></code></pre></div>
+<div class="sourceCode" id="cb717"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb717-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb717-1" aria-hidden="true" tabindex="-1"></a>mod</span></code></pre></div>
+<pre><code>## // Ejemplo de estimación del máximo de uniforme
+## data {
+##   int n; // número de observaciones
+##   array[n] real y; //datos observados
+## }
+## 
+## transformed data{
+##   real y_max;
+##   y_max = max(y);
+## }
+## parameters {
+##   real&lt;lower=y_max&gt; theta;
+## }
+## 
+## model {
+##   // inicial
+##   theta ~ gamma(5, 0.0001);
+##   y ~ uniform(0, theta);
+## }</code></pre>
+<p>Pasamos datos y muestreamos</p>
+<div class="sourceCode" id="cb719"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb719-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb719-1" aria-hidden="true" tabindex="-1"></a>datos_lista <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">n =</span> <span class="fu">nrow</span>(muestra_loteria), <span class="at">y =</span> muestra_loteria<span class="sc">$</span>numero)</span>
+<span id="cb719-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb719-2" aria-hidden="true" tabindex="-1"></a>ajuste <span class="ot">&lt;-</span> mod<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb719-3"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb719-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> datos_lista,</span>
+<span id="cb719-4"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb719-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb719-5"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb719-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb719-6"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb719-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_sampling =</span> <span class="dv">10000</span>,</span>
+<span id="cb719-7"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb719-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">4</span>,</span>
+<span id="cb719-8"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb719-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">2000</span>)</span></code></pre></div>
+<pre><code>## Running MCMC with 4 parallel chains...</code></pre>
+<pre><code>## Chain 1 ./modelo-3: 4: Syntax error: &quot;)&quot; unexpected</code></pre>
+<pre><code>## Chain 2 ./modelo-3: 4: Syntax error: &quot;)&quot; unexpected</code></pre>
+<pre><code>## Chain 3 ./modelo-3: 4: Syntax error: &quot;)&quot; unexpected</code></pre>
+<pre><code>## Chain 4 ./modelo-3: 4: Syntax error: &quot;)&quot; unexpected</code></pre>
+<pre><code>## Warning: Chain 1 finished unexpectedly!</code></pre>
+<pre><code>## Warning: Chain 2 finished unexpectedly!</code></pre>
+<pre><code>## Warning: Chain 3 finished unexpectedly!</code></pre>
+<pre><code>## Warning: Chain 4 finished unexpectedly!</code></pre>
+<pre><code>## Warning: All chains finished unexpectedly! Use the $output(chain_id) method for more information.</code></pre>
+<pre><code>## Warning: Use read_cmdstan_csv() to read the results of the failed chains.</code></pre>
+<pre><code>## Warning: No chains finished successfully. Unable to retrieve the fit.</code></pre>
+<p>Checamos diagnósticos:</p>
+<div class="sourceCode" id="cb732"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb732-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb732-1" aria-hidden="true" tabindex="-1"></a>ajuste<span class="sc">$</span><span class="fu">cmdstan_diagnose</span>()</span></code></pre></div>
+<pre><code>## Error: No CmdStan runs finished successfully. Unable to run bin/diagnose.</code></pre>
+<p>Si no hay problemas, podemos ver el resumen:</p>
+<div class="sourceCode" id="cb734"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb734-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb734-1" aria-hidden="true" tabindex="-1"></a>resumen <span class="ot">&lt;-</span> ajuste<span class="sc">$</span><span class="fu">summary</span>()</span></code></pre></div>
+<pre><code>## Error: No chains finished successfully. Unable to retrieve the draws.</code></pre>
+<div class="sourceCode" id="cb736"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb736-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb736-1" aria-hidden="true" tabindex="-1"></a>resumen</span></code></pre></div>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;resumen&#39; not found</code></pre>
+<p>El intervalo 95% que obtenemos es:</p>
+<div class="sourceCode" id="cb738"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb738-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb738-1" aria-hidden="true" tabindex="-1"></a>ajuste<span class="sc">$</span><span class="fu">draws</span>(<span class="st">&quot;theta&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">as_draws_df</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb738-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb738-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">theta_inf =</span> <span class="fu">quantile</span>(theta, <span class="fl">0.025</span>), </span>
+<span id="cb738-3"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb738-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">theta_mediana =</span> <span class="fu">quantile</span>(theta, <span class="fl">0.5</span>),</span>
+<span id="cb738-4"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb738-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">theta_sup =</span> <span class="fu">quantile</span>(theta, <span class="fl">0.975</span>))</span></code></pre></div>
+<pre><code>## Error: No chains finished successfully. Unable to retrieve the draws.</code></pre>
+<p>Y la posterior se ve como sigue:</p>
+<div class="sourceCode" id="cb740"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb740-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb740-1" aria-hidden="true" tabindex="-1"></a>theta_post_sim <span class="ot">&lt;-</span> ajuste<span class="sc">$</span><span class="fu">draws</span>(<span class="st">&quot;theta&quot;</span>) <span class="sc">%&gt;%</span> as.numeric</span></code></pre></div>
+<pre><code>## Error: No chains finished successfully. Unable to retrieve the draws.</code></pre>
+<div class="sourceCode" id="cb742"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb742-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb742-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qplot</span>(theta_post_sim)</span></code></pre></div>
+<pre><code>## Warning: `qplot()` was deprecated in ggplot2 3.4.0.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.</code></pre>
+<pre><code>## Error: object &#39;theta_post_sim&#39; not found</code></pre>
+</div>
+<div id="ejemplo-de-cantantes" class="section level2 unnumbered hasAnchor">
+<h2>Ejemplo de cantantes<a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#ejemplo-de-cantantes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Haremos el ejemplo no conjugado de estaturas de cantantes, con
+verificación predictiva posterior.</p>
+<div class="sourceCode" id="cb745"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb745-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb745-1" aria-hidden="true" tabindex="-1"></a>mod</span></code></pre></div>
+<pre><code>## // Ejemplo de modelo normal para estaturas de cantantes
+## data {
+##   int n; // número de observaciones
+##   array[n] real y; //datos observados
+## }
+## 
+## parameters {
+##   real mu;
+##   real&lt;lower=2, upper=20&gt; sigma;
+## }
+## 
+## model {
+##   // inicial
+##   mu ~ normal(175, 3);
+##   sigma ~ uniform(2, 20);
+##   y ~ normal(mu, sigma);
+## }
+## 
+## generated quantities {
+##   array[n] real y_sim;  
+##   for(i in 1:n){
+##     y_sim[i] = normal_rng(mu, sigma);
+##   }
+## 
+## }</code></pre>
+<p>Pasamos datos y muestreamos</p>
+<div class="sourceCode" id="cb747"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb747-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb747-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3413</span>)</span>
+<span id="cb747-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb747-2" aria-hidden="true" tabindex="-1"></a>cantantes <span class="ot">&lt;-</span> lattice<span class="sc">::</span>singer <span class="sc">%&gt;%</span> </span>
+<span id="cb747-3"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb747-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">estatura_cm =</span> (<span class="fl">2.54</span> <span class="sc">*</span> height)) <span class="sc">%&gt;%</span> </span>
+<span id="cb747-4"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb747-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(voice.part, <span class="st">&quot;Tenor&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb747-5"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb747-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample_n</span>(<span class="dv">20</span>)</span>
+<span id="cb747-6"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb747-6" aria-hidden="true" tabindex="-1"></a>datos_lista <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">n =</span> <span class="fu">nrow</span>(cantantes), <span class="at">y =</span> cantantes<span class="sc">$</span>estatura_cm)</span>
+<span id="cb747-7"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb747-7" aria-hidden="true" tabindex="-1"></a>ajuste <span class="ot">&lt;-</span> mod<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb747-8"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb747-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> datos_lista,</span>
+<span id="cb747-9"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb747-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb747-10"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb747-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb747-11"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb747-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_warmup =</span> <span class="dv">4000</span>,</span>
+<span id="cb747-12"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb747-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_sampling =</span> <span class="dv">4000</span>,</span>
+<span id="cb747-13"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb747-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">2000</span>)</span></code></pre></div>
+<pre><code>## Running MCMC with 4 sequential chains...</code></pre>
+<pre><code>## Chain 1 ./modelo-cantantes: 1: Syntax error: &quot;)&quot; unexpected</code></pre>
+<pre><code>## Warning: Chain 1 finished unexpectedly!</code></pre>
+<pre><code>## Chain 2 ./modelo-cantantes: 1: Syntax error: &quot;)&quot; unexpected</code></pre>
+<pre><code>## Warning: Chain 2 finished unexpectedly!</code></pre>
+<pre><code>## Chain 3 ./modelo-cantantes: 1: Syntax error: &quot;)&quot; unexpected</code></pre>
+<pre><code>## Warning: Chain 3 finished unexpectedly!</code></pre>
+<pre><code>## Chain 4 ./modelo-cantantes: 1: Syntax error: &quot;)&quot; unexpected</code></pre>
+<pre><code>## Warning: Chain 4 finished unexpectedly!</code></pre>
+<pre><code>## Warning: All chains finished unexpectedly! Use the $output(chain_id) method for more information.</code></pre>
+<pre><code>## Warning: Use read_cmdstan_csv() to read the results of the failed chains.</code></pre>
+<pre><code>## Warning: No chains finished successfully. Unable to retrieve the fit.</code></pre>
+<p>Checamos diagnósticos:</p>
+<div class="sourceCode" id="cb760"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb760-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb760-1" aria-hidden="true" tabindex="-1"></a>ajuste<span class="sc">$</span><span class="fu">cmdstan_diagnose</span>()</span></code></pre></div>
+<pre><code>## Error: No CmdStan runs finished successfully. Unable to run bin/diagnose.</code></pre>
+<p>Si no hay problemas, podemos ver el resumen:</p>
+<div class="sourceCode" id="cb762"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb762-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb762-1" aria-hidden="true" tabindex="-1"></a>resumen <span class="ot">&lt;-</span> ajuste<span class="sc">$</span><span class="fu">summary</span>()</span></code></pre></div>
+<pre><code>## Error: No chains finished successfully. Unable to retrieve the draws.</code></pre>
+<div class="sourceCode" id="cb764"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb764-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb764-1" aria-hidden="true" tabindex="-1"></a>resumen</span></code></pre></div>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;resumen&#39; not found</code></pre>
+<p>El intervalo 95% que obtenemos es:</p>
+<div class="sourceCode" id="cb766"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb766-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb766-1" aria-hidden="true" tabindex="-1"></a>ajuste<span class="sc">$</span><span class="fu">draws</span>(<span class="fu">c</span>(<span class="st">&quot;mu&quot;</span>, <span class="st">&quot;sigma&quot;</span>)) <span class="sc">%&gt;%</span> <span class="fu">as_draws_df</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb766-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb766-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> mu, <span class="at">y =</span> sigma)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb766-3"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb766-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_equal</span>()</span></code></pre></div>
+<pre><code>## Error: No chains finished successfully. Unable to retrieve the draws.</code></pre>
+<p>Y ahora extraemos algunas replicaciones de la posterior predictiva:</p>
+<div class="sourceCode" id="cb768"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb768-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb768-1" aria-hidden="true" tabindex="-1"></a>y_sim_tbl <span class="ot">&lt;-</span> ajuste<span class="sc">$</span><span class="fu">draws</span>(<span class="st">&quot;y_sim&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">as_draws_df</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb768-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb768-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">starts_with</span>(<span class="st">&quot;y_sim&quot;</span>), <span class="st">&quot;nombre&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb768-3"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb768-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(nombre, <span class="fu">c</span>(<span class="st">&quot;nombre&quot;</span>, <span class="st">&quot;n_obs&quot;</span>, <span class="st">&quot;vacio&quot;</span>), <span class="st">&quot;[</span><span class="sc">\\</span><span class="st">[</span><span class="sc">\\</span><span class="st">]]&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb768-4"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb768-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>nombre, <span class="sc">-</span>vacio) <span class="sc">%&gt;%</span> </span>
+<span id="cb768-5"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb768-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(.chain <span class="sc">==</span> <span class="dv">1</span>, .iteration <span class="sc">&lt;</span> <span class="dv">12</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb768-6"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb768-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(.iteration, value) <span class="sc">%&gt;%</span> </span>
+<span id="cb768-7"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb768-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(<span class="fu">tibble</span>(<span class="at">.iteration =</span> <span class="dv">12</span>, <span class="at">value =</span> <span class="fu">round</span>(cantantes<span class="sc">$</span>estatura_cm, <span class="dv">0</span>)))</span></code></pre></div>
+<pre><code>## Error: No chains finished successfully. Unable to retrieve the draws.</code></pre>
+<pre><code>## Error in `pivot_longer()`:
+## ! Arguments in `...` must be used.
+## ✖ Problematic argument:
+## • ..1 = &quot;nombre&quot;
+## ℹ Did you misspell an argument name?</code></pre>
+<div class="sourceCode" id="cb771"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb771-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb771-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(y_sim_tbl, <span class="fu">aes</span>(<span class="at">sample =</span> value)) <span class="sc">+</span></span>
+<span id="cb771-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb771-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq</span>() <span class="sc">+</span></span>
+<span id="cb771-3"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb771-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> .iteration)</span></code></pre></div>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;y_sim_tbl&#39; not found</code></pre>
+<div id="ejemplo-exámenes-1" class="section level3 hasAnchor" number="13.0.1">
+<h3><span class="header-section-number">13.0.1</span> Ejemplo: exámenes<a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#ejemplo-exámenes-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb773"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb773-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb773-1" aria-hidden="true" tabindex="-1"></a>sim_formas <span class="ot">&lt;-</span> <span class="cf">function</span>(p_azar, p_corr){</span>
+<span id="cb773-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb773-2" aria-hidden="true" tabindex="-1"></a>  tipo <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span> <span class="sc">-</span> p_azar)</span>
+<span id="cb773-3"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb773-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(tipo<span class="sc">==</span><span class="dv">0</span>){</span>
+<span id="cb773-4"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb773-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># al azar</span></span>
+<span id="cb773-5"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb773-5" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">5</span>)</span>
+<span id="cb773-6"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb773-6" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb773-7"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb773-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># no al azar</span></span>
+<span id="cb773-8"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb773-8" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">1</span>, <span class="dv">10</span>, p_corr)</span>
+<span id="cb773-9"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb773-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb773-10"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb773-10" aria-hidden="true" tabindex="-1"></a>  x</span>
+<span id="cb773-11"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb773-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb773-12"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb773-12" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">12</span>)</span>
+<span id="cb773-13"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb773-13" aria-hidden="true" tabindex="-1"></a>muestra_1 <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">200</span>, <span class="sc">~</span> <span class="fu">sim_formas</span>(<span class="fl">0.35</span>, <span class="fl">0.5</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb774"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb774-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb774-1" aria-hidden="true" tabindex="-1"></a>mod_informado</span></code></pre></div>
+<pre><code>## // Ejemplo de estimación del máximo de uniforme
+## data {
+##   int n; // número de observaciones
+##   array[n] int y; //datos observados
+## }
+## 
+## 
+## parameters {
+##   real&lt;lower=0, upper=1&gt; theta_azar;
+##   real&lt;lower=0, upper=1&gt; theta_corr;
+## }
+## 
+## model {
+##   // inicial
+##   theta_azar ~ beta(1, 5);
+##   theta_corr ~ beta(7, 3);
+##   // en este caso, agregamos términos directamente a la log posterior
+##   for(i in 1:n){
+##     target+= log_sum_exp(
+##       log(theta_azar) + binomial_lpmf(y[i] | 10, 0.20),
+##       log(1 - theta_azar) + binomial_lpmf(y[i] | 10, theta_corr));
+##   }
+## }</code></pre>
+<p>Pasamos datos y muestreamos</p>
+<div class="sourceCode" id="cb776"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb776-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb776-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3413</span>)</span>
+<span id="cb776-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb776-2" aria-hidden="true" tabindex="-1"></a>datos_lista <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">n =</span> <span class="fu">length</span>(muestra_1), <span class="at">y =</span> muestra_1)</span>
+<span id="cb776-3"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb776-3" aria-hidden="true" tabindex="-1"></a>ajuste <span class="ot">&lt;-</span> mod_informado<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb776-4"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb776-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> datos_lista,</span>
+<span id="cb776-5"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb776-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb776-6"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb776-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb776-7"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb776-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_warmup =</span> <span class="dv">4000</span>,</span>
+<span id="cb776-8"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb776-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_sampling =</span> <span class="dv">4000</span>,</span>
+<span id="cb776-9"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb776-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">2000</span>)</span></code></pre></div>
+<pre><code>## Running MCMC with 4 sequential chains...
+## 
+## Chain 1 Iteration:    1 / 8000 [  0%]  (Warmup) 
+## Chain 1 Iteration: 2000 / 8000 [ 25%]  (Warmup) 
+## Chain 1 Iteration: 4000 / 8000 [ 50%]  (Warmup) 
+## Chain 1 Iteration: 4001 / 8000 [ 50%]  (Sampling) 
+## Chain 1 Iteration: 6000 / 8000 [ 75%]  (Sampling) 
+## Chain 1 Iteration: 8000 / 8000 [100%]  (Sampling) 
+## Chain 1 finished in 2.1 seconds.
+## Chain 2 Iteration:    1 / 8000 [  0%]  (Warmup) 
+## Chain 2 Iteration: 2000 / 8000 [ 25%]  (Warmup) 
+## Chain 2 Iteration: 4000 / 8000 [ 50%]  (Warmup) 
+## Chain 2 Iteration: 4001 / 8000 [ 50%]  (Sampling) 
+## Chain 2 Iteration: 6000 / 8000 [ 75%]  (Sampling) 
+## Chain 2 Iteration: 8000 / 8000 [100%]  (Sampling) 
+## Chain 2 finished in 2.0 seconds.
+## Chain 3 Iteration:    1 / 8000 [  0%]  (Warmup) 
+## Chain 3 Iteration: 2000 / 8000 [ 25%]  (Warmup) 
+## Chain 3 Iteration: 4000 / 8000 [ 50%]  (Warmup) 
+## Chain 3 Iteration: 4001 / 8000 [ 50%]  (Sampling) 
+## Chain 3 Iteration: 6000 / 8000 [ 75%]  (Sampling) 
+## Chain 3 Iteration: 8000 / 8000 [100%]  (Sampling) 
+## Chain 3 finished in 2.1 seconds.
+## Chain 4 Iteration:    1 / 8000 [  0%]  (Warmup) 
+## Chain 4 Iteration: 2000 / 8000 [ 25%]  (Warmup) 
+## Chain 4 Iteration: 4000 / 8000 [ 50%]  (Warmup) 
+## Chain 4 Iteration: 4001 / 8000 [ 50%]  (Sampling) 
+## Chain 4 Iteration: 6000 / 8000 [ 75%]  (Sampling) 
+## Chain 4 Iteration: 8000 / 8000 [100%]  (Sampling) 
+## Chain 4 finished in 2.2 seconds.
+## 
+## All 4 chains finished successfully.
+## Mean chain execution time: 2.1 seconds.
+## Total execution time: 8.9 seconds.</code></pre>
+<p>Checamos diagnósticos:</p>
+<div class="sourceCode" id="cb778"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb778-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb778-1" aria-hidden="true" tabindex="-1"></a>ajuste<span class="sc">$</span><span class="fu">cmdstan_diagnose</span>()</span></code></pre></div>
+<pre><code>## Processing csv files: /tmp/Rtmp37USZf/modelo-examenes-202311282201-1-71971b.csv, /tmp/Rtmp37USZf/modelo-examenes-202311282201-2-71971b.csv, /tmp/Rtmp37USZf/modelo-examenes-202311282201-3-71971b.csv, /tmp/Rtmp37USZf/modelo-examenes-202311282201-4-71971b.csv
+## 
+## Checking sampler transitions treedepth.
+## Treedepth satisfactory for all transitions.
+## 
+## Checking sampler transitions for divergences.
+## No divergent transitions found.
+## 
+## Checking E-BFMI - sampler transitions HMC potential energy.
+## E-BFMI satisfactory.
+## 
+## Effective sample size satisfactory.
+## 
+## Split R-hat values satisfactory all parameters.
+## 
+## Processing complete, no problems detected.</code></pre>
+<p>Si no hay problemas, podemos ver el resumen:</p>
+<div class="sourceCode" id="cb780"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb780-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb780-1" aria-hidden="true" tabindex="-1"></a>resumen <span class="ot">&lt;-</span> ajuste<span class="sc">$</span><span class="fu">summary</span>()</span>
+<span id="cb780-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb780-2" aria-hidden="true" tabindex="-1"></a>resumen</span></code></pre></div>
+<pre><code>## # A tibble: 3 × 10
+##   variable       mean   median     sd    mad       q5      q95  rhat ess_bulk
+##   &lt;chr&gt;         &lt;num&gt;    &lt;num&gt;  &lt;num&gt;  &lt;num&gt;    &lt;num&gt;    &lt;num&gt; &lt;num&gt;    &lt;num&gt;
+## 1 lp__       -439.    -438.    1.00   0.741  -441.    -438.     1.00    6789.
+## 2 theta_azar    0.375    0.375 0.0468 0.0469    0.298    0.452  1.00    7631.
+## 3 theta_corr    0.525    0.525 0.0182 0.0180    0.495    0.555  1.00    8297.
+## # ℹ 1 more variable: ess_tail &lt;num&gt;</code></pre>
+<div class="sourceCode" id="cb782"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb782-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb782-1" aria-hidden="true" tabindex="-1"></a>sims_theta_tbl <span class="ot">&lt;-</span> </span>
+<span id="cb782-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb782-2" aria-hidden="true" tabindex="-1"></a>  ajuste<span class="sc">$</span><span class="fu">draws</span>(<span class="fu">c</span>(<span class="st">&quot;theta_azar&quot;</span>, <span class="st">&quot;theta_corr&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb782-3"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb782-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_draws_df</span>()  </span>
+<span id="cb782-4"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb782-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sims_theta_tbl, <span class="fu">aes</span>(<span class="at">x =</span> theta_azar, <span class="at">y =</span> theta_corr)) <span class="sc">+</span></span>
+<span id="cb782-5"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb782-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>)</span></code></pre></div>
+<p><img src="17-inferencia-stan-01_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+</div>
+</div>
+<div id="ejemplo-exámenes-mal-identificado" class="section level2 hasAnchor" number="13.1">
+<h2><span class="header-section-number">13.1</span> Ejemplo: exámenes, mal identificado<a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#ejemplo-exámenes-mal-identificado" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>En este ejemplo cambiamos los parámetros de la simulación
+y ponemos iniciales poco informativas.</p>
+<div class="sourceCode" id="cb783"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb783-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb783-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">12</span>)</span>
+<span id="cb783-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb783-2" aria-hidden="true" tabindex="-1"></a>muestra_2 <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">200</span>, <span class="sc">~</span> <span class="fu">sim_formas</span>(<span class="fl">0.35</span>, <span class="fl">0.21</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb784"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb784-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb784-1" aria-hidden="true" tabindex="-1"></a>mod_no_inf</span></code></pre></div>
+<pre><code>## // Ejemplo de estimación del máximo de uniforme
+## data {
+##   int n; // número de observaciones
+##   array[n] int y; //datos observados
+## }
+## 
+## 
+## parameters {
+##   real&lt;lower=0, upper=1&gt; theta_azar;
+##   real&lt;lower=0, upper=1&gt; theta_corr;
+## }
+## 
+## model {
+##   // inicial
+##   theta_azar ~ beta(1, 1);
+##   theta_corr ~ beta(1, 1);
+##   // en este caso, agregamos términos directamente a la log posterior
+##   for(i in 1:n){
+##     target+= log_sum_exp(
+##       log(theta_azar) + binomial_lpmf(y[i] | 10, 0.20),
+##       log(1 - theta_azar) + binomial_lpmf(y[i] | 10, theta_corr));
+##   }
+## }</code></pre>
+<p>Pasamos datos y muestreamos</p>
+<div class="sourceCode" id="cb786"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb786-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb786-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3413</span>)</span>
+<span id="cb786-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb786-2" aria-hidden="true" tabindex="-1"></a>datos_lista <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">n =</span> <span class="fu">length</span>(muestra_2), <span class="at">y =</span> muestra_2)</span>
+<span id="cb786-3"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb786-3" aria-hidden="true" tabindex="-1"></a>ajuste <span class="ot">&lt;-</span> mod_no_inf<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb786-4"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb786-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> datos_lista,</span>
+<span id="cb786-5"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb786-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb786-6"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb786-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb786-7"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb786-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_warmup =</span> <span class="dv">4000</span>,</span>
+<span id="cb786-8"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb786-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_sampling =</span> <span class="dv">4000</span>,</span>
+<span id="cb786-9"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb786-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">2000</span>)</span></code></pre></div>
+<pre><code>## Running MCMC with 4 sequential chains...</code></pre>
+<pre><code>## Chain 1 ./modelo-examenes-no-inf: 1: !H__PAGEZERO__TEXT@@__text__TEXT__stubs__TEXTPP__init_offsets__TEXT__gcc_except_tab__TEXT__const__TEXT
+K~
+__cstring__TEXTۋbxۋ__unwind_info__TEXT@:@__eh_frame__TEXT: not found</code></pre>
+<pre><code>## Chain 1 ./modelo-examenes-no-inf: 2: j: not found</code></pre>
+<pre><code>## Chain 1 ./modelo-examenes-no-inf: 3: Syntax error: word unexpected (expecting &quot;)&quot;)</code></pre>
+<pre><code>## Warning: Chain 1 finished unexpectedly!</code></pre>
+<pre><code>## Chain 2 ./modelo-examenes-no-inf: 1: !H__PAGEZERO__TEXT@@__text__TEXT__stubs__TEXTPP__init_offsets__TEXT__gcc_except_tab__TEXT__const__TEXT
+K~
+__cstring__TEXTۋbxۋ__unwind_info__TEXT@:@__eh_frame__TEXT: not found</code></pre>
+<pre><code>## Chain 2 ./modelo-examenes-no-inf: 2: j: not found</code></pre>
+<pre><code>## Chain 2 ./modelo-examenes-no-inf: 3: Syntax error: word unexpected (expecting &quot;)&quot;)</code></pre>
+<pre><code>## Warning: Chain 2 finished unexpectedly!</code></pre>
+<pre><code>## Chain 3 ./modelo-examenes-no-inf: 1: !H__PAGEZERO__TEXT@@__text__TEXT__stubs__TEXTPP__init_offsets__TEXT__gcc_except_tab__TEXT__const__TEXT
+K~
+__cstring__TEXTۋbxۋ__unwind_info__TEXT@:@__eh_frame__TEXT: not found</code></pre>
+<pre><code>## Chain 3 ./modelo-examenes-no-inf: 2: j: not found</code></pre>
+<pre><code>## Chain 3 ./modelo-examenes-no-inf: 3: Syntax error: word unexpected (expecting &quot;)&quot;)</code></pre>
+<pre><code>## Warning: Chain 3 finished unexpectedly!</code></pre>
+<pre><code>## Chain 4 ./modelo-examenes-no-inf: 1: !H__PAGEZERO__TEXT@@__text__TEXT__stubs__TEXTPP__init_offsets__TEXT__gcc_except_tab__TEXT__const__TEXT
+K~
+__cstring__TEXTۋbxۋ__unwind_info__TEXT@:@__eh_frame__TEXT: not found</code></pre>
+<pre><code>## Chain 4 ./modelo-examenes-no-inf: 2: j: not found</code></pre>
+<pre><code>## Chain 4 ./modelo-examenes-no-inf: 3: Syntax error: word unexpected (expecting &quot;)&quot;)</code></pre>
+<pre><code>## Warning: Chain 4 finished unexpectedly!</code></pre>
+<pre><code>## Warning: All chains finished unexpectedly! Use the $output(chain_id) method for more information.</code></pre>
+<pre><code>## Warning: Use read_cmdstan_csv() to read the results of the failed chains.</code></pre>
+<pre><code>## Warning: No chains finished successfully. Unable to retrieve the fit.</code></pre>
+<p>Y obtenemos mensajes de advertencia (divergencias), lo que implica que
+los diagnósticos indican que es posible que las cadenas no hayan explorado
+suficientemente la posterior</p>
+<div class="sourceCode" id="cb807"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb807-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb807-1" aria-hidden="true" tabindex="-1"></a>ajuste<span class="sc">$</span><span class="fu">cmdstan_diagnose</span>()</span></code></pre></div>
+<pre><code>## Error: No CmdStan runs finished successfully. Unable to run bin/diagnose.</code></pre>
+<div class="sourceCode" id="cb809"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb809-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb809-1" aria-hidden="true" tabindex="-1"></a>sims_theta_tbl <span class="ot">&lt;-</span> </span>
+<span id="cb809-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb809-2" aria-hidden="true" tabindex="-1"></a>  ajuste<span class="sc">$</span><span class="fu">draws</span>(<span class="fu">c</span>(<span class="st">&quot;theta_azar&quot;</span>, <span class="st">&quot;theta_corr&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb809-3"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb809-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_draws_df</span>()  </span></code></pre></div>
+<pre><code>## Error: No chains finished successfully. Unable to retrieve the draws.</code></pre>
+<div class="sourceCode" id="cb811"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb811-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb811-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sims_theta_tbl, <span class="fu">aes</span>(<span class="at">x =</span> theta_azar, <span class="at">y =</span> theta_corr)) <span class="sc">+</span></span>
+<span id="cb811-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb811-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>)</span></code></pre></div>
+<p><img src="17-inferencia-stan-01_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+<p>Donde vemos que el problema es serio: cuando <span class="math inline">\(\theta_{azar}\)</span> es chico, los
+datos son consistentes con valores de <span class="math inline">\(\theta_{corr}\)</span> cercanos a 0.2. Pero
+también es posible que <span class="math inline">\(\theta_{azar}\)</span> sea grande, y en ese caso tenemos
+poca información acerca de <span class="math inline">\(\theta_corr\)</span>.</p>
+<ul>
+<li>La geometría de esta posterior
+hace difícil para el algoritmo establecer el tamaño de paso correcto para explorar
+adecuadamente esta posterior (con un tamaño de paso chico, explora lentamente, pero
+si se hace más grande, entonces aparecen problemas numéricos y rechazos en los
+“embudos” de esta posterior).</li>
+<li>Sin embargo, este resultado generalmente lo rechazaríamos, pues sabemos que
+una proporción considerable de estudiantes <strong>no</strong> contesta al azar.</li>
+</ul>
+<p>Si corremos el modelo informado con la muestra de esta población, obtenemos:</p>
+<div class="sourceCode" id="cb812"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb812-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb812-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3413</span>)</span>
+<span id="cb812-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb812-2" aria-hidden="true" tabindex="-1"></a>datos_lista <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">n =</span> <span class="fu">length</span>(muestra_2), <span class="at">y =</span> muestra_2)</span>
+<span id="cb812-3"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb812-3" aria-hidden="true" tabindex="-1"></a>ajuste <span class="ot">&lt;-</span> mod_informado<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb812-4"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb812-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> datos_lista,</span>
+<span id="cb812-5"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb812-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1234</span>,</span>
+<span id="cb812-6"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb812-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb812-7"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb812-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_warmup =</span> <span class="dv">4000</span>,</span>
+<span id="cb812-8"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb812-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_sampling =</span> <span class="dv">4000</span>,</span>
+<span id="cb812-9"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb812-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">2000</span>)</span></code></pre></div>
+<pre><code>## Running MCMC with 4 sequential chains...
+## 
+## Chain 1 Iteration:    1 / 8000 [  0%]  (Warmup) 
+## Chain 1 Iteration: 2000 / 8000 [ 25%]  (Warmup) 
+## Chain 1 Iteration: 4000 / 8000 [ 50%]  (Warmup) 
+## Chain 1 Iteration: 4001 / 8000 [ 50%]  (Sampling) 
+## Chain 1 Iteration: 6000 / 8000 [ 75%]  (Sampling) 
+## Chain 1 Iteration: 8000 / 8000 [100%]  (Sampling) 
+## Chain 1 finished in 2.3 seconds.
+## Chain 2 Iteration:    1 / 8000 [  0%]  (Warmup) 
+## Chain 2 Iteration: 2000 / 8000 [ 25%]  (Warmup) 
+## Chain 2 Iteration: 4000 / 8000 [ 50%]  (Warmup) 
+## Chain 2 Iteration: 4001 / 8000 [ 50%]  (Sampling) 
+## Chain 2 Iteration: 6000 / 8000 [ 75%]  (Sampling) 
+## Chain 2 Iteration: 8000 / 8000 [100%]  (Sampling) 
+## Chain 2 finished in 2.1 seconds.
+## Chain 3 Iteration:    1 / 8000 [  0%]  (Warmup) 
+## Chain 3 Iteration: 2000 / 8000 [ 25%]  (Warmup) 
+## Chain 3 Iteration: 4000 / 8000 [ 50%]  (Warmup) 
+## Chain 3 Iteration: 4001 / 8000 [ 50%]  (Sampling) 
+## Chain 3 Iteration: 6000 / 8000 [ 75%]  (Sampling) 
+## Chain 3 Iteration: 8000 / 8000 [100%]  (Sampling) 
+## Chain 3 finished in 2.1 seconds.
+## Chain 4 Iteration:    1 / 8000 [  0%]  (Warmup) 
+## Chain 4 Iteration: 2000 / 8000 [ 25%]  (Warmup) 
+## Chain 4 Iteration: 4000 / 8000 [ 50%]  (Warmup) 
+## Chain 4 Iteration: 4001 / 8000 [ 50%]  (Sampling) 
+## Chain 4 Iteration: 6000 / 8000 [ 75%]  (Sampling) 
+## Chain 4 Iteration: 8000 / 8000 [100%]  (Sampling) 
+## Chain 4 finished in 2.0 seconds.
+## 
+## All 4 chains finished successfully.
+## Mean chain execution time: 2.1 seconds.
+## Total execution time: 8.8 seconds.</code></pre>
+<p>No tenemos problemas numéricos, y la posterior se ve como sigue:</p>
+<div class="sourceCode" id="cb814"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb814-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb814-1" aria-hidden="true" tabindex="-1"></a>sims_theta_tbl <span class="ot">&lt;-</span> </span>
+<span id="cb814-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb814-2" aria-hidden="true" tabindex="-1"></a>  ajuste<span class="sc">$</span><span class="fu">draws</span>(<span class="fu">c</span>(<span class="st">&quot;theta_azar&quot;</span>, <span class="st">&quot;theta_corr&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb814-3"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb814-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_draws_df</span>()  </span>
+<span id="cb814-4"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb814-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(sims_theta_tbl, <span class="fu">aes</span>(<span class="at">x =</span> theta_azar, <span class="at">y =</span> theta_corr)) <span class="sc">+</span></span>
+<span id="cb814-5"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb814-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>)</span></code></pre></div>
+<p><img src="17-inferencia-stan-01_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="métodos-de-cadenas-de-markov-monte-carlo.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="apéndice-principios-de-visualizacion.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/17-inferencia-stan-01.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["fundamentos-estadistica.Rmd"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section",
+"depth": 1
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

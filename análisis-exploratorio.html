@@ -442,6 +442,16 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#recomendaciones-generales"><i class="fa fa-check"></i>Recomendaciones generales</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="13" data-path="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><i class="fa fa-check"></i><b>13</b> Ejemplos de inferencia bayesiana en Stan I</a>
+<ul>
+<li class="chapter" data-level="" data-path="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#estimación-de-una-proporción"><i class="fa fa-check"></i>Estimación de una proporción</a></li>
+<li class="chapter" data-level="" data-path="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#estimación-del-máximo-de-una-uniforme"><i class="fa fa-check"></i>Estimación del máximo de una uniforme</a></li>
+<li class="chapter" data-level="" data-path="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#ejemplo-de-cantantes"><i class="fa fa-check"></i>Ejemplo de cantantes</a>
+<ul>
+<li class="chapter" data-level="13.0.1" data-path="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#ejemplo-exámenes-1"><i class="fa fa-check"></i><b>13.0.1</b> Ejemplo: exámenes</a></li>
+</ul></li>
+<li class="chapter" data-level="13.1" data-path="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#ejemplo-exámenes-mal-identificado"><i class="fa fa-check"></i><b>13.1</b> Ejemplo: exámenes, mal identificado</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html"><i class="fa fa-check"></i>Apéndice: Principios de visualizacion</a>
 <ul>
 <li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#el-cuarteto-de-anscombe"><i class="fa fa-check"></i>El cuarteto de Anscombe</a></li>
@@ -558,10 +568,30 @@ num_personas
 <tbody>
 <tr>
 <td style="text-align:right;">
-11.87
+48.33
 </td>
 <td style="text-align:right;">
-1.63
+9.00
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:left;">
+Sab
+</td>
+<td style="text-align:left;">
+Cena
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+12.43
+</td>
+<td style="text-align:right;">
+1.80
 </td>
 <td style="text-align:left;">
 No
@@ -578,10 +608,30 @@ Comida
 </tr>
 <tr>
 <td style="text-align:right;">
-35.83
+12.03
 </td>
 <td style="text-align:right;">
-4.67
+1.50
+</td>
+<td style="text-align:left;">
+Si
+</td>
+<td style="text-align:left;">
+Vie
+</td>
+<td style="text-align:left;">
+Cena
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+17.07
+</td>
+<td style="text-align:right;">
+3.00
 </td>
 <td style="text-align:left;">
 No
@@ -598,19 +648,19 @@ Cena
 </tr>
 <tr>
 <td style="text-align:right;">
-10.34
+26.41
 </td>
 <td style="text-align:right;">
-2.00
+1.50
 </td>
 <td style="text-align:left;">
-Si
+No
 </td>
 <td style="text-align:left;">
-Jue
+Sab
 </td>
 <td style="text-align:left;">
-Comida
+Cena
 </td>
 <td style="text-align:right;">
 2
@@ -618,10 +668,10 @@ Comida
 </tr>
 <tr>
 <td style="text-align:right;">
-22.76
+22.82
 </td>
 <td style="text-align:right;">
-3.00
+2.18
 </td>
 <td style="text-align:left;">
 No
@@ -633,38 +683,38 @@ Jue
 Comida
 </td>
 <td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+32.90
+</td>
+<td style="text-align:right;">
+3.11
+</td>
+<td style="text-align:left;">
+Si
+</td>
+<td style="text-align:left;">
+Dom
+</td>
+<td style="text-align:left;">
+Cena
+</td>
+<td style="text-align:right;">
 2
 </td>
 </tr>
 <tr>
 <td style="text-align:right;">
-20.53
+32.40
 </td>
 <td style="text-align:right;">
-4.00
+6.00
 </td>
 <td style="text-align:left;">
-Si
-</td>
-<td style="text-align:left;">
-Jue
-</td>
-<td style="text-align:left;">
-Comida
-</td>
-<td style="text-align:right;">
-4
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-34.65
-</td>
-<td style="text-align:right;">
-3.68
-</td>
-<td style="text-align:left;">
-Si
+No
 </td>
 <td style="text-align:left;">
 Dom
@@ -678,13 +728,13 @@ Cena
 </tr>
 <tr>
 <td style="text-align:right;">
-16.93
+28.17
 </td>
 <td style="text-align:right;">
-3.07
+6.50
 </td>
 <td style="text-align:left;">
-No
+Si
 </td>
 <td style="text-align:left;">
 Sab
@@ -698,62 +748,22 @@ Cena
 </tr>
 <tr>
 <td style="text-align:right;">
-20.45
+43.11
 </td>
 <td style="text-align:right;">
-3.00
+5.00
 </td>
 <td style="text-align:left;">
-No
+Si
 </td>
 <td style="text-align:left;">
-Sab
+Jue
 </td>
 <td style="text-align:left;">
-Cena
+Comida
 </td>
 <td style="text-align:right;">
 4
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-24.71
-</td>
-<td style="text-align:right;">
-5.85
-</td>
-<td style="text-align:left;">
-No
-</td>
-<td style="text-align:left;">
-Jue
-</td>
-<td style="text-align:left;">
-Comida
-</td>
-<td style="text-align:right;">
-2
-</td>
-</tr>
-<tr>
-<td style="text-align:right;">
-8.52
-</td>
-<td style="text-align:right;">
-1.48
-</td>
-<td style="text-align:left;">
-No
-</td>
-<td style="text-align:left;">
-Jue
-</td>
-<td style="text-align:left;">
-Comida
-</td>
-<td style="text-align:right;">
-2
 </td>
 </tr>
 </tbody>

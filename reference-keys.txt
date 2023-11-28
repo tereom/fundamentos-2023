@@ -17,3 +17,6 @@ introducción-a-inferencia-bayesiana-1
 calibración-bayesiana-y-regularización
 métodos-de-cadenas-de-markov-monte-carlo
 ejemplo-de-islas
+ejemplos-de-inferencia-bayesiana-en-stan-i
+ejemplo-exámenes-1
+ejemplo-exámenes-mal-identificado

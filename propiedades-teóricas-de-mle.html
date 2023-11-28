@@ -442,6 +442,16 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#recomendaciones-generales"><i class="fa fa-check"></i>Recomendaciones generales</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="13" data-path="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><i class="fa fa-check"></i><b>13</b> Ejemplos de inferencia bayesiana en Stan I</a>
+<ul>
+<li class="chapter" data-level="" data-path="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#estimación-de-una-proporción"><i class="fa fa-check"></i>Estimación de una proporción</a></li>
+<li class="chapter" data-level="" data-path="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#estimación-del-máximo-de-una-uniforme"><i class="fa fa-check"></i>Estimación del máximo de una uniforme</a></li>
+<li class="chapter" data-level="" data-path="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#ejemplo-de-cantantes"><i class="fa fa-check"></i>Ejemplo de cantantes</a>
+<ul>
+<li class="chapter" data-level="13.0.1" data-path="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#ejemplo-exámenes-1"><i class="fa fa-check"></i><b>13.0.1</b> Ejemplo: exámenes</a></li>
+</ul></li>
+<li class="chapter" data-level="13.1" data-path="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#ejemplo-exámenes-mal-identificado"><i class="fa fa-check"></i><b>13.1</b> Ejemplo: exámenes, mal identificado</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html"><i class="fa fa-check"></i>Apéndice: Principios de visualizacion</a>
 <ul>
 <li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html#el-cuarteto-de-anscombe"><i class="fa fa-check"></i>El cuarteto de Anscombe</a></li>
@@ -804,7 +814,7 @@ la distribución de <span class="math inline">\(\tau = g(\theta)?\)</span></p>
 el <strong>método delta</strong>.</p>
 <div class="mathblock">
 <p>
-<strong>Teorema.</strong> Si <span class="math inline"><span class="math inline">\(\tau = g(\theta)\)</span></span> es una función diferenciable y <span class="math inline"><span class="math inline">\(g&amp;#39;(\theta) \neq 0\)</span></span>, entonces
+<strong>Teorema.</strong> Si <span class="math inline"><span class="math inline">\(\tau = g(\theta)\)</span></span> es una función diferenciable y <span class="math display"><span class="math display">\[g&amp;#39;(\theta) \neq 0\]</span></span>, entonces
 </p>
 </div>
 <span class="math display">\[\hat \tau_n \overset{d}{\rightarrow} \mathsf{N}( \tau^*, \hat{\mathsf{ee}}^2_\tau),\]</span>
@@ -816,7 +826,7 @@ donde <span class="math inline"><span class="math inline">\(\hat \tau_n = g(\hat
 <p><span class="math display">\[\hat{\mathsf{ee}}_\tau = \bigg| g&#39;(\hat \theta_n) \bigg| \times \hat{\mathsf{ee}}_\theta(\hat \theta_n).\]</span></p>
 <p>Por ejemplo, este resultado lo podemos utilizar para nuestro experimento de Bernoullis.
 Pues <span class="math inline">\(g(p) = \frac{p}{1-p}\)</span> es una función diferenciable y por lo tanto
-<span class="math display">\[\hat{\mathsf{ee}}_\theta = \sqrt{\frac1n} \times \left[ \hat p_n^{1/2} (1-\hat p_n)^{3/2}\right].\]</span></p>
+<span class="math display">\[\hat{\mathsf{ee}}_\theta = \sqrt{\frac1n} \times \left[ \hat p_n^{1/2} (1-\hat p_n)^{-3/2}\right].\]</span></p>
 <div class="ejercicio">
 <p>
 Comprueba la fórmula del método delta para el momio en función de la
@@ -886,9 +896,6 @@ regresión ridge o utilizamos el estimador James–Stein para un vector de
 medias.
 </p>
 </div>
-<p>El siguiente diagrama muestra de manera gráfica la relación entre las distintas
-propiedades que hemos visto en esta sección.</p>
-<p><img src="images/mle-mapa-mental.jpg" width="95%" style="display: block; margin: auto;" /></p>
 
 </div>
 </div>

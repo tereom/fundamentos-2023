@@ -377,7 +377,7 @@ el **método delta**.
 <div class="mathblock">
 <p><strong>Teorema.</strong> Si <span class="math inline">\(\tau =
 g(\theta)\)</span> es una función diferenciable y <span
-class="math inline">\(g&#39;(\theta) \neq 0\)</span>, entonces</p>
+class="math display">\[g&#39;(\theta) \neq 0\]</span>, entonces</p>
 </div>
 
 $$\hat \tau_n \overset{d}{\rightarrow} \mathsf{N}( \tau^*, \hat{\mathsf{ee}}^2_\tau),$$
@@ -390,7 +390,7 @@ $$\hat{\mathsf{ee}}_\tau = \bigg| g'(\hat \theta_n) \bigg| \times \hat{\mathsf{e
 
 Por ejemplo, este resultado lo podemos utilizar para nuestro experimento de Bernoullis. 
 Pues $g(p) = \frac{p}{1-p}$ es una función diferenciable y por lo tanto 
-$$\hat{\mathsf{ee}}_\theta = \sqrt{\frac1n} \times \left[ \hat p_n^{1/2} (1-\hat p_n)^{3/2}\right].$$
+$$\hat{\mathsf{ee}}_\theta = \sqrt{\frac1n} \times \left[ \hat p_n^{1/2} (1-\hat p_n)^{-3/2}\right].$$
 
 <div class="ejercicio">
 <p>Comprueba la fórmula del método delta para el momio en función de la
@@ -471,10 +471,3 @@ class="math inline">\(\textsf{ECM},\)</span> como cuando hacemos
 regresión ridge o utilizamos el estimador James–Stein para un vector de
 medias.</p>
 </div>
-
-
-El siguiente diagrama muestra de manera gráfica la relación entre las distintas 
-propiedades que hemos visto en esta sección. 
-
-<img src="images/mle-mapa-mental.jpg" width="95%" style="display: block; margin: auto;" />
-

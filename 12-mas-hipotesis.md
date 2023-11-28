@@ -4,7 +4,7 @@
 
 
 En esta sección veremos enfoques más clásicos para analizar una prueba de
-hipótesis. en particular veremos situaciones donde podemos hacer algunos
+hipótesis, en particular veremos situaciones donde podemos hacer algunos
 supuestos teóricos acerca de la distribución de las poblaciones. Esta es una
 sección complementaria para entender prácticas estadísticas usuales: recuerda
 que discutimos antes que hacer estimación por intervalos generalmente es más

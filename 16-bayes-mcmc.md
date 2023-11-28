@@ -651,7 +651,7 @@ crear_metropolis <- function(fun_log, sigma_salto = 0.1){
         iteraciones[i, ] <- theta_prop
       } else {
         iteraciones[i, ] <- theta  
-      }
+      } 
     }
     iteraciones_tbl <- iteraciones %>% 
       as_tibble() %>%  
@@ -1742,7 +1742,7 @@ ahora nos concentraremos en el uso de Stan.
 ## HMC y Stan {-}
 
 > It appears to be quite a general principle that, whenever there is a 
-randomized way of doinf something, then there is a nonrandomized way that 
+randomized way of doing something, then there is a nonrandomized way that 
 delivers better performance but requires more thought. -E.T. Jaynes
 
 `Stan` es un programa para generar muestras de una distribución posterior de los 
@@ -1950,7 +1950,9 @@ Y $\hat{V}$ es una estimación del varianza de posterior de $\theta$:
 
 $$\hat{V} = \frac{N-1}{N}W + \frac{M+1}{MN}B$$
 #### Ejemplo {-}
+
 En nuestro ejemplo anterior, tenemos
+
 
 ```r
 sims_tbl %>% 

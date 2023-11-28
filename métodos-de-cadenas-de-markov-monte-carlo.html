@@ -30,7 +30,7 @@
   
   
 <link rel="prev" href="calibración-bayesiana-y-regularización.html"/>
-<link rel="next" href="apéndice-principios-de-visualizacion.html"/>
+<link rel="next" href="ejemplos-de-inferencia-bayesiana-en-stan-i.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -441,6 +441,16 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#eficiencia"><i class="fa fa-check"></i>Eficiencia</a></li>
 <li class="chapter" data-level="" data-path="métodos-de-cadenas-de-markov-monte-carlo.html"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#recomendaciones-generales"><i class="fa fa-check"></i>Recomendaciones generales</a></li>
 </ul></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><i class="fa fa-check"></i><b>13</b> Ejemplos de inferencia bayesiana en Stan I</a>
+<ul>
+<li class="chapter" data-level="" data-path="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#estimación-de-una-proporción"><i class="fa fa-check"></i>Estimación de una proporción</a></li>
+<li class="chapter" data-level="" data-path="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#estimación-del-máximo-de-una-uniforme"><i class="fa fa-check"></i>Estimación del máximo de una uniforme</a></li>
+<li class="chapter" data-level="" data-path="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#ejemplo-de-cantantes"><i class="fa fa-check"></i>Ejemplo de cantantes</a>
+<ul>
+<li class="chapter" data-level="13.0.1" data-path="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#ejemplo-exámenes-1"><i class="fa fa-check"></i><b>13.0.1</b> Ejemplo: exámenes</a></li>
+</ul></li>
+<li class="chapter" data-level="13.1" data-path="ejemplos-de-inferencia-bayesiana-en-stan-i.html"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#ejemplo-exámenes-mal-identificado"><i class="fa fa-check"></i><b>13.1</b> Ejemplo: exámenes, mal identificado</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="apéndice-principios-de-visualizacion.html"><a href="apéndice-principios-de-visualizacion.html"><i class="fa fa-check"></i>Apéndice: Principios de visualizacion</a>
 <ul>
@@ -1003,7 +1013,7 @@ Utiliza implementaciones establecidas en las aplicaciones.</p>
 <span id="cb583-15"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-15" aria-hidden="true" tabindex="-1"></a>        iteraciones[i, ] <span class="ot">&lt;-</span> theta_prop</span>
 <span id="cb583-16"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-16" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
 <span id="cb583-17"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-17" aria-hidden="true" tabindex="-1"></a>        iteraciones[i, ] <span class="ot">&lt;-</span> theta  </span>
-<span id="cb583-18"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-18" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb583-18"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-18" aria-hidden="true" tabindex="-1"></a>      } </span>
 <span id="cb583-19"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-19" aria-hidden="true" tabindex="-1"></a>    }</span>
 <span id="cb583-20"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-20" aria-hidden="true" tabindex="-1"></a>    iteraciones_tbl <span class="ot">&lt;-</span> iteraciones <span class="sc">%&gt;%</span> </span>
 <span id="cb583-21"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb583-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span>  </span>
@@ -1775,7 +1785,7 @@ ahora nos concentraremos en el uso de Stan.</p></li>
 <h2>HMC y Stan<a href="métodos-de-cadenas-de-markov-monte-carlo.html#hmc-y-stan" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <blockquote>
 <p>It appears to be quite a general principle that, whenever there is a
-randomized way of doinf something, then there is a nonrandomized way that
+randomized way of doing something, then there is a nonrandomized way that
 delivers better performance but requires more thought. -E.T. Jaynes</p>
 </blockquote>
 <p><code>Stan</code> es un programa para generar muestras de una distribución posterior de los
@@ -1913,8 +1923,8 @@ parámetros.</p>
 <span class="math display">\[W = \frac{1}{M}\sum_m \hat{\sigma}_m^2\]</span></p>
 <p>Y <span class="math inline">\(\hat{V}\)</span> es una estimación del varianza de posterior de <span class="math inline">\(\theta\)</span>:</p>
 <p><span class="math display">\[\hat{V} = \frac{N-1}{N}W + \frac{M+1}{MN}B\]</span>
-#### Ejemplo {-}
-En nuestro ejemplo anterior, tenemos</p>
+#### Ejemplo {-}</p>
+<p>En nuestro ejemplo anterior, tenemos</p>
 <div class="sourceCode" id="cb651"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb651-1"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb651-1" aria-hidden="true" tabindex="-1"></a>sims_tbl <span class="sc">%&gt;%</span> </span>
 <span id="cb651-2"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb651-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(mu<span class="sc">:</span>sigma, <span class="at">names_to =</span> <span class="st">&quot;parametro&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;valor&quot;</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb651-3"><a href="métodos-de-cadenas-de-markov-monte-carlo.html#cb651-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(parametro, cadena) <span class="sc">%&gt;%</span> </span>
@@ -2071,7 +2081,7 @@ Kruschke, John. 2015. <em>Doing Bayesian Data Analysis (Second Edition)</em>. Ac
         </div>
       </div>
 <a href="calibración-bayesiana-y-regularización.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="apéndice-principios-de-visualizacion.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
