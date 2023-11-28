@@ -77,7 +77,7 @@ ggplot(sims_tbl, aes(x = theta, fill = dist)) +
 
 ## Estimación del máximo de una uniforme {-}
 
-Tomamos el ejemplo de los boletos de lotería
+Tomamos el ejemplo de los boletos de lotería,
 
 ```{r}
 loteria_tbl <- read_csv("data/nums_loteria_avion.csv", col_names = c("id", "numero")) %>% 
@@ -111,6 +111,7 @@ ajuste <- mod$sample(
   parallel_chains = 4,
   refresh = 5000)
 ```
+
 Checamos diagnósticos:
 
 ```{r}
@@ -222,6 +223,7 @@ ajuste <- mod$sample(
   iter_sampling = 4000,
   refresh = 2000)
 ```
+
 Checamos diagnósticos:
 
 ```{r}
@@ -381,6 +383,7 @@ sims_theta_tbl <-
 ggplot(sims_theta_tbl, aes(x = theta_azar, y = theta_corr)) +
   geom_point(alpha = 0.1)
 ```
+
 Donde vemos que el problema es serio: cuando $\theta_{azar}$ es chico, los
 datos son consistentes con valores de $\theta_{corr}$ cercanos a 0.2. Pero
 también es posible que  $\theta_{azar}$ sea grande, y en ese caso tenemos
