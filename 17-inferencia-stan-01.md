@@ -70,50 +70,39 @@ ajuste <- mod$sample(
 
 ```
 ## Running MCMC with 4 parallel chains...
-```
-
-```
-## Chain 1 ./modelo-1: 5: Syntax error: ")" unexpected
-```
-
-```
-## Chain 2 ./modelo-1: 5: Syntax error: ")" unexpected
-```
-
-```
-## Chain 3 ./modelo-1: 5: Syntax error: ")" unexpected
-```
-
-```
-## Chain 4 ./modelo-1: 5: Syntax error: ")" unexpected
-```
-
-```
-## Warning: Chain 1 finished unexpectedly!
-```
-
-```
-## Warning: Chain 2 finished unexpectedly!
-```
-
-```
-## Warning: Chain 3 finished unexpectedly!
-```
-
-```
-## Warning: Chain 4 finished unexpectedly!
-```
-
-```
-## Warning: All chains finished unexpectedly! Use the $output(chain_id) method for more information.
-```
-
-```
-## Warning: Use read_cmdstan_csv() to read the results of the failed chains.
-```
-
-```
-## Warning: No chains finished successfully. Unable to retrieve the fit.
+## 
+## Chain 1 Iteration:    1 / 2000 [  0%]  (Warmup) 
+## Chain 1 Iteration:  500 / 2000 [ 25%]  (Warmup) 
+## Chain 1 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
+## Chain 1 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
+## Chain 1 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
+## Chain 1 Iteration: 2000 / 2000 [100%]  (Sampling) 
+## Chain 2 Iteration:    1 / 2000 [  0%]  (Warmup) 
+## Chain 2 Iteration:  500 / 2000 [ 25%]  (Warmup) 
+## Chain 2 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
+## Chain 2 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
+## Chain 2 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
+## Chain 2 Iteration: 2000 / 2000 [100%]  (Sampling) 
+## Chain 3 Iteration:    1 / 2000 [  0%]  (Warmup) 
+## Chain 3 Iteration:  500 / 2000 [ 25%]  (Warmup) 
+## Chain 3 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
+## Chain 3 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
+## Chain 3 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
+## Chain 3 Iteration: 2000 / 2000 [100%]  (Sampling) 
+## Chain 4 Iteration:    1 / 2000 [  0%]  (Warmup) 
+## Chain 4 Iteration:  500 / 2000 [ 25%]  (Warmup) 
+## Chain 4 Iteration: 1000 / 2000 [ 50%]  (Warmup) 
+## Chain 4 Iteration: 1001 / 2000 [ 50%]  (Sampling) 
+## Chain 4 Iteration: 1500 / 2000 [ 75%]  (Sampling) 
+## Chain 4 Iteration: 2000 / 2000 [100%]  (Sampling) 
+## Chain 1 finished in 0.0 seconds.
+## Chain 2 finished in 0.0 seconds.
+## Chain 3 finished in 0.0 seconds.
+## Chain 4 finished in 0.0 seconds.
+## 
+## All 4 chains finished successfully.
+## Mean chain execution time: 0.0 seconds.
+## Total execution time: 0.3 seconds.
 ```
 
 Checamos diagnósticos:
@@ -124,7 +113,22 @@ ajuste$cmdstan_diagnose()
 ```
 
 ```
-## Error: No CmdStan runs finished successfully. Unable to run bin/diagnose.
+## Processing csv files: /tmp/Rtmpv7c8tl/modelo-1-202311292012-1-8a4b85.csv, /tmp/Rtmpv7c8tl/modelo-1-202311292012-2-8a4b85.csv, /tmp/Rtmpv7c8tl/modelo-1-202311292012-3-8a4b85.csv, /tmp/Rtmpv7c8tl/modelo-1-202311292012-4-8a4b85.csv
+## 
+## Checking sampler transitions treedepth.
+## Treedepth satisfactory for all transitions.
+## 
+## Checking sampler transitions for divergences.
+## No divergent transitions found.
+## 
+## Checking E-BFMI - sampler transitions HMC potential energy.
+## E-BFMI satisfactory.
+## 
+## Effective sample size satisfactory.
+## 
+## Split R-hat values satisfactory all parameters.
+## 
+## Processing complete, no problems detected.
 ```
 
 Si no hay problemas, podemos ver el resumen:
@@ -135,7 +139,12 @@ ajuste$summary()
 ```
 
 ```
-## Error: No chains finished successfully. Unable to retrieve the draws.
+## # A tibble: 3 × 10
+##   variable    mean  median     sd    mad      q5     q95  rhat ess_bulk ess_tail
+##   <chr>      <num>   <num>  <num>  <num>   <num>   <num> <num>    <num>    <num>
+## 1 lp__     -24.5   -24.3   0.694  0.289  -26.0   -24.1    1.00    1845.    2051.
+## 2 theta      0.611   0.613 0.0787 0.0786   0.476   0.739  1.00    1324.    1635.
+## 3 theta_i…   0.500   0.502 0.190  0.208    0.189   0.813  1.00    4182.    4102.
 ```
 
 Donde verificamos que el tamaño de muestra efectivo (ess) y el diagnóstico de
@@ -146,21 +155,12 @@ Podemos ver las cadenas de la siguiente forma:
 
 ```r
 theta_tbl <- ajuste$draws(c("theta", "theta_inicial")) %>% as_draws_df()
-```
-
-```
-## Error: No chains finished successfully. Unable to retrieve the draws.
-```
-
-```r
 ggplot(theta_tbl, aes(x = .iteration, y = theta)) +
   geom_line() +
   facet_wrap(~.chain, ncol = 1)
 ```
 
-```
-## Error in eval(expr, envir, enclos): object 'theta_tbl' not found
-```
+<img src="17-inferencia-stan-01_files/figure-html/unnamed-chunk-8-1.png" width="672" />
 
 Y replicamos la gráfica de las notas haciendo:
 
@@ -170,7 +170,7 @@ sims_tbl <- theta_tbl %>% pivot_longer(theta:theta_inicial, names_to = "dist", v
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'theta_tbl' not found
+## Warning: Dropping 'draws_df' class as required metadata was removed.
 ```
 
 ```r
@@ -178,9 +178,7 @@ ggplot(sims_tbl, aes(x = theta, fill = dist)) +
   geom_histogram(aes(x = theta), bins = 30, alpha = 0.5, position = "identity")
 ```
 
-```
-## Error in eval(expr, envir, enclos): object 'sims_tbl' not found
-```
+<img src="17-inferencia-stan-01_files/figure-html/unnamed-chunk-9-1.png" width="576" />
 
 ## Estimación del máximo de una uniforme {-}
 
@@ -256,50 +254,66 @@ ajuste <- mod$sample(
 
 ```
 ## Running MCMC with 4 parallel chains...
+## 
+## Chain 1 Iteration:     1 / 25000 [  0%]  (Warmup) 
+## Chain 1 Iteration:  5000 / 25000 [ 20%]  (Warmup) 
+## Chain 1 Iteration:  5001 / 25000 [ 20%]  (Sampling) 
+## Chain 1 Iteration: 10000 / 25000 [ 40%]  (Sampling) 
+## Chain 2 Iteration:     1 / 25000 [  0%]  (Warmup) 
+## Chain 2 Iteration:  5000 / 25000 [ 20%]  (Warmup) 
+## Chain 2 Iteration:  5001 / 25000 [ 20%]  (Sampling) 
+## Chain 2 Iteration: 10000 / 25000 [ 40%]  (Sampling) 
+## Chain 3 Iteration:     1 / 25000 [  0%]  (Warmup) 
+## Chain 3 Iteration:  5000 / 25000 [ 20%]  (Warmup) 
+## Chain 3 Iteration:  5001 / 25000 [ 20%]  (Sampling) 
+## Chain 3 Iteration: 10000 / 25000 [ 40%]  (Sampling)
 ```
 
 ```
-## Chain 1 ./modelo-2: 3: Syntax error: Unterminated quoted string
+## Chain 3 Informational Message: The current Metropolis proposal is about to be rejected because of the following issue:
 ```
 
 ```
-## Chain 2 ./modelo-2: 3: Syntax error: Unterminated quoted string
+## Chain 3 Exception: uniform_lpdf: Upper bound parameter is inf, but must be finite! (in '/tmp/Rtmpv7c8tl/model-26ca41633101.stan', line 18, column 2 to column 24)
 ```
 
 ```
-## Chain 3 ./modelo-2: 3: Syntax error: Unterminated quoted string
+## Chain 3 If this warning occurs sporadically, such as for highly constrained variable types like covariance matrices, then the sampler is fine,
 ```
 
 ```
-## Chain 4 ./modelo-2: 3: Syntax error: Unterminated quoted string
+## Chain 3 but if this warning occurs often then your model may be either severely ill-conditioned or misspecified.
 ```
 
 ```
-## Warning: Chain 1 finished unexpectedly!
+## Chain 3
 ```
 
 ```
-## Warning: Chain 2 finished unexpectedly!
-```
-
-```
-## Warning: Chain 3 finished unexpectedly!
-```
-
-```
-## Warning: Chain 4 finished unexpectedly!
-```
-
-```
-## Warning: All chains finished unexpectedly! Use the $output(chain_id) method for more information.
-```
-
-```
-## Warning: Use read_cmdstan_csv() to read the results of the failed chains.
-```
-
-```
-## Warning: No chains finished successfully. Unable to retrieve the fit.
+## Chain 4 Iteration:     1 / 25000 [  0%]  (Warmup) 
+## Chain 4 Iteration:  5000 / 25000 [ 20%]  (Warmup) 
+## Chain 4 Iteration:  5001 / 25000 [ 20%]  (Sampling) 
+## Chain 4 Iteration: 10000 / 25000 [ 40%]  (Sampling) 
+## Chain 1 Iteration: 15000 / 25000 [ 60%]  (Sampling) 
+## Chain 1 Iteration: 20000 / 25000 [ 80%]  (Sampling) 
+## Chain 1 Iteration: 25000 / 25000 [100%]  (Sampling) 
+## Chain 2 Iteration: 15000 / 25000 [ 60%]  (Sampling) 
+## Chain 2 Iteration: 20000 / 25000 [ 80%]  (Sampling) 
+## Chain 3 Iteration: 15000 / 25000 [ 60%]  (Sampling) 
+## Chain 3 Iteration: 20000 / 25000 [ 80%]  (Sampling) 
+## Chain 3 Iteration: 25000 / 25000 [100%]  (Sampling) 
+## Chain 4 Iteration: 15000 / 25000 [ 60%]  (Sampling) 
+## Chain 1 finished in 0.3 seconds.
+## Chain 2 Iteration: 25000 / 25000 [100%]  (Sampling) 
+## Chain 2 finished in 0.3 seconds.
+## Chain 3 finished in 0.3 seconds.
+## Chain 4 Iteration: 20000 / 25000 [ 80%]  (Sampling) 
+## Chain 4 Iteration: 25000 / 25000 [100%]  (Sampling) 
+## Chain 4 finished in 0.3 seconds.
+## 
+## All 4 chains finished successfully.
+## Mean chain execution time: 0.3 seconds.
+## Total execution time: 0.5 seconds.
 ```
 
 Checamos diagnósticos:
@@ -310,7 +324,22 @@ ajuste$cmdstan_diagnose()
 ```
 
 ```
-## Error: No CmdStan runs finished successfully. Unable to run bin/diagnose.
+## Processing csv files: /tmp/Rtmpv7c8tl/modelo-2-202311292012-1-7abdbd.csv, /tmp/Rtmpv7c8tl/modelo-2-202311292012-2-7abdbd.csv, /tmp/Rtmpv7c8tl/modelo-2-202311292012-3-7abdbd.csv, /tmp/Rtmpv7c8tl/modelo-2-202311292012-4-7abdbd.csv
+## 
+## Checking sampler transitions treedepth.
+## Treedepth satisfactory for all transitions.
+## 
+## Checking sampler transitions for divergences.
+## No divergent transitions found.
+## 
+## Checking E-BFMI - sampler transitions HMC potential energy.
+## E-BFMI satisfactory.
+## 
+## Effective sample size satisfactory.
+## 
+## Split R-hat values satisfactory all parameters.
+## 
+## Processing complete, no problems detected.
 ```
 
 Si no hay problemas, podemos ver el resumen:
@@ -318,18 +347,15 @@ Si no hay problemas, podemos ver el resumen:
 
 ```r
 resumen <- ajuste$summary()
-```
-
-```
-## Error: No chains finished successfully. Unable to retrieve the draws.
-```
-
-```r
 resumen
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'resumen' not found
+## # A tibble: 2 × 10
+##   variable  mean median      sd     mad    q5   q95  rhat ess_bulk ess_tail
+##   <chr>    <num>  <num>   <num>   <num> <num> <num> <num>    <num>    <num>
+## 1 lp__     -231.  -231.   0.793   0.359 -233. -231.  1.00   23508.   21069.
+## 2 theta    6087.  6012. 243.    165.    5864. 6567.  1.00   20929.   18821.
 ```
 
 El intervalo 95% que obtenemos es:
@@ -343,7 +369,10 @@ ajuste$draws("theta") %>% as_draws_df() %>%
 ```
 
 ```
-## Error: No chains finished successfully. Unable to retrieve the draws.
+## # A tibble: 1 × 3
+##   theta_inf theta_mediana theta_sup
+##       <dbl>         <dbl>     <dbl>
+## 1     5858.         6012.     6742.
 ```
 
 Podemos ahora intentar con la inicial gamma que nos pareció 
@@ -400,50 +429,43 @@ ajuste <- mod$sample(
 
 ```
 ## Running MCMC with 4 parallel chains...
-```
-
-```
-## Chain 1 ./modelo-3: 4: Syntax error: ")" unexpected
-```
-
-```
-## Chain 2 ./modelo-3: 4: Syntax error: ")" unexpected
-```
-
-```
-## Chain 3 ./modelo-3: 4: Syntax error: ")" unexpected
-```
-
-```
-## Chain 4 ./modelo-3: 4: Syntax error: ")" unexpected
-```
-
-```
-## Warning: Chain 1 finished unexpectedly!
-```
-
-```
-## Warning: Chain 2 finished unexpectedly!
-```
-
-```
-## Warning: Chain 3 finished unexpectedly!
-```
-
-```
-## Warning: Chain 4 finished unexpectedly!
-```
-
-```
-## Warning: All chains finished unexpectedly! Use the $output(chain_id) method for more information.
-```
-
-```
-## Warning: Use read_cmdstan_csv() to read the results of the failed chains.
-```
-
-```
-## Warning: No chains finished successfully. Unable to retrieve the fit.
+## 
+## Chain 1 Iteration:     1 / 11000 [  0%]  (Warmup) 
+## Chain 1 Iteration:  1001 / 11000 [  9%]  (Sampling) 
+## Chain 1 Iteration:  3000 / 11000 [ 27%]  (Sampling) 
+## Chain 1 Iteration:  5000 / 11000 [ 45%]  (Sampling) 
+## Chain 1 Iteration:  7000 / 11000 [ 63%]  (Sampling) 
+## Chain 1 Iteration:  9000 / 11000 [ 81%]  (Sampling) 
+## Chain 1 Iteration: 11000 / 11000 [100%]  (Sampling) 
+## Chain 2 Iteration:     1 / 11000 [  0%]  (Warmup) 
+## Chain 2 Iteration:  1001 / 11000 [  9%]  (Sampling) 
+## Chain 2 Iteration:  3000 / 11000 [ 27%]  (Sampling) 
+## Chain 2 Iteration:  5000 / 11000 [ 45%]  (Sampling) 
+## Chain 2 Iteration:  7000 / 11000 [ 63%]  (Sampling) 
+## Chain 2 Iteration:  9000 / 11000 [ 81%]  (Sampling) 
+## Chain 3 Iteration:     1 / 11000 [  0%]  (Warmup) 
+## Chain 3 Iteration:  1001 / 11000 [  9%]  (Sampling) 
+## Chain 3 Iteration:  3000 / 11000 [ 27%]  (Sampling) 
+## Chain 3 Iteration:  5000 / 11000 [ 45%]  (Sampling) 
+## Chain 3 Iteration:  7000 / 11000 [ 63%]  (Sampling) 
+## Chain 3 Iteration:  9000 / 11000 [ 81%]  (Sampling) 
+## Chain 4 Iteration:     1 / 11000 [  0%]  (Warmup) 
+## Chain 4 Iteration:  1001 / 11000 [  9%]  (Sampling) 
+## Chain 4 Iteration:  3000 / 11000 [ 27%]  (Sampling) 
+## Chain 4 Iteration:  5000 / 11000 [ 45%]  (Sampling) 
+## Chain 4 Iteration:  7000 / 11000 [ 63%]  (Sampling) 
+## Chain 4 Iteration:  9000 / 11000 [ 81%]  (Sampling) 
+## Chain 1 finished in 0.1 seconds.
+## Chain 2 Iteration: 11000 / 11000 [100%]  (Sampling) 
+## Chain 2 finished in 0.1 seconds.
+## Chain 3 Iteration: 11000 / 11000 [100%]  (Sampling) 
+## Chain 3 finished in 0.1 seconds.
+## Chain 4 Iteration: 11000 / 11000 [100%]  (Sampling) 
+## Chain 4 finished in 0.1 seconds.
+## 
+## All 4 chains finished successfully.
+## Mean chain execution time: 0.1 seconds.
+## Total execution time: 0.3 seconds.
 ```
 
 Checamos diagnósticos:
@@ -454,7 +476,22 @@ ajuste$cmdstan_diagnose()
 ```
 
 ```
-## Error: No CmdStan runs finished successfully. Unable to run bin/diagnose.
+## Processing csv files: /tmp/Rtmpv7c8tl/modelo-3-202311292012-1-348f41.csv, /tmp/Rtmpv7c8tl/modelo-3-202311292012-2-348f41.csv, /tmp/Rtmpv7c8tl/modelo-3-202311292012-3-348f41.csv, /tmp/Rtmpv7c8tl/modelo-3-202311292012-4-348f41.csv
+## 
+## Checking sampler transitions treedepth.
+## Treedepth satisfactory for all transitions.
+## 
+## Checking sampler transitions for divergences.
+## No divergent transitions found.
+## 
+## Checking E-BFMI - sampler transitions HMC potential energy.
+## E-BFMI satisfactory.
+## 
+## Effective sample size satisfactory.
+## 
+## Split R-hat values satisfactory all parameters.
+## 
+## Processing complete, no problems detected.
 ```
 
 Si no hay problemas, podemos ver el resumen:
@@ -462,18 +499,15 @@ Si no hay problemas, podemos ver el resumen:
 
 ```r
 resumen <- ajuste$summary()
-```
-
-```
-## Error: No chains finished successfully. Unable to retrieve the draws.
-```
-
-```r
 resumen
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'resumen' not found
+## # A tibble: 2 × 10
+##   variable  mean median      sd     mad    q5   q95  rhat ess_bulk ess_tail
+##   <chr>    <num>  <num>   <num>   <num> <num> <num> <num>    <num>    <num>
+## 1 lp__     -179.  -178.   0.799   0.362 -180. -178.  1.00   11507.   10915.
+## 2 theta    6150.  6052. 314.    208.    5867. 6764.  1.00    9946.    9364.
 ```
 
 El intervalo 95% que obtenemos es:
@@ -487,7 +521,10 @@ ajuste$draws("theta") %>% as_draws_df() %>%
 ```
 
 ```
-## Error: No chains finished successfully. Unable to retrieve the draws.
+## # A tibble: 1 × 3
+##   theta_inf theta_mediana theta_sup
+##       <dbl>         <dbl>     <dbl>
+## 1     5860.         6052.     6996.
 ```
 
 Y la posterior se ve como sigue:
@@ -495,13 +532,6 @@ Y la posterior se ve como sigue:
 
 ```r
 theta_post_sim <- ajuste$draws("theta") %>% as.numeric
-```
-
-```
-## Error: No chains finished successfully. Unable to retrieve the draws.
-```
-
-```r
 qplot(theta_post_sim)
 ```
 
@@ -513,8 +543,10 @@ qplot(theta_post_sim)
 ```
 
 ```
-## Error: object 'theta_post_sim' not found
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
+
+<img src="17-inferencia-stan-01_files/figure-html/unnamed-chunk-23-1.png" width="672" />
 
 ## Ejemplo de cantantes {-}
 
@@ -578,50 +610,39 @@ ajuste <- mod$sample(
 
 ```
 ## Running MCMC with 4 sequential chains...
-```
-
-```
-## Chain 1 ./modelo-cantantes: 1: Syntax error: ")" unexpected
-```
-
-```
-## Warning: Chain 1 finished unexpectedly!
-```
-
-```
-## Chain 2 ./modelo-cantantes: 1: Syntax error: ")" unexpected
-```
-
-```
-## Warning: Chain 2 finished unexpectedly!
-```
-
-```
-## Chain 3 ./modelo-cantantes: 1: Syntax error: ")" unexpected
-```
-
-```
-## Warning: Chain 3 finished unexpectedly!
-```
-
-```
-## Chain 4 ./modelo-cantantes: 1: Syntax error: ")" unexpected
-```
-
-```
-## Warning: Chain 4 finished unexpectedly!
-```
-
-```
-## Warning: All chains finished unexpectedly! Use the $output(chain_id) method for more information.
-```
-
-```
-## Warning: Use read_cmdstan_csv() to read the results of the failed chains.
-```
-
-```
-## Warning: No chains finished successfully. Unable to retrieve the fit.
+## 
+## Chain 1 Iteration:    1 / 8000 [  0%]  (Warmup) 
+## Chain 1 Iteration: 2000 / 8000 [ 25%]  (Warmup) 
+## Chain 1 Iteration: 4000 / 8000 [ 50%]  (Warmup) 
+## Chain 1 Iteration: 4001 / 8000 [ 50%]  (Sampling) 
+## Chain 1 Iteration: 6000 / 8000 [ 75%]  (Sampling) 
+## Chain 1 Iteration: 8000 / 8000 [100%]  (Sampling) 
+## Chain 1 finished in 0.1 seconds.
+## Chain 2 Iteration:    1 / 8000 [  0%]  (Warmup) 
+## Chain 2 Iteration: 2000 / 8000 [ 25%]  (Warmup) 
+## Chain 2 Iteration: 4000 / 8000 [ 50%]  (Warmup) 
+## Chain 2 Iteration: 4001 / 8000 [ 50%]  (Sampling) 
+## Chain 2 Iteration: 6000 / 8000 [ 75%]  (Sampling) 
+## Chain 2 Iteration: 8000 / 8000 [100%]  (Sampling) 
+## Chain 2 finished in 0.1 seconds.
+## Chain 3 Iteration:    1 / 8000 [  0%]  (Warmup) 
+## Chain 3 Iteration: 2000 / 8000 [ 25%]  (Warmup) 
+## Chain 3 Iteration: 4000 / 8000 [ 50%]  (Warmup) 
+## Chain 3 Iteration: 4001 / 8000 [ 50%]  (Sampling) 
+## Chain 3 Iteration: 6000 / 8000 [ 75%]  (Sampling) 
+## Chain 3 Iteration: 8000 / 8000 [100%]  (Sampling) 
+## Chain 3 finished in 0.1 seconds.
+## Chain 4 Iteration:    1 / 8000 [  0%]  (Warmup) 
+## Chain 4 Iteration: 2000 / 8000 [ 25%]  (Warmup) 
+## Chain 4 Iteration: 4000 / 8000 [ 50%]  (Warmup) 
+## Chain 4 Iteration: 4001 / 8000 [ 50%]  (Sampling) 
+## Chain 4 Iteration: 6000 / 8000 [ 75%]  (Sampling) 
+## Chain 4 Iteration: 8000 / 8000 [100%]  (Sampling) 
+## Chain 4 finished in 0.1 seconds.
+## 
+## All 4 chains finished successfully.
+## Mean chain execution time: 0.1 seconds.
+## Total execution time: 0.6 seconds.
 ```
 
 Checamos diagnósticos:
@@ -632,7 +653,22 @@ ajuste$cmdstan_diagnose()
 ```
 
 ```
-## Error: No CmdStan runs finished successfully. Unable to run bin/diagnose.
+## Processing csv files: /tmp/Rtmpv7c8tl/modelo-cantantes-202311292013-1-1106ec.csv, /tmp/Rtmpv7c8tl/modelo-cantantes-202311292013-2-1106ec.csv, /tmp/Rtmpv7c8tl/modelo-cantantes-202311292013-3-1106ec.csv, /tmp/Rtmpv7c8tl/modelo-cantantes-202311292013-4-1106ec.csv
+## 
+## Checking sampler transitions treedepth.
+## Treedepth satisfactory for all transitions.
+## 
+## Checking sampler transitions for divergences.
+## No divergent transitions found.
+## 
+## Checking E-BFMI - sampler transitions HMC potential energy.
+## E-BFMI satisfactory.
+## 
+## Effective sample size satisfactory.
+## 
+## Split R-hat values satisfactory all parameters.
+## 
+## Processing complete, no problems detected.
 ```
 
 Si no hay problemas, podemos ver el resumen:
@@ -640,18 +676,24 @@ Si no hay problemas, podemos ver el resumen:
 
 ```r
 resumen <- ajuste$summary()
-```
-
-```
-## Error: No chains finished successfully. Unable to retrieve the draws.
-```
-
-```r
 resumen
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'resumen' not found
+## # A tibble: 23 × 10
+##    variable   mean median    sd   mad     q5    q95  rhat ess_bulk ess_tail
+##    <chr>     <num>  <num> <num> <num>  <num>  <num> <num>    <num>    <num>
+##  1 lp__     -46.2  -45.9   1.07 0.766 -48.3  -45.2   1.00    6796.    8066.
+##  2 mu       176.   176.    1.35 1.31  174.   178.    1.00   12204.    9317.
+##  3 sigma      6.70   6.54  1.18 1.10    5.07   8.85  1.00   12061.    8424.
+##  4 y_sim[1] 176.   176.    7.00 6.76  164.   187.    1.00   15924.   15078.
+##  5 y_sim[2] 176.   176.    6.91 6.76  164.   187.    1.00   15815.   15205.
+##  6 y_sim[3] 176.   176.    7.01 6.77  164.   187.    1.00   14830.   15367.
+##  7 y_sim[4] 176.   176.    6.95 6.69  164.   187.    1.00   15770.   15668.
+##  8 y_sim[5] 176.   176.    6.91 6.73  164.   187.    1.00   15282.   14563.
+##  9 y_sim[6] 176.   176.    6.99 6.69  164.   187.    1.00   16240.   15265.
+## 10 y_sim[7] 176.   176.    6.90 6.61  164.   187.    1.00   15662.   15977.
+## # ℹ 13 more rows
 ```
 
 El intervalo 95% que obtenemos es:
@@ -663,9 +705,7 @@ ggplot(aes(x = mu, y = sigma)) + geom_point(alpha = 0.1) +
   coord_equal()
 ```
 
-```
-## Error: No chains finished successfully. Unable to retrieve the draws.
-```
+<img src="17-inferencia-stan-01_files/figure-html/unnamed-chunk-29-1.png" width="672" />
 
 
 Y ahora extraemos algunas replicaciones de la posterior predictiva:
@@ -682,7 +722,7 @@ y_sim_tbl <- ajuste$draws("y_sim") %>% as_draws_df() %>%
 ```
 
 ```
-## Error: No chains finished successfully. Unable to retrieve the draws.
+## Warning: Dropping 'draws_df' class as required metadata was removed.
 ```
 
 ```
@@ -790,7 +830,7 @@ ajuste <- mod_informado$sample(
 ## Chain 2 Iteration: 4001 / 8000 [ 50%]  (Sampling) 
 ## Chain 2 Iteration: 6000 / 8000 [ 75%]  (Sampling) 
 ## Chain 2 Iteration: 8000 / 8000 [100%]  (Sampling) 
-## Chain 2 finished in 2.1 seconds.
+## Chain 2 finished in 2.0 seconds.
 ## Chain 3 Iteration:    1 / 8000 [  0%]  (Warmup) 
 ## Chain 3 Iteration: 2000 / 8000 [ 25%]  (Warmup) 
 ## Chain 3 Iteration: 4000 / 8000 [ 50%]  (Warmup) 
@@ -818,7 +858,7 @@ ajuste$cmdstan_diagnose()
 ```
 
 ```
-## Processing csv files: /tmp/Rtmpdljgfv/modelo-examenes-202311291757-1-719731.csv, /tmp/Rtmpdljgfv/modelo-examenes-202311291757-2-719731.csv, /tmp/Rtmpdljgfv/modelo-examenes-202311291757-3-719731.csv, /tmp/Rtmpdljgfv/modelo-examenes-202311291757-4-719731.csv
+## Processing csv files: /tmp/Rtmpv7c8tl/modelo-examenes-202311292013-1-719786.csv, /tmp/Rtmpv7c8tl/modelo-examenes-202311292013-2-719786.csv, /tmp/Rtmpv7c8tl/modelo-examenes-202311292013-3-719786.csv, /tmp/Rtmpv7c8tl/modelo-examenes-202311292013-4-719786.csv
 ## 
 ## Checking sampler transitions treedepth.
 ## Treedepth satisfactory for all transitions.
@@ -931,82 +971,44 @@ ajuste <- mod_no_inf$sample(
 
 ```
 ## Running MCMC with 4 sequential chains...
+## 
+## Chain 1 Iteration:    1 / 8000 [  0%]  (Warmup) 
+## Chain 1 Iteration: 2000 / 8000 [ 25%]  (Warmup) 
+## Chain 1 Iteration: 4000 / 8000 [ 50%]  (Warmup) 
+## Chain 1 Iteration: 4001 / 8000 [ 50%]  (Sampling) 
+## Chain 1 Iteration: 6000 / 8000 [ 75%]  (Sampling) 
+## Chain 1 Iteration: 8000 / 8000 [100%]  (Sampling) 
+## Chain 1 finished in 2.9 seconds.
+## Chain 2 Iteration:    1 / 8000 [  0%]  (Warmup) 
+## Chain 2 Iteration: 2000 / 8000 [ 25%]  (Warmup) 
+## Chain 2 Iteration: 4000 / 8000 [ 50%]  (Warmup) 
+## Chain 2 Iteration: 4001 / 8000 [ 50%]  (Sampling) 
+## Chain 2 Iteration: 6000 / 8000 [ 75%]  (Sampling) 
+## Chain 2 Iteration: 8000 / 8000 [100%]  (Sampling) 
+## Chain 2 finished in 2.8 seconds.
+## Chain 3 Iteration:    1 / 8000 [  0%]  (Warmup) 
+## Chain 3 Iteration: 2000 / 8000 [ 25%]  (Warmup) 
+## Chain 3 Iteration: 4000 / 8000 [ 50%]  (Warmup) 
+## Chain 3 Iteration: 4001 / 8000 [ 50%]  (Sampling) 
+## Chain 3 Iteration: 6000 / 8000 [ 75%]  (Sampling) 
+## Chain 3 Iteration: 8000 / 8000 [100%]  (Sampling) 
+## Chain 3 finished in 4.9 seconds.
+## Chain 4 Iteration:    1 / 8000 [  0%]  (Warmup) 
+## Chain 4 Iteration: 2000 / 8000 [ 25%]  (Warmup) 
+## Chain 4 Iteration: 4000 / 8000 [ 50%]  (Warmup) 
+## Chain 4 Iteration: 4001 / 8000 [ 50%]  (Sampling) 
+## Chain 4 Iteration: 6000 / 8000 [ 75%]  (Sampling) 
+## Chain 4 Iteration: 8000 / 8000 [100%]  (Sampling) 
+## Chain 4 finished in 2.8 seconds.
+## 
+## All 4 chains finished successfully.
+## Mean chain execution time: 3.3 seconds.
+## Total execution time: 13.6 seconds.
 ```
 
 ```
-## Chain 1 ./modelo-examenes-no-inf: 1: !H__PAGEZERO__TEXT@@__text__TEXT__stubs__TEXTPP__init_offsets__TEXT__gcc_except_tab__TEXT__const__TEXTK~__cstring__TEXTۋbxۋ__unwind_info__TEXT@:@__eh_frame__TEXT: not found
-```
-
-```
-## Chain 1 ./modelo-examenes-no-inf: 2: j: not found
-```
-
-```
-## Chain 1 ./modelo-examenes-no-inf: 3: Syntax error: word unexpected (expecting ")")
-```
-
-```
-## Warning: Chain 1 finished unexpectedly!
-```
-
-```
-## Chain 2 ./modelo-examenes-no-inf: 1: !H__PAGEZERO__TEXT@@__text__TEXT__stubs__TEXTPP__init_offsets__TEXT__gcc_except_tab__TEXT__const__TEXTK~__cstring__TEXTۋbxۋ__unwind_info__TEXT@:@__eh_frame__TEXT: not found
-```
-
-```
-## Chain 2 ./modelo-examenes-no-inf: 2: j: not found
-```
-
-```
-## Chain 2 ./modelo-examenes-no-inf: 3: Syntax error: word unexpected (expecting ")")
-```
-
-```
-## Warning: Chain 2 finished unexpectedly!
-```
-
-```
-## Chain 3 ./modelo-examenes-no-inf: 1: !H__PAGEZERO__TEXT@@__text__TEXT__stubs__TEXTPP__init_offsets__TEXT__gcc_except_tab__TEXT__const__TEXTK~__cstring__TEXTۋbxۋ__unwind_info__TEXT@:@__eh_frame__TEXT: not found
-```
-
-```
-## Chain 3 ./modelo-examenes-no-inf: 2: j: not found
-```
-
-```
-## Chain 3 ./modelo-examenes-no-inf: 3: Syntax error: word unexpected (expecting ")")
-```
-
-```
-## Warning: Chain 3 finished unexpectedly!
-```
-
-```
-## Chain 4 ./modelo-examenes-no-inf: 1: !H__PAGEZERO__TEXT@@__text__TEXT__stubs__TEXTPP__init_offsets__TEXT__gcc_except_tab__TEXT__const__TEXTK~__cstring__TEXTۋbxۋ__unwind_info__TEXT@:@__eh_frame__TEXT: not found
-```
-
-```
-## Chain 4 ./modelo-examenes-no-inf: 2: j: not found
-```
-
-```
-## Chain 4 ./modelo-examenes-no-inf: 3: Syntax error: word unexpected (expecting ")")
-```
-
-```
-## Warning: Chain 4 finished unexpectedly!
-```
-
-```
-## Warning: All chains finished unexpectedly! Use the $output(chain_id) method for more information.
-```
-
-```
-## Warning: Use read_cmdstan_csv() to read the results of the failed chains.
-```
-
-```
-## Warning: No chains finished successfully. Unable to retrieve the fit.
+## Warning: 520 of 16000 (3.0%) transitions ended with a divergence.
+## See https://mc-stan.org/misc/warnings for details.
 ```
 Y obtenemos mensajes de advertencia (divergencias), lo que implica que
 los diagnósticos indican que es posible que las cadenas no hayan explorado
@@ -1018,7 +1020,25 @@ ajuste$cmdstan_diagnose()
 ```
 
 ```
-## Error: No CmdStan runs finished successfully. Unable to run bin/diagnose.
+## Processing csv files: /tmp/Rtmpv7c8tl/modelo-examenes-no-inf-202311292013-1-719786.csv, /tmp/Rtmpv7c8tl/modelo-examenes-no-inf-202311292013-2-719786.csv, /tmp/Rtmpv7c8tl/modelo-examenes-no-inf-202311292013-3-719786.csv, /tmp/Rtmpv7c8tl/modelo-examenes-no-inf-202311292013-4-719786.csv
+## 
+## Checking sampler transitions treedepth.
+## Treedepth satisfactory for all transitions.
+## 
+## Checking sampler transitions for divergences.
+## 520 of 16000 (3.25%) transitions ended with a divergence.
+## These divergent transitions indicate that HMC is not fully able to explore the posterior distribution.
+## Try increasing adapt delta closer to 1.
+## If this doesn't remove all divergences, try to reparameterize the model.
+## 
+## Checking E-BFMI - sampler transitions HMC potential energy.
+## E-BFMI satisfactory.
+## 
+## Effective sample size satisfactory.
+## 
+## Split R-hat values satisfactory all parameters.
+## 
+## Processing complete.
 ```
 
 
@@ -1027,13 +1047,6 @@ ajuste$cmdstan_diagnose()
 sims_theta_tbl <- 
   ajuste$draws(c("theta_azar", "theta_corr")) %>% 
   as_draws_df()  
-```
-
-```
-## Error: No chains finished successfully. Unable to retrieve the draws.
-```
-
-```r
 ggplot(sims_theta_tbl, aes(x = theta_azar, y = theta_corr)) +
   geom_point(alpha = 0.1)
 ```
@@ -1104,7 +1117,7 @@ ajuste <- mod_informado$sample(
 ## 
 ## All 4 chains finished successfully.
 ## Mean chain execution time: 2.1 seconds.
-## Total execution time: 8.9 seconds.
+## Total execution time: 8.8 seconds.
 ```
 
 No tenemos problemas numéricos, y la posterior se ve como sigue:

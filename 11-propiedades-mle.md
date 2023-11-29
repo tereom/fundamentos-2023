@@ -120,7 +120,7 @@ distintas realizaciones de muestras obtenidas del modelo ($B = 500$).
 Nota que la banda definida por $\epsilon$ se puede hacer tan pequeña como se requiera, 
 lo único que sucederá es que necesitaremos un mayor número de observaciones para garantizar 
 que las trayectorias de los estimadores $\hat p_n$ se mantengan dentro de las bandas con 
-alta probabilidad conforme $n$ aumenta. 
+alta probabilidad. 
 
 ## Equivarianza del $\textsf{MLE}$  {-}
 
@@ -255,7 +255,7 @@ $$\hat{\mathsf{ee}} = \sqrt{1/I_n(\hat \theta_n)}.$$
 Esto último nos permite constuir intervalos de confianza, por ejemplo al 95\%, a través de 
 $$ \hat \theta_n \pm 2 \, \hat{\mathsf{ee}}.$$
 Asimismo, el teorema de Normalidad asintótica nos permite establecer que el $\textsf{MLE}$ es **asíntoticamente insesgado**. Es decir, 
-$$\lim_{n \rightarrow n}\mathbb{E}[\hat \theta_n] =  \theta^*.$$
+$$\lim_{n \rightarrow \infty}\mathbb{E}[\hat \theta_n] =  \theta^*.$$
 
 <div class="mathblock">
 <p><strong>Definición.</strong> Sea una muestra <span
@@ -374,11 +374,8 @@ la distribución de $\tau = g(\theta)?$
 La respuesta es afirmativa y la enunciamos por medio de un teorema. El resultado se conoce como 
 el **método delta**. 
 
-<div class="mathblock">
-<p><strong>Teorema.</strong> Si <span class="math inline">\(\tau =
-g(\theta)\)</span> es una función diferenciable y <span
-class="math display">\[g&#39;(\theta) \neq 0\]</span>, entonces</p>
-</div>
+**Teorema.** Si $\tau = g(\theta)$ es una función diferenciable y $g'(\theta) \neq 0$, entonces
+
 
 $$\hat \tau_n \overset{d}{\rightarrow} \mathsf{N}( \tau^*, \hat{\mathsf{ee}}^2_\tau),$$
 <div class="mathblock">

@@ -598,7 +598,7 @@ distintas realizaciones de muestras obtenidas del modelo (<span class="math inli
 <p>Nota que la banda definida por <span class="math inline">\(\epsilon\)</span> se puede hacer tan pequeña como se requiera,
 lo único que sucederá es que necesitaremos un mayor número de observaciones para garantizar
 que las trayectorias de los estimadores <span class="math inline">\(\hat p_n\)</span> se mantengan dentro de las bandas con
-alta probabilidad conforme <span class="math inline">\(n\)</span> aumenta.</p>
+alta probabilidad.</p>
 </div>
 </div>
 <div id="equivarianza-del-textsfmle" class="section level2 unnumbered hasAnchor">
@@ -715,7 +715,7 @@ asintótica por medio de
 <p>Esto último nos permite constuir intervalos de confianza, por ejemplo al 95%, a través de
 <span class="math display">\[ \hat \theta_n \pm 2 \, \hat{\mathsf{ee}}.\]</span>
 Asimismo, el teorema de Normalidad asintótica nos permite establecer que el <span class="math inline">\(\textsf{MLE}\)</span> es <strong>asíntoticamente insesgado</strong>. Es decir,
-<span class="math display">\[\lim_{n \rightarrow n}\mathbb{E}[\hat \theta_n] =  \theta^*.\]</span></p>
+<span class="math display">\[\lim_{n \rightarrow \infty}\mathbb{E}[\hat \theta_n] =  \theta^*.\]</span></p>
 <div class="mathblock">
 <p>
 <strong>Definición.</strong> Sea una muestra <span class="math inline"><span class="math inline">\(X_1, \ldots, X_n \overset{iid}{\sim} f(X; \theta^*)\)</span></span>. Un estimador <span class="math inline"><span class="math inline">\(\tilde \theta_n\)</span></span> es insesgado si satisface que <span class="math display"><span class="math display">\[\mathbb{E}[\tilde \theta_n]
@@ -812,11 +812,7 @@ de él? Es decir, si ya conocemos la distribución de <span class="math inline">
 la distribución de <span class="math inline">\(\tau = g(\theta)?\)</span></p>
 <p>La respuesta es afirmativa y la enunciamos por medio de un teorema. El resultado se conoce como
 el <strong>método delta</strong>.</p>
-<div class="mathblock">
-<p>
-<strong>Teorema.</strong> Si <span class="math inline"><span class="math inline">\(\tau = g(\theta)\)</span></span> es una función diferenciable y <span class="math display"><span class="math display">\[g&amp;#39;(\theta) \neq 0\]</span></span>, entonces
-</p>
-</div>
+<p><strong>Teorema.</strong> Si <span class="math inline">\(\tau = g(\theta)\)</span> es una función diferenciable y <span class="math inline">\(g&#39;(\theta) \neq 0\)</span>, entonces</p>
 <span class="math display">\[\hat \tau_n \overset{d}{\rightarrow} \mathsf{N}( \tau^*, \hat{\mathsf{ee}}^2_\tau),\]</span>
 <div class="mathblock">
 <p>
