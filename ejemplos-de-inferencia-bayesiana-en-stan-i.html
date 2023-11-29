@@ -867,7 +867,7 @@ verificación predictiva posterior.</p>
 ## Chain 2 Iteration: 4001 / 8000 [ 50%]  (Sampling) 
 ## Chain 2 Iteration: 6000 / 8000 [ 75%]  (Sampling) 
 ## Chain 2 Iteration: 8000 / 8000 [100%]  (Sampling) 
-## Chain 2 finished in 2.0 seconds.
+## Chain 2 finished in 2.1 seconds.
 ## Chain 3 Iteration:    1 / 8000 [  0%]  (Warmup) 
 ## Chain 3 Iteration: 2000 / 8000 [ 25%]  (Warmup) 
 ## Chain 3 Iteration: 4000 / 8000 [ 50%]  (Warmup) 
@@ -888,7 +888,7 @@ verificación predictiva posterior.</p>
 ## Total execution time: 8.9 seconds.</code></pre>
 <p>Checamos diagnósticos:</p>
 <div class="sourceCode" id="cb778"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb778-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb778-1" aria-hidden="true" tabindex="-1"></a>ajuste<span class="sc">$</span><span class="fu">cmdstan_diagnose</span>()</span></code></pre></div>
-<pre><code>## Processing csv files: /tmp/Rtmp37USZf/modelo-examenes-202311282201-1-71971b.csv, /tmp/Rtmp37USZf/modelo-examenes-202311282201-2-71971b.csv, /tmp/Rtmp37USZf/modelo-examenes-202311282201-3-71971b.csv, /tmp/Rtmp37USZf/modelo-examenes-202311282201-4-71971b.csv
+<pre><code>## Processing csv files: /tmp/Rtmpdljgfv/modelo-examenes-202311291757-1-719731.csv, /tmp/Rtmpdljgfv/modelo-examenes-202311291757-2-719731.csv, /tmp/Rtmpdljgfv/modelo-examenes-202311291757-3-719731.csv, /tmp/Rtmpdljgfv/modelo-examenes-202311291757-4-719731.csv
 ## 
 ## Checking sampler transitions treedepth.
 ## Treedepth satisfactory for all transitions.
@@ -1058,7 +1058,7 @@ una proporción considerable de estudiantes <strong>no</strong> contesta al azar
 ## 
 ## All 4 chains finished successfully.
 ## Mean chain execution time: 2.1 seconds.
-## Total execution time: 8.8 seconds.</code></pre>
+## Total execution time: 8.9 seconds.</code></pre>
 <p>No tenemos problemas numéricos, y la posterior se ve como sigue:</p>
 <div class="sourceCode" id="cb814"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb814-1"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb814-1" aria-hidden="true" tabindex="-1"></a>sims_theta_tbl <span class="ot">&lt;-</span> </span>
 <span id="cb814-2"><a href="ejemplos-de-inferencia-bayesiana-en-stan-i.html#cb814-2" aria-hidden="true" tabindex="-1"></a>  ajuste<span class="sc">$</span><span class="fu">draws</span>(<span class="fu">c</span>(<span class="st">&quot;theta_azar&quot;</span>, <span class="st">&quot;theta_corr&quot;</span>)) <span class="sc">%&gt;%</span> </span>

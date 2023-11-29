@@ -389,7 +389,7 @@ sims %>% group_by(dist) %>%
 ## # A tibble: 2 × 2
 ##   dist      theta_hat
 ##   <chr>         <dbl>
-## 1 inicial       0.5  
+## 1 inicial       0.502
 ## 2 posterior     0.612
 ```
 Nota que el estimador de máxima verosimilitud es $\hat{p} = 19/30 = 0.63$, que

@@ -790,7 +790,7 @@ ajuste <- mod_informado$sample(
 ## Chain 2 Iteration: 4001 / 8000 [ 50%]  (Sampling) 
 ## Chain 2 Iteration: 6000 / 8000 [ 75%]  (Sampling) 
 ## Chain 2 Iteration: 8000 / 8000 [100%]  (Sampling) 
-## Chain 2 finished in 2.0 seconds.
+## Chain 2 finished in 2.1 seconds.
 ## Chain 3 Iteration:    1 / 8000 [  0%]  (Warmup) 
 ## Chain 3 Iteration: 2000 / 8000 [ 25%]  (Warmup) 
 ## Chain 3 Iteration: 4000 / 8000 [ 50%]  (Warmup) 
@@ -818,7 +818,7 @@ ajuste$cmdstan_diagnose()
 ```
 
 ```
-## Processing csv files: /tmp/Rtmp37USZf/modelo-examenes-202311282201-1-71971b.csv, /tmp/Rtmp37USZf/modelo-examenes-202311282201-2-71971b.csv, /tmp/Rtmp37USZf/modelo-examenes-202311282201-3-71971b.csv, /tmp/Rtmp37USZf/modelo-examenes-202311282201-4-71971b.csv
+## Processing csv files: /tmp/Rtmpdljgfv/modelo-examenes-202311291757-1-719731.csv, /tmp/Rtmpdljgfv/modelo-examenes-202311291757-2-719731.csv, /tmp/Rtmpdljgfv/modelo-examenes-202311291757-3-719731.csv, /tmp/Rtmpdljgfv/modelo-examenes-202311291757-4-719731.csv
 ## 
 ## Checking sampler transitions treedepth.
 ## Treedepth satisfactory for all transitions.
@@ -1104,7 +1104,7 @@ ajuste <- mod_informado$sample(
 ## 
 ## All 4 chains finished successfully.
 ## Mean chain execution time: 2.1 seconds.
-## Total execution time: 8.8 seconds.
+## Total execution time: 8.9 seconds.
 ```
 
 No tenemos problemas numéricos, y la posterior se ve como sigue:
